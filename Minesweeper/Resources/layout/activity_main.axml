@@ -34,6 +34,11 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/txtTimer" />
+        <ProgressBar
+            android:id="@+id/prgGameLevel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal" />
     </LinearLayout>
     <GridLayout
         android:minWidth="25px"

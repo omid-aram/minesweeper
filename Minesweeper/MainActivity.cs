@@ -15,8 +15,8 @@ namespace Minesweeper
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
     public class MainActivity : AppCompatActivity
     {
-        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount,
-            rowCount, colCount, minePercent, mineCount, flagRemainCount;
+        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
+            rowCount, colCount, minePercent, mineCount, flagRemainCount, gameLevelPercent;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         BoardCell[,] boardCells;
@@ -63,8 +63,11 @@ namespace Minesweeper
             minColCount = (int)Math.Round(gridWidth / screenXdpi * 2.54 / maxSizeCm);
             minRowCount = (int)Math.Round(gridHeight / screenYdpi * 2.54 / maxSizeCm);
 
+            minMinePercent = 15;
+            maxMinePercent = 27;
+
             colCount = maxColCount;
-            minePercent = 27;
+            minePercent = maxMinePercent;
         }
 
         private void BtnToggleFlagDefault_Click(object sender, EventArgs e)
@@ -161,13 +164,25 @@ namespace Minesweeper
             if (rowCount < minRowCount) { rowCount = minRowCount; }
             if (rowCount > maxRowCount) { rowCount = maxRowCount; }
 
-            var gameMinMinePercent = isLastGameWinner ? minePercent : 15;
-            var gameMaxMinePercent = isLastGameWinner ? 27 : minePercent;
+            var gameMinMinePercent = isLastGameWinner ? minePercent : minMinePercent;
+            var gameMaxMinePercent = isLastGameWinner ? maxMinePercent : minePercent;
+
+            if (isLastGameWinner && gameMinMinePercent < maxMinePercent)
+            {
+                gameMinMinePercent++;
+            }
 
             minePercent = random.Next(gameMinMinePercent, gameMaxMinePercent);
             mineCount = (int)Math.Round((double)minePercent * rowCount * colCount / 100); //easy: 15%, medium: 21%, hard: 27%
             flagRemainCount = mineCount;
             setFlagsView();
+
+            //calcutaing gameLevelPercent
+            var colLevel = (float)(colCount - minColCount) / (maxColCount - minColCount);
+            var mineLevel = (float)(minePercent - minMinePercent) / (maxMinePercent - minMinePercent);
+            gameLevelPercent = (int)((colLevel + mineLevel) / 2 * 100);
+            var prgGameLevel = FindViewById<ProgressBar>(Resource.Id.prgGameLevel);
+            prgGameLevel.Progress = gameLevelPercent;
 
             gridLayout.RowCount = rowCount;
             gridLayout.ColumnCount = colCount;
