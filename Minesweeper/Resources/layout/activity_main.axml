@@ -10,6 +10,11 @@
     android:layout_height="match_parent"
     android:id="@+id/linearLayout1"
     app:backgroundTintMode="src_atop">
+        <ProgressBar
+            android:id="@+id/prgGameLevel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal" />
     <LinearLayout
         android:orientation="horizontal"
         android:minWidth="25px"
@@ -34,11 +39,27 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/txtTimer" />
-        <ProgressBar
-            android:id="@+id/prgGameLevel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            style="?android:attr/progressBarStyleHorizontal" />
+        <TextView
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/txtGolden" />
+        <Button
+            android:text="S:0"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnStar" />
+        <Button
+            android:text="F:0"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnGreenFlag" />
+        <Button
+            android:text="H:0"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:id="@+id/btnHeart" />
     </LinearLayout>
     <GridLayout
         android:minWidth="25px"
