@@ -16,17 +16,11 @@ namespace Minesweeper
     public class MainActivity : AppCompatActivity
     {
         Game game;
-        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
-            //rowCount, colCount, minePercent, mineCount, flagRemainCount, gameLevelPercent,
-            //goldenTimeSeconds, silverTimeSeconds, 
-            starCount, greenFlagCount, heartCount;
+        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent, starCount, greenFlagCount, heartCount;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
-        //BoardCell[,] boardCells;
-        bool isAppInitialized, //isGameStarted, isGameFinished, 
-            isFlagDefault/*, isLastGameWinner*/;
+        bool isAppInitialized, isFlagDefault;
         ImageView btnToggleFlagDefault;
-        //DateTime gameStartedTime;
         Timer timer;
         TextView txtTimer, txtGolden;
         Button btnStar, btnGreenFlag, btnHeart;
@@ -60,8 +54,8 @@ namespace Minesweeper
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
 
-            gridWidth = gridLayout.Width; //Resources.DisplayMetrics.WidthPixels;
-            gridHeight = gridLayout.Height; //Resources.DisplayMetrics.HeightPixels;
+            gridWidth = gridLayout.Width; 
+            gridHeight = gridLayout.Height; 
 
             var minSizeCm = 0.5;
             maxColCount = (int)Math.Round(gridWidth / screenXdpi * 2.54 / minSizeCm);
@@ -142,9 +136,6 @@ namespace Minesweeper
             var islastGameDone = (game.Status == GameStatus.Done);
 
             gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
-
-            //game.IsGameStarted = false;
-            //game.IsGameFinished = false;
 
             gridLayout.RemoveAllViews();
 
@@ -316,8 +307,6 @@ namespace Minesweeper
         private void startGame()
         {
             game.Status = GameStatus.Playing;
-            //game.IsGameStarted = true;
-            //Toast.MakeText(Application.Context, "Game started :) Mines count: " + mineCount, ToastLength.Short).Show();
             game.GameStartedTime = DateTime.Now;
             timer.Interval = 1000;
             timer.Start();
@@ -553,15 +542,27 @@ namespace Minesweeper
                 heartCount++;
                 btnHeart.Text = $"H:{heartCount}";
             }
-            if (game.IsInSilverTime)
+            else if (game.IsInSilverTime)
             {
                 greenFlagCount++;
                 btnGreenFlag.Text = $"F:{greenFlagCount}";
             }
-            starCount++;
-            btnStar.Text = $"S:{starCount}";
+            else
+            {
+                starCount++;
+                btnStar.Text = $"S:{starCount}";
+            }
 
-            Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
+            //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
+            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            Android.App.AlertDialog alert = dialog.Create();
+            alert.SetTitle("برنده شدی");
+            alert.SetMessage("بریم دست بعدی؟");
+            alert.SetButton("بریم", (c, ev) =>
+            {
+                newGame();
+            });
+            alert.Show();
         }
 
         private void toggleFlag(int r, int c)
@@ -623,7 +624,16 @@ namespace Minesweeper
             }
 
             game.Status = GameStatus.Fail;
-            Toast.MakeText(Application.Context, "BOOOOOOM :(", ToastLength.Short).Show();
+            //Toast.MakeText(Application.Context, "BOOOOOOM :(", ToastLength.Short).Show();
+            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            Android.App.AlertDialog alert = dialog.Create();
+            alert.SetTitle("پات رفت رو مین");
+            alert.SetMessage("بریم یه دست دیگه؟");
+            alert.SetButton("بریم", (c, ev) =>
+            {
+                newGame();
+            });
+            alert.Show();
         }
 
         private void checkFlagCorrect(int r, int c)
@@ -678,7 +688,7 @@ namespace Minesweeper
 
         private bool isInBoard(int r, int c)
         {
-            return (r >= 0 && c >= 0 && r < game.RowCount && c < game.ColCount/* && game.Status == GameStatus.Playing*/);
+            return (r >= 0 && c >= 0 && r < game.RowCount && c < game.ColCount);
         }
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
@@ -701,9 +711,6 @@ namespace Minesweeper
         public int SilverTimeSeconds { get; set; }
         public BoardCell[,] BoardCells { get; set; }
         public GameStatus Status { get; set; }
-        //public bool IsGameStarted { get; set; }
-        //public bool IsGameFinished { get; set; }
-        //public bool IsDone { get; set; }
         public DateTime GameStartedTime { get; set; }
         public TimeSpan GamePlayingTime { get; set; }
         public bool IsInGoldenTime => (int)GamePlayingTime.TotalSeconds < GoldenTimeSeconds;
