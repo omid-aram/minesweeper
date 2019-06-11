@@ -22,8 +22,9 @@ namespace Minesweeper
         bool isAppInitialized, isFlagDefault;
         ImageView btnToggleFlagDefault;
         Timer timer;
-        TextView txtTimer, txtGolden;
-        Button btnStar, btnGreenFlag, btnHeart;
+        TextView txtTimer, txtGolden, txtMessage;
+        Button btnStar, btnGreenFlag, btnHeart, btnNewGame;
+        LinearLayout linearLayoutMessage, linearLayoutButtons;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,6 +46,17 @@ namespace Minesweeper
             btnStar = FindViewById<Button>(Resource.Id.btnStar);
             btnGreenFlag = FindViewById<Button>(Resource.Id.btnGreenFlag);
             btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
+
+            linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
+            linearLayoutMessage = FindViewById<LinearLayout>(Resource.Id.linearLayoutMessage);
+            txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
+            btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
+            btnNewGame.Click += BtnNewGame_Click;
+        }
+
+        private void BtnNewGame_Click(object sender, EventArgs e)
+        {
+            newGame();
         }
 
         private void initApp()
@@ -220,6 +232,9 @@ namespace Minesweeper
 
             txtTimer.Text = "00:00";
             txtGolden.Text = "";
+
+            linearLayoutMessage.Visibility = ViewStates.Gone;
+            linearLayoutButtons.Visibility = ViewStates.Visible;
         }
         private void createNewBoard(int firstR, int firstC)
         {
@@ -554,15 +569,18 @@ namespace Minesweeper
             }
 
             //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
-            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
-            Android.App.AlertDialog alert = dialog.Create();
-            alert.SetTitle("برنده شدی");
-            alert.SetMessage("بریم دست بعدی؟");
-            alert.SetButton("بریم", (c, ev) =>
-            {
-                newGame();
-            });
-            alert.Show();
+            //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            //Android.App.AlertDialog alert = dialog.Create();
+            //alert.SetTitle("برنده شدی");
+            //alert.SetMessage("بریم دست بعدی؟");
+            //alert.SetButton("بریم", (c, ev) =>
+            //{
+            //    newGame();
+            //});
+            //alert.Show();
+            txtMessage.Text = "برنده شدی";
+            linearLayoutMessage.Visibility = ViewStates.Visible;
+            linearLayoutButtons.Visibility = ViewStates.Gone;
         }
 
         private void toggleFlag(int r, int c)
@@ -625,15 +643,18 @@ namespace Minesweeper
 
             game.Status = GameStatus.Fail;
             //Toast.MakeText(Application.Context, "BOOOOOOM :(", ToastLength.Short).Show();
-            Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
-            Android.App.AlertDialog alert = dialog.Create();
-            alert.SetTitle("پات رفت رو مین");
-            alert.SetMessage("بریم یه دست دیگه؟");
-            alert.SetButton("بریم", (c, ev) =>
-            {
-                newGame();
-            });
-            alert.Show();
+            //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
+            //Android.App.AlertDialog alert = dialog.Create();
+            //alert.SetTitle("پات رفت رو مین");
+            //alert.SetMessage("بریم یه دست دیگه؟");
+            //alert.SetButton("بریم", (c, ev) =>
+            //{
+            //    newGame();
+            //});
+            //alert.Show();
+            txtMessage.Text = "ترکیدی که";
+            linearLayoutMessage.Visibility = ViewStates.Visible;
+            linearLayoutButtons.Visibility = ViewStates.Gone;
         }
 
         private void checkFlagCorrect(int r, int c)
