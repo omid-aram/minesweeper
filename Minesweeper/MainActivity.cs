@@ -27,7 +27,7 @@ namespace Minesweeper
         TextView txtTimer, txtGolden, txtMessage;
         Button btnStar, btnGreenFlag, btnHeart, btnNewGame;
         LinearLayout linearLayoutMessage, linearLayoutButtons;
-        Point lastPressedPoint;
+        //Point lastPressedPoint;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -46,9 +46,13 @@ namespace Minesweeper
 
             txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
             txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
+
             btnStar = FindViewById<Button>(Resource.Id.btnStar);
+            btnStar.Click += BtnStar_Click;
+
             btnGreenFlag = FindViewById<Button>(Resource.Id.btnGreenFlag);
             btnGreenFlag.Click += BtnGreenFlag_Click;
+
             btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
             linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
@@ -56,6 +60,16 @@ namespace Minesweeper
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
             btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
+        }
+
+        private void BtnStar_Click(object sender, EventArgs e)
+        {
+            if (starCount >= 3)
+            {
+                starCount -= 3;
+                greenFlagCount++;
+            }
+            setBonusNumbers();
         }
 
         private void BtnGreenFlag_Click(object sender, EventArgs e)
@@ -66,10 +80,36 @@ namespace Minesweeper
                 return;
             }
 
-            if (lastPressedPoint != null && game.BoardCells[lastPressedPoint.X, lastPressedPoint.Y].Value > 0)
+            for (int r = 0; r < game.RowCount; r++)
             {
-
+                for (int c = 0; c < game.ColCount; c++)
+                {
+                    if (game.BoardCells[r, c].Value == -1 && game.BoardCells[r, c].Status != CellStatus.Flagged)
+                    {
+                        if (isAroundCellsPressed(r, c))
+                        {
+                            putGreenFlag(r, c);
+                            greenFlagCount--;
+                            setBonusNumbers();
+                            return;
+                        }
+                    }
+                }
             }
+        }
+
+        private bool isAroundCellsPressed(int r, int c)
+        {
+            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status == CellStatus.Pressed) return true;
+            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status == CellStatus.Pressed) return true;
+
+            return false;
         }
 
         private void BtnNewGame_Click(object sender, EventArgs e)
@@ -491,7 +531,7 @@ namespace Minesweeper
 
             if (!isInBoard(r, c) || game.BoardCells[r, c].Status != CellStatus.NotPressed) return;
 
-            lastPressedPoint = new Point(r, c);
+            //lastPressedPoint = new Point(r, c);
 
             openCellImage(r, c, isAutoClick);
 
@@ -579,18 +619,16 @@ namespace Minesweeper
             if (game.IsInGoldenTime)
             {
                 heartCount++;
-                btnHeart.Text = $"H:{heartCount}";
             }
             else if (game.IsInSilverTime)
             {
                 greenFlagCount++;
-                btnGreenFlag.Text = $"F:{greenFlagCount}";
             }
             else
             {
                 starCount++;
-                btnStar.Text = $"S:{starCount}";
             }
+                setBonusNumbers();
 
             //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
             //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
@@ -605,6 +643,13 @@ namespace Minesweeper
             txtMessage.Text = "برنده شدی";
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
+        }
+
+        private void setBonusNumbers()
+        {
+            btnStar.Text = $"S:{starCount}";
+            btnGreenFlag.Text = $"F:{greenFlagCount}";
+            btnHeart.Text = $"H:{heartCount}";
         }
 
         private void toggleFlag(int r, int c)
