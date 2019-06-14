@@ -9,6 +9,7 @@ using Android.Content.PM;
 using System;
 using Xamarin.Essentials;
 using System.Timers;
+using System.Drawing;
 
 namespace Minesweeper
 {
@@ -16,7 +17,8 @@ namespace Minesweeper
     public class MainActivity : AppCompatActivity
     {
         Game game;
-        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent, starCount, greenFlagCount, heartCount;
+        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent, 
+            starCount, greenFlagCount, heartCount;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault;
@@ -25,6 +27,7 @@ namespace Minesweeper
         TextView txtTimer, txtGolden, txtMessage;
         Button btnStar, btnGreenFlag, btnHeart, btnNewGame;
         LinearLayout linearLayoutMessage, linearLayoutButtons;
+        Point lastPressedPoint;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -45,6 +48,7 @@ namespace Minesweeper
             txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
             btnStar = FindViewById<Button>(Resource.Id.btnStar);
             btnGreenFlag = FindViewById<Button>(Resource.Id.btnGreenFlag);
+            btnGreenFlag.Click += BtnGreenFlag_Click;
             btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
             linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
@@ -52,6 +56,20 @@ namespace Minesweeper
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
             btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
+        }
+
+        private void BtnGreenFlag_Click(object sender, EventArgs e)
+        {
+            if (greenFlagCount == 0)
+            {
+                Toast.MakeText(Application.Context, "پرچم نداری", ToastLength.Short).Show();
+                return;
+            }
+
+            if (lastPressedPoint != null && game.BoardCells[lastPressedPoint.X, lastPressedPoint.Y].Value > 0)
+            {
+
+            }
         }
 
         private void BtnNewGame_Click(object sender, EventArgs e)
@@ -66,8 +84,8 @@ namespace Minesweeper
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
 
-            gridWidth = gridLayout.Width; 
-            gridHeight = gridLayout.Height; 
+            gridWidth = gridLayout.Width;
+            gridHeight = gridLayout.Height;
 
             var minSizeCm = 0.5;
             maxColCount = (int)Math.Round(gridWidth / screenXdpi * 2.54 / minSizeCm);
@@ -246,7 +264,10 @@ namespace Minesweeper
             {
                 for (int c = 0; c < game.ColCount; c++)
                 {
-                    game.BoardCells[r, c] = new BoardCell();
+                    game.BoardCells[r, c] = new BoardCell
+                    {
+                        Status = CellStatus.NotPressed,
+                    };
                 }
             }
 
@@ -373,7 +394,7 @@ namespace Minesweeper
 
         private void setCellImage(int r, int c, int resImage)
         {
-            if (!isInBoard(r, c) || game.BoardCells[r, c].IsPressed) return;
+            if (!isInBoard(r, c) || game.BoardCells[r, c].Status == CellStatus.Pressed) return;
 
             var position = r * game.ColCount + c;
             var button = (ImageView)gridLayout.GetChildAt(position);
@@ -423,7 +444,7 @@ namespace Minesweeper
                 else
                     pressCell(r, c, false);
 
-                if (game.BoardCells[r, c].IsPressed)
+                if (game.BoardCells[r, c].Status == CellStatus.Pressed)
                 {
                     openedPress(r, c);
                 }
@@ -468,7 +489,9 @@ namespace Minesweeper
                 createNewBoard(r, c);
             }
 
-            if (!isInBoard(r, c) || game.BoardCells[r, c].IsPressed || game.BoardCells[r, c].IsFlagged) return;
+            if (!isInBoard(r, c) || game.BoardCells[r, c].Status != CellStatus.NotPressed) return;
+
+            lastPressedPoint = new Point(r, c);
 
             openCellImage(r, c, isAutoClick);
 
@@ -499,25 +522,25 @@ namespace Minesweeper
         {
             var flaggedCount = 0;
 
-            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].IsFlagged) flaggedCount++;
-            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].IsFlagged) flaggedCount++;
-            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].IsFlagged) flaggedCount++;
-            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].IsFlagged) flaggedCount++;
-            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].IsFlagged) flaggedCount++;
-            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].IsFlagged) flaggedCount++;
-            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].IsFlagged) flaggedCount++;
-            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].IsFlagged) flaggedCount++;
+            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status == CellStatus.Flagged) flaggedCount++;
+            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status == CellStatus.Flagged) flaggedCount++;
 
             if (flaggedCount >= game.BoardCells[r, c].Value)
             {
-                if (isInBoard(r - 1, c - 1) && !game.BoardCells[r - 1, c - 1].IsPressed) pressCell(r - 1, c - 1);
-                if (isInBoard(r - 1, c - 0) && !game.BoardCells[r - 1, c - 0].IsPressed) pressCell(r - 1, c - 0);
-                if (isInBoard(r - 1, c + 1) && !game.BoardCells[r - 1, c + 1].IsPressed) pressCell(r - 1, c + 1);
-                if (isInBoard(r - 0, c - 1) && !game.BoardCells[r - 0, c - 1].IsPressed) pressCell(r - 0, c - 1);
-                if (isInBoard(r - 0, c + 1) && !game.BoardCells[r - 0, c + 1].IsPressed) pressCell(r - 0, c + 1);
-                if (isInBoard(r + 1, c - 1) && !game.BoardCells[r + 1, c - 1].IsPressed) pressCell(r + 1, c - 1);
-                if (isInBoard(r + 1, c - 0) && !game.BoardCells[r + 1, c - 0].IsPressed) pressCell(r + 1, c - 0);
-                if (isInBoard(r + 1, c + 1) && !game.BoardCells[r + 1, c + 1].IsPressed) pressCell(r + 1, c + 1);
+                if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status != CellStatus.Pressed) pressCell(r - 1, c - 1);
+                if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status != CellStatus.Pressed) pressCell(r - 1, c - 0);
+                if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status != CellStatus.Pressed) pressCell(r - 1, c + 1);
+                if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status != CellStatus.Pressed) pressCell(r - 0, c - 1);
+                if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status != CellStatus.Pressed) pressCell(r - 0, c + 1);
+                if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status != CellStatus.Pressed) pressCell(r + 1, c - 1);
+                if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status != CellStatus.Pressed) pressCell(r + 1, c - 0);
+                if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status != CellStatus.Pressed) pressCell(r + 1, c + 1);
             }
         }
 
@@ -527,7 +550,7 @@ namespace Minesweeper
             {
                 for (int c = 0; c < game.ColCount; c++)
                 {
-                    if (game.BoardCells[r, c].Value != -1 && !game.BoardCells[r, c].IsPressed) return;
+                    if (game.BoardCells[r, c].Value != -1 && game.BoardCells[r, c].Status != CellStatus.Pressed) return;
                 }
             }
 
@@ -543,9 +566,10 @@ namespace Minesweeper
             {
                 for (int c = 0; c < game.ColCount; c++)
                 {
-                    if (game.BoardCells[r, c].Value == -1 && !game.BoardCells[r, c].IsFlagged)
+                    if (game.BoardCells[r, c].Value == -1 /*&& game.BoardCells[r, c].Status != CellStatus.Flagged*/)
                     {
-                        toggleFlag(r, c);
+                        //toggleFlag(r, c);
+                        putGreenFlag(r, c);
                     }
                 }
             }
@@ -585,17 +609,20 @@ namespace Minesweeper
 
         private void toggleFlag(int r, int c)
         {
-            if (!isInBoard(r, c) || game.BoardCells[r, c].IsPressed) return;
+            if (!isInBoard(r, c) || game.BoardCells[r, c].Status == CellStatus.Pressed) return;
 
-            if (game.BoardCells[r, c].IsFlagged)
+            if (game.BoardCells[r, c].Status == CellStatus.Flagged)
             {
-                game.BoardCells[r, c].IsFlagged = false;
-                setCellImage(r, c, Resource.Drawable.box_up);
-                game.FlagRemainCount++;
+                if (!game.BoardCells[r, c].IsGreenFlag)
+                {
+                    game.BoardCells[r, c].Status = CellStatus.NotPressed;
+                    setCellImage(r, c, Resource.Drawable.box_up);
+                    game.FlagRemainCount++;
+                }
             }
             else if (game.FlagRemainCount > 0)
             {
-                game.BoardCells[r, c].IsFlagged = true;
+                game.BoardCells[r, c].Status = CellStatus.Flagged;
                 setCellImage(r, c, Resource.Drawable.box_flag);
                 game.FlagRemainCount--;
             }
@@ -603,6 +630,18 @@ namespace Minesweeper
             setFlagsView();
         }
 
+        private void putGreenFlag(int r, int c)
+        {
+            if (game.BoardCells[r, c].Status != CellStatus.Flagged)
+            {
+                game.BoardCells[r, c].Status = CellStatus.Flagged;
+                game.FlagRemainCount--;
+            }
+            game.BoardCells[r, c].IsGreenFlag = true;
+            setCellImage(r, c, Resource.Drawable.box_flag_green);
+
+            setFlagsView();
+        }
         private void setFlagsView()
         {
             var txtFlagRemainCount = FindViewById<TextView>(Resource.Id.textView1);
@@ -659,7 +698,7 @@ namespace Minesweeper
 
         private void checkFlagCorrect(int r, int c)
         {
-            if (!isInBoard(r, c) || !game.BoardCells[r, c].IsFlagged) return;
+            if (!isInBoard(r, c) || game.BoardCells[r, c].Status != CellStatus.Flagged) return;
 
             if (game.BoardCells[r, c].Value != -1)
             {
@@ -669,7 +708,7 @@ namespace Minesweeper
 
         private void openCellImage(int r, int c, bool isAutoClick)
         {
-            if (!isInBoard(r, c) || game.BoardCells[r, c].IsPressed || game.BoardCells[r, c].IsFlagged) return;
+            if (!isInBoard(r, c) || game.BoardCells[r, c].Status == CellStatus.Pressed || game.BoardCells[r, c].Status == CellStatus.Flagged) return;
 
             int cellImage = Resource.Drawable.box_0;
             switch (game.BoardCells[r, c].Value)
@@ -704,7 +743,7 @@ namespace Minesweeper
             }
             setCellImage(r, c, cellImage);
 
-            game.BoardCells[r, c].IsPressed = true;
+            game.BoardCells[r, c].Status = CellStatus.Pressed;
         }
 
         private bool isInBoard(int r, int c)
@@ -740,8 +779,10 @@ namespace Minesweeper
     public class BoardCell
     {
         public SByte Value { get; set; }
-        public bool IsPressed { get; set; }
-        public bool IsFlagged { get; set; }
+        public CellStatus Status { get; set; }
+        //public bool IsPressed { get; set; }
+        //public bool IsFlagged { get; set; }
+        public bool IsGreenFlag { get; set; }
         public bool IsNearByZero { get; set; }
     }
 
@@ -751,5 +792,13 @@ namespace Minesweeper
         Playing,
         Done,
         Fail,
+    }
+
+    public enum CellStatus
+    {
+        NotPressed,
+        Pressed,
+        Flagged,
+        //GreenFlagged,
     }
 }
