@@ -17,8 +17,6 @@
         style="?android:attr/progressBarStyleHorizontal" />
     <LinearLayout
         android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/linearLayoutMessage"
@@ -35,6 +33,30 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/btnNewGame" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:id="@+id/linearLayoutUseHeart"
+        android:visibility="gone"
+        android:layoutDirection="rtl">
+        <TextView
+            android:text="ترکیدی ولی جون داری"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/txtMessage2" />
+        <Button
+            android:text="میخوام"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnUseHeart" />
+        <Button
+            android:text="نمیخوام"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/btnDontUseHeart" />
     </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"

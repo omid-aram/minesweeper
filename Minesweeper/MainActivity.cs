@@ -17,7 +17,7 @@ namespace Minesweeper
     public class MainActivity : AppCompatActivity
     {
         Game game;
-        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent, 
+        int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
             starCount, greenFlagCount, heartCount;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
@@ -25,9 +25,9 @@ namespace Minesweeper
         ImageView btnToggleFlagDefault;
         Timer timer;
         TextView txtTimer, txtGolden, txtMessage;
-        Button btnStar, btnGreenFlag, btnHeart, btnNewGame;
-        LinearLayout linearLayoutMessage, linearLayoutButtons;
-        //Point lastPressedPoint;
+        Button btnStar, btnGreenFlag, btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
+        LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
+        Point lastPressedPoint;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -55,19 +55,59 @@ namespace Minesweeper
 
             btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
+            btnUseHeart = FindViewById<Button>(Resource.Id.btnUseHeart);
+            btnUseHeart.Click += BtnUseHeart_Click;
+
+            btnDontUseHeart = FindViewById<Button>(Resource.Id.btnDontUseHeart);
+            btnDontUseHeart.Click += BtnDontUseHeart_Click;
+
             linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
             linearLayoutMessage = FindViewById<LinearLayout>(Resource.Id.linearLayoutMessage);
+            linearLayoutUseHeart = FindViewById<LinearLayout>(Resource.Id.linearLayoutUseHeart);
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
             btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
         }
 
+        private void BtnDontUseHeart_Click(object sender, EventArgs e)
+        {
+            gameOver();
+        }
+
+        private void BtnUseHeart_Click(object sender, EventArgs e)
+        {
+            if (heartCount <= 0)
+            {
+                Toast.MakeText(Application.Context, "جون نداری", ToastLength.Short).Show();
+                return;
+            }
+
+            putGreenFlag(lastPressedPoint.X, lastPressedPoint.Y);
+            heartCount--;
+            game.Status = GameStatus.Playing;
+
+            linearLayoutMessage.Visibility = ViewStates.Gone;
+            linearLayoutButtons.Visibility = ViewStates.Visible;
+            linearLayoutUseHeart.Visibility = ViewStates.Gone;
+
+            setBonusNumbers();
+        }
+
         private void BtnStar_Click(object sender, EventArgs e)
         {
-            if (starCount >= 3)
+            if (starCount >= 5)
+            {
+                starCount -= 5;
+                heartCount++;
+            }
+            else if (starCount >= 3)
             {
                 starCount -= 3;
                 greenFlagCount++;
+            }
+            else
+            {
+                Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
             }
             setBonusNumbers();
         }
@@ -293,6 +333,7 @@ namespace Minesweeper
 
             linearLayoutMessage.Visibility = ViewStates.Gone;
             linearLayoutButtons.Visibility = ViewStates.Visible;
+            linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
         private void createNewBoard(int firstR, int firstC)
         {
@@ -466,6 +507,8 @@ namespace Minesweeper
 
         private void Button_Click(object sender, System.EventArgs e)
         {
+            if (game.Status == GameStatus.Paused) return;
+
             var button = (ImageView)sender;
             int position = gridLayout.IndexOfChild(button);
 
@@ -479,20 +522,21 @@ namespace Minesweeper
 
             if (game.Status == GameStatus.Playing)
             {
-                if (isFlagDefault)
-                    toggleFlag(r, c);
-                else
-                    pressCell(r, c, false);
-
                 if (game.BoardCells[r, c].Status == CellStatus.Pressed)
                 {
                     openedPress(r, c);
                 }
+                else if (isFlagDefault)
+                    toggleFlag(r, c);
+                else
+                    pressCell(r, c, false);
             }
         }
 
         private void Button_LongClick(object sender, View.LongClickEventArgs e)
         {
+            if (game.Status == GameStatus.Paused) return;
+
             Vibrate(50);
 
             //TODO: 
@@ -531,9 +575,25 @@ namespace Minesweeper
 
             if (!isInBoard(r, c) || game.BoardCells[r, c].Status != CellStatus.NotPressed) return;
 
-            //lastPressedPoint = new Point(r, c);
+            lastPressedPoint = new Point(r, c);
 
             openCellImage(r, c, isAutoClick);
+
+            if (game.BoardCells[r, c].Value == -1)
+            {
+                if (heartCount > 0)
+                {
+                    game.Status = GameStatus.Paused;
+                    linearLayoutMessage.Visibility = ViewStates.Gone;
+                    linearLayoutButtons.Visibility = ViewStates.Gone;
+                    linearLayoutUseHeart.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    gameOver();
+                }
+                return;
+            }
 
             if (game.BoardCells[r, c].Value == 0)
             {
@@ -545,11 +605,6 @@ namespace Minesweeper
                 pressCell(r + 1, c - 1);
                 pressCell(r + 1, c - 0);
                 pressCell(r + 1, c + 1);
-            }
-
-            if (game.BoardCells[r, c].Value == -1)
-            {
-                gameOver();
             }
 
             if (game.Status == GameStatus.Playing)
@@ -628,7 +683,7 @@ namespace Minesweeper
             {
                 starCount++;
             }
-                setBonusNumbers();
+            setBonusNumbers();
 
             //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
             //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
@@ -643,6 +698,7 @@ namespace Minesweeper
             txtMessage.Text = "برنده شدی";
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
+            linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
 
         private void setBonusNumbers()
@@ -739,6 +795,7 @@ namespace Minesweeper
             txtMessage.Text = "ترکیدی که";
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
+            linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
 
         private void checkFlagCorrect(int r, int c)
@@ -835,6 +892,7 @@ namespace Minesweeper
     {
         Created,
         Playing,
+        Paused,
         Done,
         Fail,
     }
