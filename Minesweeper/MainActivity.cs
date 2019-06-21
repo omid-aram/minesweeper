@@ -18,7 +18,7 @@ namespace Minesweeper
     {
         Game game;
         int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
-            starCount, greenFlagCount, heartCount;
+            starCount = 0, greenFlagCount = 0, heartCount = 0;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault;
@@ -67,6 +67,8 @@ namespace Minesweeper
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
             btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
+
+            setBonusNumbers();
         }
 
         private void BtnDontUseHeart_Click(object sender, EventArgs e)
@@ -114,42 +116,53 @@ namespace Minesweeper
 
         private void BtnGreenFlag_Click(object sender, EventArgs e)
         {
-            if (greenFlagCount == 0)
+            if (game.Status != GameStatus.Playing) return;
+
+            if (greenFlagCount == 0 || game.FlagRemainCount == 0)
             {
                 Toast.MakeText(Application.Context, "پرچم نداری", ToastLength.Short).Show();
                 return;
             }
 
+            var targetPoint = new KeyValuePair<Point, int>(new Point(), 9);
+
             for (int r = 0; r < game.RowCount; r++)
             {
                 for (int c = 0; c < game.ColCount; c++)
                 {
-                    if (game.BoardCells[r, c].Value == -1 && game.BoardCells[r, c].Status != CellStatus.Flagged)
+                    if (game.BoardCells != null && game.BoardCells[r, c].Value == -1 && game.BoardCells[r, c].Status != CellStatus.Flagged)
                     {
-                        if (isAroundCellsPressed(r, c))
+                        var minValue = minAroundPressedCellsValue(r, c);
+                        if (minValue <= targetPoint.Value)
                         {
-                            putGreenFlag(r, c);
-                            greenFlagCount--;
-                            setBonusNumbers();
-                            return;
+                            targetPoint = new KeyValuePair<Point, int>(new Point(r, c), minValue);
                         }
                     }
                 }
             }
+            if (targetPoint.Value < 9)
+            {
+                putGreenFlag(targetPoint.Key.X, targetPoint.Key.Y);
+                greenFlagCount--;
+                setBonusNumbers();
+                return;
+            }
         }
 
-        private bool isAroundCellsPressed(int r, int c)
+        private int minAroundPressedCellsValue(int r, int c)
         {
-            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status == CellStatus.Pressed) return true;
-            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status == CellStatus.Pressed) return true;
+            var result = 10;
 
-            return false;
+            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 1, c - 1].Value);
+            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 1, c - 0].Value);
+            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 1, c + 1].Value);
+            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 0, c - 1].Value);
+            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 0, c + 1].Value);
+            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r + 1, c - 1].Value);
+            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r + 1, c - 0].Value);
+            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r + 1, c + 1].Value);
+
+            return result;
         }
 
         private void BtnNewGame_Click(object sender, EventArgs e)
