@@ -267,11 +267,17 @@ namespace Minesweeper
             var gameMinColCount = islastGameDone ? lastColCount : minColCount;
             var gameMaxColCount = islastGameDone ? maxColCount : lastColCount;
 
-            var random = new Random();
-            var randColCount = random.Next(gameMinColCount, gameMaxColCount);
+            if (islastGameDone && gameMinColCount < maxColCount)
+            {
+                gameMinColCount++;
+            }
 
-            var firstBtnWidth = (int)Math.Round((decimal)gridWidth / randColCount);
-            game.ColCount = gridWidth / firstBtnWidth;
+            var random = new Random();
+            //var randColCount = random.Next(gameMinColCount, gameMaxColCount);
+            //var firstBtnWidth = (int)Math.Round((decimal)gridWidth / randColCount);
+            //game.ColCount = gridWidth / firstBtnWidth;
+            game.ColCount = random.Next(gameMinColCount, gameMaxColCount);
+            var firstBtnWidth = (int)Math.Round((decimal)gridWidth / game.ColCount);
             if (game.ColCount < minColCount) { game.ColCount = minColCount; }
             if (game.ColCount > maxColCount) { game.ColCount = maxColCount; }
 
