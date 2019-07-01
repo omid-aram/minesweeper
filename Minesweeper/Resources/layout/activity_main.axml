@@ -65,15 +65,38 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:id="@+id/linearLayoutButtons">
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout1" >
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="32dp"
+                android:layout_height="50dp"
+                android:id="@+id/remainFlagDigit100" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="32dp"
+                android:layout_height="50dp"
+                android:id="@+id/remainFlagDigit10" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="32dp"
+                android:layout_height="50dp"
+                android:id="@+id/remainFlagDigit1" />
+        </LinearLayout>
+        <!--<TextView
             android:text="0"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/textView1" />
+            android:id="@+id/textView1" />-->
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:id="@+id/btnToggleFlagDefault" />
         <TextView

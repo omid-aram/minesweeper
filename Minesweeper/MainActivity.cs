@@ -21,13 +21,13 @@ namespace Minesweeper
             starCount = 0, greenFlagCount = 0, heartCount = 0;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
-        bool isAppInitialized, isFlagDefault;
-        ImageView btnToggleFlagDefault;
+        bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
+        ImageView btnToggleFlagDefault, remainFlagDigit100, remainFlagDigit10, remainFlagDigit1;
         Timer timer;
         TextView txtTimer, txtGolden, txtMessage;
         Button btnStar, btnGreenFlag, btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
-        Point lastPressedPoint;
+        Point lastPressedPoint, lastOpenedPressed;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -43,6 +43,10 @@ namespace Minesweeper
             btnToggleFlagDefault.Click += BtnToggleFlagDefault_Click;
 
             setFlagDefaultButton();
+
+            remainFlagDigit100 = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
+            remainFlagDigit10 = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
+            remainFlagDigit1 = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
 
             txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
             txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
@@ -84,15 +88,51 @@ namespace Minesweeper
                 return;
             }
 
-            putGreenFlag(lastPressedPoint.X, lastPressedPoint.Y);
+            if (!isBombOnAutoClick)
+            {
+                putGreenFlag(lastPressedPoint.X, lastPressedPoint.Y);
+            }
+            else
+            {
+                var r = lastOpenedPressed.X;
+                var c = lastOpenedPressed.Y;
+
+                crackCell(r - 1, c - 1);
+                crackCell(r - 1, c - 0);
+                crackCell(r - 1, c + 1);
+                crackCell(r - 0, c - 1);
+                crackCell(r - 0, c + 1);
+                crackCell(r + 1, c - 1);
+                crackCell(r + 1, c - 0);
+                crackCell(r + 1, c + 1);
+            }
+
             heartCount--;
             game.Status = GameStatus.Playing;
+
+            checkIsWin();
 
             linearLayoutMessage.Visibility = ViewStates.Gone;
             linearLayoutButtons.Visibility = ViewStates.Visible;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
 
             setBonusNumbers();
+        }
+
+        private void crackCell(int r, int c)
+        {
+            if (!isInBoard(r, c)) return;
+
+            if (game.BoardCells[r, c].Value == -1)
+            {
+                putGreenFlag(r, c);
+            }
+            else
+            {
+                if (game.BoardCells[r, c].Status == CellStatus.Flagged) toggleFlag(r, c);
+
+                pressCell(r, c);
+            }
         }
 
         private void BtnStar_Click(object sender, EventArgs e)
@@ -118,7 +158,7 @@ namespace Minesweeper
         {
             if (game.Status != GameStatus.Playing) return;
 
-            if (greenFlagCount == 0 || game.FlagRemainCount == 0)
+            if (greenFlagCount == 0 || game.FlagRemainCount <= 0)
             {
                 Toast.MakeText(Application.Context, "پرچم نداری", ToastLength.Short).Show();
                 return;
@@ -239,7 +279,16 @@ namespace Minesweeper
                 if (game != null && game.Status == GameStatus.Playing)
                 {
                     game.GamePlayingTime = DateTime.Now - game.GameStartedTime;
-                    txtTimer.Text = $"{game.GamePlayingTime.Minutes:D2}:{game.GamePlayingTime.Seconds:D2}";
+                    var hours = game.GamePlayingTime.Hours;
+                    var minutes = (hours * 60) + game.GamePlayingTime.Minutes;
+                    var seconds = game.GamePlayingTime.Seconds;
+
+                    if (minutes > 99)
+                    {
+                        minutes = 99;
+                        seconds = 99;
+                    }
+                    txtTimer.Text = $"{minutes:D2}:{seconds:D2}";
                     txtGolden.Text = game.IsInGoldenTime ? "G" : game.IsInSilverTime ? "S" : string.Empty;
                 }
             });
@@ -602,6 +651,7 @@ namespace Minesweeper
             {
                 if (heartCount > 0)
                 {
+                    isBombOnAutoClick = isAutoClick;
                     game.Status = GameStatus.Paused;
                     linearLayoutMessage.Visibility = ViewStates.Gone;
                     linearLayoutButtons.Visibility = ViewStates.Gone;
@@ -647,6 +697,8 @@ namespace Minesweeper
 
             if (flaggedCount >= game.BoardCells[r, c].Value)
             {
+                lastOpenedPressed = new Point(r, c);
+
                 if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status != CellStatus.Pressed) pressCell(r - 1, c - 1);
                 if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status != CellStatus.Pressed) pressCell(r - 1, c - 0);
                 if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status != CellStatus.Pressed) pressCell(r - 1, c + 1);
@@ -764,8 +816,63 @@ namespace Minesweeper
         }
         private void setFlagsView()
         {
-            var txtFlagRemainCount = FindViewById<TextView>(Resource.Id.textView1);
-            txtFlagRemainCount.Text = game.FlagRemainCount.ToString();
+            var value = Math.Min(game.FlagRemainCount, 999).ToString("D3");
+            var d100 = value[0] == '0' ? ' ' : value[0];
+            var d10 = value[0] == '0' && value[1] == '0' ? ' ' : value[1];
+            var d1 = value[2];
+
+            setSevenSegmentImage(remainFlagDigit100, d100);
+            setSevenSegmentImage(remainFlagDigit10, d10);
+            setSevenSegmentImage(remainFlagDigit1, d1);
+
+            //var txtFlagRemainCount = FindViewById<TextView>(Resource.Id.textView1);
+            //txtFlagRemainCount.Text = game.FlagRemainCount.ToString();
+        }
+
+        private void setSevenSegmentImage(ImageView imageView, char value)
+        {
+            switch (value)
+            {
+                case '0':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_0);
+                    break;
+                case '1':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_1);
+                    break;
+                case '2':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_2);
+                    break;
+                case '3':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_3);
+                    break;
+                case '4':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_4);
+                    break;
+                case '5':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_5);
+                    break;
+                case '6':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_6);
+                    break;
+                case '7':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_7);
+                    break;
+                case '8':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_8);
+                    break;
+                case '9':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_9);
+                    break;
+                case '-':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_minus);
+                    break;
+                case ':':
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_column);
+                    break;
+                default:
+                    imageView.SetImageResource(Resource.Drawable.seven_seg_null);
+                    break;
+            }
         }
 
         private void Vibrate(int duration)
