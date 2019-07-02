@@ -110,13 +110,13 @@ namespace Minesweeper
             heartCount--;
             game.Status = GameStatus.Playing;
 
-            checkIsWin();
-
             linearLayoutMessage.Visibility = ViewStates.Gone;
             linearLayoutButtons.Visibility = ViewStates.Visible;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
 
             setBonusNumbers();
+
+            checkIsWin();
         }
 
         private void crackCell(int r, int c)
@@ -945,28 +945,28 @@ namespace Minesweeper
                     cellImage = isAutoClick ? Resource.Drawable.box_bomb : Resource.Drawable.box_bomb_red;
                     break;
                 case 1:
-                    cellImage = Resource.Drawable.box_1;
+                    cellImage = Resource.Drawable.box_dot_1;
                     break;
                 case 2:
-                    cellImage = Resource.Drawable.box_2;
+                    cellImage = Resource.Drawable.box_dot_2;
                     break;
                 case 3:
-                    cellImage = Resource.Drawable.box_3;
+                    cellImage = Resource.Drawable.box_dot_3;
                     break;
                 case 4:
-                    cellImage = Resource.Drawable.box_4;
+                    cellImage = Resource.Drawable.box_dot_4;
                     break;
                 case 5:
-                    cellImage = Resource.Drawable.box_5;
+                    cellImage = Resource.Drawable.box_dot_5;
                     break;
                 case 6:
-                    cellImage = Resource.Drawable.box_6;
+                    cellImage = Resource.Drawable.box_dot_6;
                     break;
                 case 7:
-                    cellImage = Resource.Drawable.box_7;
+                    cellImage = Resource.Drawable.box_dot_7;
                     break;
                 case 8:
-                    cellImage = Resource.Drawable.box_8;
+                    cellImage = Resource.Drawable.box_dot_8;
                     break;
             }
             setCellImage(r, c, cellImage);
