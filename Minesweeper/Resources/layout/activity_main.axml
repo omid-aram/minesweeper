@@ -63,7 +63,7 @@
         android:minWidth="25px"
         android:minHeight="25px"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:id="@+id/linearLayoutButtons">
         <LinearLayout
             android:orientation="horizontal"
@@ -74,18 +74,18 @@
             android:id="@+id/linearLayout1" >
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="32dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
                 android:id="@+id/remainFlagDigit100" />
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="32dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
                 android:id="@+id/remainFlagDigit10" />
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="32dp"
-                android:layout_height="50dp"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
                 android:id="@+id/remainFlagDigit1" />
         </LinearLayout>
         <!--<TextView
@@ -96,15 +96,48 @@
             android:id="@+id/textView1" />-->
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="50dp"
+            android:layout_width="40dp"
             android:layout_height="match_parent"
             android:id="@+id/btnToggleFlagDefault" />
-        <TextView
+        <LinearLayout
+            android:orientation="horizontal"
+            android:minWidth="25px"
+            android:minHeight="25px"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout3" >
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:id="@+id/timerDigit_h1" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:id="@+id/timerDigit_h2" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="11dp"
+                android:layout_height="40dp"
+                android:id="@+id/timerDigit_col" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:id="@+id/timerDigit_m1" />
+            <ImageView
+                android:src="@android:drawable/ic_menu_gallery"
+                android:layout_width="25dp"
+                android:layout_height="40dp"
+                android:id="@+id/timerDigit_m2" />
+        </LinearLayout>
+        <!--<TextView
             android:text="00:00"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/txtTimer" />
+            android:id="@+id/txtTimer" />-->
         <TextView
             android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
