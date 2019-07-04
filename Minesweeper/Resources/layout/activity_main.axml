@@ -12,13 +12,13 @@
     app:backgroundTintMode="src_atop">
     <ProgressBar
         android:id="@+id/prgGameLevel"
-        android:layout_width="fill_parent"
-        android:layout_height="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
         style="?android:attr/progressBarStyleHorizontal" />
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:id="@+id/linearLayoutMessage"
         android:visibility="gone"
         android:layoutDirection="rtl">
@@ -37,7 +37,7 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:id="@+id/linearLayoutUseHeart"
         android:visibility="gone"
         android:layoutDirection="rtl">
@@ -71,7 +71,7 @@
             android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/linearLayout1" >
+            android:id="@+id/linearLayout1">
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="25dp"
@@ -105,7 +105,7 @@
             android:minHeight="25px"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/linearLayout3" >
+            android:id="@+id/linearLayout3">
             <ImageView
                 android:src="@android:drawable/ic_menu_gallery"
                 android:layout_width="25dp"
@@ -137,13 +137,13 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/txtTimer" />-->
+            android:id="@+id/txtTimer" />
         <TextView
             android:text=""
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:id="@+id/txtGolden" />
+            android:id="@+id/txtGolden" />-->
         <Button
             android:text="S:0"
             android:layout_width="50dp"
@@ -159,6 +159,26 @@
             android:layout_width="50dp"
             android:layout_height="match_parent"
             android:id="@+id/btnHeart" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:id="@+id/linearLayout3">
+        <ProgressBar
+            android:id="@+id/prgSilverTimes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".30"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#ffff7043"  />
+        <ProgressBar
+            android:id="@+id/prgGoldenTimes"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".70"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#FFD700" />
     </LinearLayout>
     <GridLayout
         android:minWidth="25px"

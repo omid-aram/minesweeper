@@ -23,14 +23,15 @@ namespace Minesweeper
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
         ImageView btnToggleFlagDefault, remainFlagDigit100, remainFlagDigit10, remainFlagDigit1;
-            //timerDigit_h1, timerDigit_h2, timerDigit_col, timerDigit_m1, timerDigit_m2;
+        //timerDigit_h1, timerDigit_h2, timerDigit_col, timerDigit_m1, timerDigit_m2;
         ImageView[] timerDigitsImages, remainFlagsImages;
         Timer timer;
-        TextView /*txtTimer,*/ txtGolden, txtMessage;
+        TextView /*txtTimer, txtGolden,*/ txtMessage;
         Button btnStar, btnGreenFlag, btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
         Point lastPressedPoint, lastOpenedPressed;
         char[] bombsDigits, timerDigits;
+        ProgressBar prgSilverTimes, prgGoldenTimes;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,8 +53,7 @@ namespace Minesweeper
             remainFlagDigit1 = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
 
             //txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
-
-            txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
+            //txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
 
             btnStar = FindViewById<Button>(Resource.Id.btnStar);
             btnStar.Click += BtnStar_Click;
@@ -75,6 +75,9 @@ namespace Minesweeper
             txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
             btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
+
+            prgSilverTimes = FindViewById<ProgressBar>(Resource.Id.prgSilverTimes);
+            prgGoldenTimes = FindViewById<ProgressBar>(Resource.Id.prgGoldenTimes);
 
             setBonusNumbers();
         }
@@ -303,7 +306,13 @@ namespace Minesweeper
                     }
                     //txtTimer.Text = $"{minutes:D2}:{seconds:D2}";
                     setTimerDigits($"{minutes:D2}:{seconds:D2}");
-                    txtGolden.Text = game.IsInGoldenTime ? "G" : game.IsInSilverTime ? "S" : string.Empty;
+
+                    var goldenProgress = prgGoldenTimes.Max - game.GamePlayingTime.TotalSeconds;
+                    var silverProgress = prgSilverTimes.Max - (game.GamePlayingTime.TotalSeconds - prgGoldenTimes.Max);
+                    //txtGolden.Text = game.IsInGoldenTime ? goldenProgress.ToString() : game.IsInSilverTime ? silverProgress.ToString() : string.Empty;
+
+                    prgGoldenTimes.Progress = goldenProgress < 0 ? 0 : (int)Math.Round(goldenProgress);
+                    prgSilverTimes.Progress = silverProgress < 0 ? 0 : (int)Math.Round(silverProgress);
                 }
             });
         }
@@ -424,7 +433,9 @@ namespace Minesweeper
 
             //txtTimer.Text = "00:00";
             setTimerDigits("00:00");
-            txtGolden.Text = "";
+            //txtGolden.Text = "";
+            prgGoldenTimes.Progress = 0;
+            prgSilverTimes.Progress = 0;
 
             linearLayoutMessage.Visibility = ViewStates.Gone;
             linearLayoutButtons.Visibility = ViewStates.Visible;
@@ -505,7 +516,18 @@ namespace Minesweeper
             }
 
             game.GoldenTimeSeconds = ((game.RowCount * game.ColCount) - zeros) / 2;
-            game.SilverTimeSeconds = (int)Math.Round(game.GoldenTimeSeconds * 1.2);
+            game.SilverTimeSeconds = (int)Math.Round(game.GoldenTimeSeconds * 0.2);
+
+            prgGoldenTimes.Max = game.GoldenTimeSeconds;
+            prgSilverTimes.Max = game.SilverTimeSeconds;
+
+            var goldenShare = (float)game.GoldenTimeSeconds / (game.GoldenTimeSeconds + game.SilverTimeSeconds);
+
+            prgGoldenTimes.LayoutParameters = new LinearLayout.LayoutParams(0, -1, goldenShare);
+            prgSilverTimes.LayoutParameters = new LinearLayout.LayoutParams(0, -1, 1 - goldenShare);
+
+            prgGoldenTimes.Progress = prgGoldenTimes.Max;
+            prgSilverTimes.Progress = prgSilverTimes.Max;
         }
 
         private void markAsNearByZero(int r, int c)
@@ -1041,7 +1063,7 @@ namespace Minesweeper
         public DateTime GameStartedTime { get; set; }
         public TimeSpan GamePlayingTime { get; set; }
         public bool IsInGoldenTime => (int)GamePlayingTime.TotalSeconds < GoldenTimeSeconds;
-        public bool IsInSilverTime => (int)GamePlayingTime.TotalSeconds < SilverTimeSeconds;
+        public bool IsInSilverTime => (int)GamePlayingTime.TotalSeconds < (GoldenTimeSeconds + SilverTimeSeconds);
     }
     public class BoardCell
     {
