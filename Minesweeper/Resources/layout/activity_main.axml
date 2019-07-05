@@ -1,5 +1,4 @@
-﻿
-<LinearLayout
+﻿<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,175 +9,184 @@
     android:layout_height="match_parent"
     android:id="@+id/linearLayoutMain"
     app:backgroundTintMode="src_atop">
-    <ProgressBar
-        android:id="@+id/prgGameLevel"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        style="?android:attr/progressBarStyleHorizontal" />
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/linearLayoutMessage"
-        android:visibility="gone"
-        android:layoutDirection="rtl">
-        <TextView
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/txtMessage" />
-        <Button
-            android:text="یه دست دیگه"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/btnNewGame" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/linearLayoutUseHeart"
-        android:visibility="gone"
-        android:layoutDirection="rtl">
-        <TextView
-            android:text="ترکیدی ولی جون داری"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/txtMessage2" />
-        <Button
-            android:text="میخوام"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/btnUseHeart" />
-        <Button
-            android:text="نمیخوام"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/btnDontUseHeart" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:minWidth="25px"
-        android:minHeight="25px"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:id="@+id/linearLayoutButtons">
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout3"
+        android:background="#ff200000">
+        <ProgressBar
+            android:id="@+id/prgGameLevel"
+            android:layout_width="match_parent"
+            android:layout_height="7dp"
+            android:progress="67"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#ff800000" />
         <LinearLayout
             android:orientation="horizontal"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/linearLayout1">
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/remainFlagDigit100" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/remainFlagDigit10" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/remainFlagDigit1" />
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:id="@+id/linearLayoutMessage"
+            android:visibility="gone"
+            android:layoutDirection="rtl">
+            <TextView
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/txtMessage" />
+            <Button
+                android:text="یه دست دیگه"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnNewGame" />
         </LinearLayout>
-        <!--<TextView
-            android:text="0"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/textView1" />-->
-        <ImageView
-            android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:id="@+id/btnToggleFlagDefault" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:id="@+id/linearLayoutUseHeart"
+            android:visibility="gone"
+            android:layoutDirection="rtl">
+            <TextView
+                android:text="ترکیدی ولی جون داری"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/txtMessage2" />
+            <Button
+                android:text="میخوام"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnUseHeart" />
+            <Button
+                android:text="نمیخوام"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/btnDontUseHeart" />
+        </LinearLayout>
         <LinearLayout
             android:orientation="horizontal"
             android:minWidth="25px"
             android:minHeight="25px"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:id="@+id/linearLayoutButtons">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:id="@+id/linearLayout1">
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/remainFlagDigit100" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/remainFlagDigit10" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/remainFlagDigit1" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:id="@+id/linearLayout4">
+                <ImageView
+                    android:src="@android:drawable/ic_menu_gallery"
+                    android:layout_width="40dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/btnToggleFlagDefault" />
+                <Button
+                    android:text=""
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnStar"
+                    android:background="@android:drawable/btn_star_big_on" />
+                <Button
+                    android:text=""
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnGreenFlag"
+                    android:background="@android:drawable/btn_star_big_on" />
+                <Button
+                    android:text=""
+                    android:layout_width="35dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnHeart"
+                    android:background="@android:drawable/btn_star_big_on" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:id="@+id/linearLayout3">
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_h1" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_h2" />
+                <ImageView
+                    android:src="@drawable/seven_seg_column"
+                    android:layout_width="8dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_col" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_m1" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_m2" />
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
             android:id="@+id/linearLayout3">
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/timerDigit_h1" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/timerDigit_h2" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="11dp"
-                android:layout_height="40dp"
-                android:id="@+id/timerDigit_col" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/timerDigit_m1" />
-            <ImageView
-                android:src="@android:drawable/ic_menu_gallery"
-                android:layout_width="25dp"
-                android:layout_height="40dp"
-                android:id="@+id/timerDigit_m2" />
+            <ProgressBar
+                android:id="@+id/prgSilverTimes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".30"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#ffff6f00"  />
+            <ProgressBar
+                android:id="@+id/prgGoldenTimes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".70"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#ffffea00" />
         </LinearLayout>
-        <!--<TextView
-            android:text="00:00"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/txtTimer" />
-        <TextView
-            android:text=""
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/txtGolden" />-->
-        <Button
-            android:text="S:0"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:id="@+id/btnStar" />
-        <Button
-            android:text="F:0"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:id="@+id/btnGreenFlag" />
-        <Button
-            android:text="H:0"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:id="@+id/btnHeart" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="5dp"
-        android:id="@+id/linearLayout3">
-        <ProgressBar
-            android:id="@+id/prgSilverTimes"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".30"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="#ffff7043"  />
-        <ProgressBar
-            android:id="@+id/prgGoldenTimes"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".70"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="#FFD700" />
     </LinearLayout>
     <GridLayout
         android:minWidth="25px"
