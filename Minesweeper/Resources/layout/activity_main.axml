@@ -111,23 +111,33 @@
                     android:scaleType="fitXY"
                     android:id="@+id/btnToggleFlagDefault" />
                 <Button
-                    android:text=""
+                    android:text="\n5"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
                     android:id="@+id/btnStar"
-                    android:background="@android:drawable/btn_star_big_on" />
+                    android:background="@drawable/redBox"
+                    android:textColor="#ffffffff"
+                    android:typeface="normal"
+                    android:textSize="6pt"
+                    android:textStyle="bold" />
                 <Button
-                    android:text=""
+                    android:text="\n3"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
                     android:id="@+id/btnGreenFlag"
-                    android:background="@android:drawable/btn_star_big_on" />
+                    android:background="@drawable/redstar"
+                    android:textSize="6pt"
+                    android:textStyle="bold"
+                    android:textColor="#ffffffff" />
                 <Button
-                    android:text=""
+                    android:text="\n2"
                     android:layout_width="35dp"
                     android:layout_height="match_parent"
                     android:id="@+id/btnHeart"
-                    android:background="@android:drawable/btn_star_big_on" />
+                    android:background="@drawable/redheart"
+                    android:textSize="6pt"
+                    android:textStyle="bold"
+                    android:textColor="#ffffffff" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

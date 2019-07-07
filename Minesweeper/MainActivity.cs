@@ -494,9 +494,9 @@ namespace Minesweeper
         }
         private void setBonusNumbers()
         {
-            btnStar.Text = $"{starCount}";
-            btnGreenFlag.Text = $"{greenFlagCount}";
-            btnHeart.Text = $"{heartCount}";
+            btnStar.Text = $"\n{starCount}";
+            btnGreenFlag.Text = $"\n{greenFlagCount}";
+            btnHeart.Text = $"\n{heartCount}";
         }
         private void toggleFlag(int r, int c)
         {
