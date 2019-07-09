@@ -24,15 +24,14 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, remainFlagDigit100, remainFlagDigit10, remainFlagDigit1;
-        //timerDigit_h1, timerDigit_h2, timerDigit_col, timerDigit_m1, timerDigit_m2;
-        ImageView[] timerDigitsImages, remainFlagsImages;
+        ImageView btnToggleFlagDefault/*, remainFlagDigit100, remainFlagDigit10, remainFlagDigit1*/;
+        ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
+        char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
         TextView /*txtTimer, txtGolden,*/ txtMessage;
-        Button btnStar, btnGreenFlag, btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
+        Button btnStar, btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
         Point lastPressedPoint, lastOpenedPressed;
-        char[] bombsDigits, timerDigits;
         ProgressBar prgSilverTimes, prgGoldenTimes;
 
         #endregion
@@ -89,7 +88,6 @@ namespace Minesweeper
             minMinePercent = 15;
             maxMinePercent = 27;
 
-            bombsDigits = new char[3];
             timerDigits = new char[5];
             timerDigitsImages = new ImageView[5];
             timerDigitsImages[0] = FindViewById<ImageView>(Resource.Id.timerDigit_h1);
@@ -98,8 +96,31 @@ namespace Minesweeper
             timerDigitsImages[3] = FindViewById<ImageView>(Resource.Id.timerDigit_m1);
             timerDigitsImages[4] = FindViewById<ImageView>(Resource.Id.timerDigit_m2);
 
+            bombsDigits = new char[3];
+            remainFlagsImages = new ImageView[3];
+            remainFlagsImages[0] = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
+            remainFlagsImages[1] = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
+            remainFlagsImages[2] = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
+
+            starDigits = new char[2];
+            starDigitsImages = new ImageView[2];
+            starDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtStar0);
+            starDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtStar1);
+
+            plusDigits = new char[2];
+            plusDigitsImages = new ImageView[2];
+            plusDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtPlus0);
+            plusDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtPlus1);
+
+            heartDigits = new char[2];
+            heartDigitsImages = new ImageView[2];
+            heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
+            heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
+
             isFlagDefault = true;
             setFlagDefaultButton();
+
+            setBonusNumbers();
 
             isAppInitialized = true;
         }
@@ -107,15 +128,19 @@ namespace Minesweeper
         {
             btnToggleFlagDefault.SetImageResource(isFlagDefault ? Resource.Drawable.box_flag : Resource.Drawable.box_bomb);
         }
-        private void setTimerDigits(string timer)
+        private void setImageDigits(ImageView[] imageViewArray, char[] digitArray, string value)
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < value.Length; i++)
             {
-                if (timer[i] != timerDigits[i])
+                if (i < digitArray.Length && value[i] != digitArray[i])
                 {
-                    timerDigits[i] = timer[i];
-                    setSevenSegmentImage(timerDigitsImages[i], timer[i]);
+                    digitArray[i] = value[i];
+                    setSevenSegmentImage(imageViewArray[i], value[i]);
                 }
+            }
+            for (int i = value.Length; i < digitArray.Length; i++)
+            {
+                imageViewArray[i].Visibility = ViewStates.Gone;
             }
         }
         private void newGame()
@@ -220,7 +245,7 @@ namespace Minesweeper
 
             game.Status = GameStatus.Created;
 
-            setTimerDigits("00:00");
+            setImageDigits(timerDigitsImages, timerDigits, "00:00");
             prgGoldenTimes.Progress = 0;
             prgSilverTimes.Progress = 0;
 
@@ -494,9 +519,17 @@ namespace Minesweeper
         }
         private void setBonusNumbers()
         {
-            btnStar.Text = $"\n{starCount}";
-            btnGreenFlag.Text = $"\n{greenFlagCount}";
-            btnHeart.Text = $"\n{heartCount}";
+            //btnStar.Text = $"{starCount}";
+            //btnGreenFlag.Text = $"{greenFlagCount}";
+            //btnHeart.Text = $"{heartCount}";
+            var starValue = starCount > 99 ? "99" : starCount.ToString();
+            setImageDigits(starDigitsImages, starDigits, starValue);
+
+            var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
+            setImageDigits(plusDigitsImages, plusDigits, plusValue);
+
+            var heartValue = heartCount > 99 ? "99" : heartCount.ToString();
+            setImageDigits(heartDigitsImages, heartDigits, heartValue);
         }
         private void toggleFlag(int r, int c)
         {
@@ -535,25 +568,27 @@ namespace Minesweeper
         private void setFlagsView()
         {
             var value = Math.Min(game.FlagRemainCount, 999).ToString("D3");
-            var d100 = /*value[0] == '0' ? ' ' :*/ value[0];
-            var d10 = /*value[0] == '0' && value[1] == '0' ? ' ' :*/ value[1];
-            var d1 = value[2];
+            setImageDigits(remainFlagsImages, bombsDigits, value);
 
-            if (d100 != bombsDigits[0])
-            {
-                bombsDigits[0] = d100;
-                setSevenSegmentImage(remainFlagDigit100, d100);
-            }
-            if (d10 != bombsDigits[1])
-            {
-                bombsDigits[1] = d10;
-                setSevenSegmentImage(remainFlagDigit10, d10);
-            }
-            if (d1 != bombsDigits[2])
-            {
-                bombsDigits[2] = d1;
-                setSevenSegmentImage(remainFlagDigit1, d1);
-            }
+            //var d100 = /*value[0] == '0' ? ' ' :*/ value[0];
+            //var d10 = /*value[0] == '0' && value[1] == '0' ? ' ' :*/ value[1];
+            //var d1 = value[2];
+
+            //if (d100 != bombsDigits[0])
+            //{
+            //    bombsDigits[0] = d100;
+            //    setSevenSegmentImage(remainFlagDigit100, d100);
+            //}
+            //if (d10 != bombsDigits[1])
+            //{
+            //    bombsDigits[1] = d10;
+            //    setSevenSegmentImage(remainFlagDigit10, d10);
+            //}
+            //if (d1 != bombsDigits[2])
+            //{
+            //    bombsDigits[2] = d1;
+            //    setSevenSegmentImage(remainFlagDigit1, d1);
+            //}
 
             //var txtFlagRemainCount = FindViewById<TextView>(Resource.Id.textView1);
             //txtFlagRemainCount.Text = game.FlagRemainCount.ToString();
@@ -746,9 +781,9 @@ namespace Minesweeper
             btnToggleFlagDefault = FindViewById<ImageView>(Resource.Id.btnToggleFlagDefault);
             btnToggleFlagDefault.Click += BtnToggleFlagDefault_Click;
 
-            remainFlagDigit100 = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
-            remainFlagDigit10 = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
-            remainFlagDigit1 = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
+            //remainFlagDigit100 = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
+            //remainFlagDigit10 = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
+            //remainFlagDigit1 = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
 
             //txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
             //txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
@@ -759,7 +794,7 @@ namespace Minesweeper
             btnGreenFlag = FindViewById<Button>(Resource.Id.btnGreenFlag);
             btnGreenFlag.Click += BtnGreenFlag_Click;
 
-            btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
+            //btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
             btnUseHeart = FindViewById<Button>(Resource.Id.btnUseHeart);
             btnUseHeart.Click += BtnUseHeart_Click;
@@ -776,8 +811,6 @@ namespace Minesweeper
 
             prgSilverTimes = FindViewById<ProgressBar>(Resource.Id.prgSilverTimes);
             prgGoldenTimes = FindViewById<ProgressBar>(Resource.Id.prgGoldenTimes);
-
-            setBonusNumbers();
         }
         private void BtnDontUseHeart_Click(object sender, EventArgs e)
         {
@@ -924,7 +957,7 @@ namespace Minesweeper
                         seconds = 99;
                     }
                     //txtTimer.Text = $"{minutes:D2}:{seconds:D2}";
-                    setTimerDigits($"{minutes:D2}:{seconds:D2}");
+                    setImageDigits(timerDigitsImages, timerDigits, $"{minutes:D2}:{seconds:D2}");
 
                     var goldenProgress = prgGoldenTimes.Max - game.GamePlayingTime.TotalSeconds;
                     var silverProgress = prgSilverTimes.Max - (game.GamePlayingTime.TotalSeconds - prgGoldenTimes.Max);
