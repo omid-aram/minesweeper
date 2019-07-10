@@ -24,12 +24,12 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault/*, remainFlagDigit100, remainFlagDigit10, remainFlagDigit1*/;
+        ImageView btnToggleFlagDefault, btnPlus;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
         TextView /*txtTimer, txtGolden,*/ txtMessage;
-        Button btnStar, btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
+        Button btnStar, /*btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
@@ -117,7 +117,7 @@ namespace Minesweeper
             heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
             heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
 
-            isFlagDefault = true;
+            isFlagDefault = false;
             setFlagDefaultButton();
 
             setBonusNumbers();
@@ -126,7 +126,7 @@ namespace Minesweeper
         }
         private void setFlagDefaultButton()
         {
-            btnToggleFlagDefault.SetImageResource(isFlagDefault ? Resource.Drawable.box_flag : Resource.Drawable.box_bomb);
+            btnToggleFlagDefault.SetImageResource(isFlagDefault ? Resource.Drawable.switch_flag : Resource.Drawable.switch_target);
         }
         private void setImageDigits(ImageView[] imageViewArray, char[] digitArray, string value)
         {
@@ -791,8 +791,8 @@ namespace Minesweeper
             btnStar = FindViewById<Button>(Resource.Id.btnStar);
             btnStar.Click += BtnStar_Click;
 
-            btnGreenFlag = FindViewById<Button>(Resource.Id.btnGreenFlag);
-            btnGreenFlag.Click += BtnGreenFlag_Click;
+            btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
+            btnPlus.Click += btnPlus_Click;
 
             //btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
@@ -872,7 +872,7 @@ namespace Minesweeper
             }
             setBonusNumbers();
         }
-        private void BtnGreenFlag_Click(object sender, EventArgs e)
+        private void btnPlus_Click(object sender, EventArgs e)
         {
             if (game.Status != GameStatus.Playing) return;
 
