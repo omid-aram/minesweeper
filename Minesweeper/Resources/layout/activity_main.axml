@@ -25,49 +25,6 @@
             android:progressTint="#ff400000" />
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:id="@+id/linearLayoutMessage"
-            android:visibility="gone"
-            android:layoutDirection="rtl">
-            <TextView
-                android:text=""
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/txtMessage" />
-            <Button
-                android:text="یه دست دیگه"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnNewGame" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
-            android:id="@+id/linearLayoutUseHeart"
-            android:visibility="gone"
-            android:layoutDirection="rtl">
-            <TextView
-                android:text="ترکیدی ولی جون داری"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/txtMessage2" />
-            <Button
-                android:text="میخوام"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnUseHeart" />
-            <Button
-                android:text="نمیخوام"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/btnDontUseHeart" />
-        </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
             android:minWidth="25px"
             android:minHeight="25px"
             android:layout_width="match_parent"
@@ -103,9 +60,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:paddingHorizontal="15dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="15dp"
                 android:paddingBottom="3dp"
-                android:gravity="left"
                 android:id="@+id/linearLayout4">
                 <ImageView
                     android:src="@drawable/switch_flag"
@@ -142,166 +99,177 @@
                     android:id="@+id/btnPlus" />
             </LinearLayout>
             <LinearLayout
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="32dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="3dp"
+                android:layout_gravity="center"
+                android:id="@+id/linearLayoutMessage"
+                android:visibility="gone">
+                <TextView
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/txtMessage" />
+                <Button
+                    android:text="یه دست دیگه"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnNewGame" />
+                <ImageView
+                    android:src="@drawable/btn_plus"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_weight="0"
+                    android:scaleType="fitXY"
+                    android:id="@+id/btnNewGame" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:paddingLeft="32dp"
+                android:paddingRight="15dp"
+                android:paddingBottom="3dp"
+                android:layout_gravity="center"
+                android:id="@+id/linearLayoutUseHeart"
+                android:visibility="gone">
+                <TextView
+                    android:text="ترکیدی ولی جون داری"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/txtMessage2" />
+                <Button
+                    android:text="میخوام"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnUseHeart" />
+                <Button
+                    android:text="نمیخوام"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/btnDontUseHeart" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
                 android:layout_weight="0"
                 android:id="@+id/linearLayout3">
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="18dp"
-                    android:layout_weight="0"
-                    android:visibility="gone"
-                    android:id="@+id/linearLayout3">
-                    <Button
-                        android:text="0"
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/btnStar"
-                        android:background="@drawable/red_star"
-                        android:layout_margin="1dp"
-                        android:textColor="#ffffcdd2"
-                        android:textSize="5pt"
-                        android:textStyle="normal" />
-                    <!--<Button
-                        android:text="3"
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/btnGreenFlag"
-                        android:background="@drawable/red_diamond"
-                        android:layout_margin="1dp"
-                        android:textSize="5pt"
-                        android:textStyle="normal"
-                        android:textColor="#ffffcdd2" />-->
-                    <Button
-                        android:text="2"
-                        android:layout_width="16dp"
-                        android:layout_height="match_parent"
-                        android:id="@+id/btnHeart"
-                        android:background="@drawable/red_heart"
-                        android:layout_margin="1dp"
-                        android:textSize="5pt"
-                        android:textStyle="normal"
-                        android:textColor="#ffffcdd2" />
-                </LinearLayout>
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:layout_weight="0"
-                    android:layout_gravity="bottom"
-                    android:visibility="visible"
-                    android:id="@+id/linearLayout3">
-                    <ImageView
-                        android:src="@drawable/seven_seg_0"
-                        android:layout_width="13dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:id="@+id/timerDigit_h1" />
-                    <ImageView
-                        android:src="@drawable/seven_seg_0"
-                        android:layout_width="13dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:id="@+id/timerDigit_h2" />
-                    <ImageView
-                        android:src="@drawable/seven_seg_column"
-                        android:layout_width="4dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:id="@+id/timerDigit_col" />
-                    <ImageView
-                        android:src="@drawable/seven_seg_0"
-                        android:layout_width="13dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:id="@+id/timerDigit_m1" />
-                    <ImageView
-                        android:src="@drawable/seven_seg_0"
-                        android:layout_width="13dp"
-                        android:layout_height="match_parent"
-                        android:scaleType="fitXY"
-                        android:id="@+id/timerDigit_m2" />
-                </LinearLayout>
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="13dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_h1" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="13dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_h2" />
+                <ImageView
+                    android:src="@drawable/seven_seg_column"
+                    android:layout_width="4dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_col" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="13dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_m1" />
+                <ImageView
+                    android:src="@drawable/seven_seg_0"
+                    android:layout_width="13dp"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:id="@+id/timerDigit_m2" />
             </LinearLayout>
         </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_weight="0"
-        android:id="@+id/linearLayout3"
-        android:background="#ff200000">
-        <ImageView
-            android:src="@drawable/red_star"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/imageView1" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtStar0" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtStar1" />
-        <ProgressBar
-            android:id="@+id/prgSilverTimes"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".17"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="#ffd50000"  />
-        <ImageView
-            android:src="@drawable/red_plus"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/imageView1" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtPlus0" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtPlus1" />
-        <ProgressBar
-            android:id="@+id/prgGoldenTimes"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight=".83"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="#ffd50000" />
-        <ImageView
-            android:src="@drawable/red_heart"
-            android:layout_width="10dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/imageView1" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtHeart0" />
-        <ImageView
-            android:src="@drawable/seven_seg_0"
-            android:layout_width="7dp"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/dgtHeart1" />
-    </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0"
+            android:id="@+id/linearLayout3"
+            android:background="#ff200000">
+            <ImageView
+                android:src="@drawable/red_star"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/imageView1" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtStar0" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtStar1" />
+            <ProgressBar
+                android:id="@+id/prgSilverTimes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".17"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#ffd50000"  />
+            <ImageView
+                android:src="@drawable/red_plus"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/imageView1" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtPlus0" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtPlus1" />
+            <ProgressBar
+                android:id="@+id/prgGoldenTimes"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".83"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progressTint="#ffd50000" />
+            <ImageView
+                android:src="@drawable/red_heart"
+                android:layout_width="10dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/imageView1" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtHeart0" />
+            <ImageView
+                android:src="@drawable/seven_seg_0"
+                android:layout_width="7dp"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:id="@+id/dgtHeart1" />
+        </LinearLayout>
     </LinearLayout>
     <GridLayout
         android:minWidth="25px"

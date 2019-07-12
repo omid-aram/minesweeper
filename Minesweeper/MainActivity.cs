@@ -20,16 +20,16 @@ namespace Minesweeper
 
         Game game;
         int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
-            starCount = 0, greenFlagCount = 0, heartCount = 0;
+            starCount = 9, greenFlagCount = 3, heartCount = 2;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToPlus, btnStarToHeart;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
         TextView /*txtTimer, txtGolden,*/ txtMessage;
-        Button btnStar, /*btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
+        Button /*btnStar, /*btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
@@ -491,10 +491,13 @@ namespace Minesweeper
             if (game.IsInGoldenTime)
             {
                 heartCount++;
+                greenFlagCount++;
+                starCount++;
             }
             else if (game.IsInSilverTime)
             {
                 greenFlagCount++;
+                starCount++;
             }
             else
             {
@@ -525,8 +528,12 @@ namespace Minesweeper
             var starValue = starCount > 99 ? "99" : starCount.ToString();
             setImageDigits(starDigitsImages, starDigits, starValue);
 
+            btnStarToPlus.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
+            btnStarToHeart.Visibility = (starCount >= 5) ? ViewStates.Visible : ViewStates.Gone;
+
             var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
             setImageDigits(plusDigitsImages, plusDigits, plusValue);
+            btnPlus.Visibility = (greenFlagCount > 0) ? ViewStates.Visible : ViewStates.Gone; 
 
             var heartValue = heartCount > 99 ? "99" : heartCount.ToString();
             setImageDigits(heartDigitsImages, heartDigits, heartValue);
@@ -788,8 +795,13 @@ namespace Minesweeper
             //txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
             //txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
 
-            btnStar = FindViewById<Button>(Resource.Id.btnStar);
-            btnStar.Click += BtnStar_Click;
+            //btnStar = FindViewById<Button>(Resource.Id.btnStar);
+            //btnStar.Click += BtnStar_Click;
+
+            btnStarToPlus = FindViewById<ImageView>(Resource.Id.btnStarToPlus);
+            btnStarToPlus.Click += btnStarToPlus_Click;
+            btnStarToHeart = FindViewById<ImageView>(Resource.Id.btnStarToHeart);
+            btnStarToHeart.Click += btnStarToHeart_Click;
 
             btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
             btnPlus.Click += btnPlus_Click;
@@ -854,17 +866,25 @@ namespace Minesweeper
 
             checkIsWin();
         }
-        private void BtnStar_Click(object sender, EventArgs e)
+        private void btnStarToPlus_Click(object sender, EventArgs e)
+        {
+            if (starCount >= 3)
+            {
+                starCount -= 3;
+                greenFlagCount++;
+            }
+            else
+            {
+                Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
+            }
+            setBonusNumbers();
+        }
+        private void btnStarToHeart_Click(object sender, EventArgs e)
         {
             if (starCount >= 5)
             {
                 starCount -= 5;
                 heartCount++;
-            }
-            else if (starCount >= 3)
-            {
-                starCount -= 3;
-                greenFlagCount++;
             }
             else
             {
