@@ -29,7 +29,7 @@
             android:minHeight="25px"
             android:layout_width="match_parent"
             android:layout_height="35dp"
-            android:id="@+id/linearLayoutButtons">
+            android:id="@+id/linearLayout4">
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="wrap_content"
@@ -63,7 +63,8 @@
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
                 android:paddingBottom="3dp"
-                android:id="@+id/linearLayout4">
+                android:id="@+id/linearLayoutButtons"
+                android:visibility="visible">
                 <ImageView
                     android:src="@drawable/switch_flag"
                     android:layout_width="58dp"
@@ -106,25 +107,13 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="15dp"
                 android:paddingBottom="3dp"
-                android:layout_gravity="center"
                 android:id="@+id/linearLayoutMessage"
+                android:gravity="center"
                 android:visibility="gone">
-                <TextView
-                    android:text=""
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/txtMessage" />
-                <Button
-                    android:text="یه دست دیگه"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/btnNewGame" />
                 <ImageView
-                    android:src="@drawable/btn_plus"
+                    android:src="@drawable/btn_game_done"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_weight="0"
                     android:scaleType="fitXY"
                     android:id="@+id/btnNewGame" />
             </LinearLayout>
@@ -136,25 +125,21 @@
                 android:paddingLeft="32dp"
                 android:paddingRight="15dp"
                 android:paddingBottom="3dp"
-                android:layout_gravity="center"
+                android:gravity="center"
                 android:id="@+id/linearLayoutUseHeart"
                 android:visibility="gone">
-                <TextView
-                    android:text="ترکیدی ولی جون داری"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/txtMessage2" />
-                <Button
-                    android:text="میخوام"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/btnUseHeart" />
-                <Button
-                    android:text="نمیخوام"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                <ImageView
+                    android:src="@drawable/btn_cancel"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
                     android:id="@+id/btnDontUseHeart" />
+                <ImageView
+                    android:src="@drawable/btn_heart"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/btnUseHeart" />
             </LinearLayout>
             <LinearLayout
                 android:orientation="horizontal"

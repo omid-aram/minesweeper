@@ -20,16 +20,16 @@ namespace Minesweeper
 
         Game game;
         int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
-            starCount = 9, greenFlagCount = 3, heartCount = 2;
+            starCount = 0, greenFlagCount = 0, heartCount = 0;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToPlus, btnStarToHeart;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToPlus, btnStarToHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
-        TextView /*txtTimer, txtGolden,*/ txtMessage;
-        Button /*btnStar, /*btnGreenFlag, /*btnHeart, */btnNewGame, btnUseHeart, btnDontUseHeart;
+        //TextView /*txtTimer, txtGolden,*/ txtMessage;
+        //Button /*btnStar, /*btnGreenFlag, /*btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart*/;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
@@ -515,7 +515,8 @@ namespace Minesweeper
             //    newGame();
             //});
             //alert.Show();
-            txtMessage.Text = "برنده شدی";
+            //txtMessage.Text = "برنده شدی";
+            btnNewGame.SetImageResource(Resource.Drawable.btn_game_done);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
@@ -689,7 +690,8 @@ namespace Minesweeper
             //    newGame();
             //});
             //alert.Show();
-            txtMessage.Text = "ترکیدی که";
+            //txtMessage.Text = "ترکیدی که";
+            btnNewGame.SetImageResource(Resource.Drawable.btn_game_over);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
@@ -808,17 +810,17 @@ namespace Minesweeper
 
             //btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
-            btnUseHeart = FindViewById<Button>(Resource.Id.btnUseHeart);
+            btnUseHeart = FindViewById<ImageView>(Resource.Id.btnUseHeart);
             btnUseHeart.Click += BtnUseHeart_Click;
 
-            btnDontUseHeart = FindViewById<Button>(Resource.Id.btnDontUseHeart);
+            btnDontUseHeart = FindViewById<ImageView>(Resource.Id.btnDontUseHeart);
             btnDontUseHeart.Click += BtnDontUseHeart_Click;
 
             linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
             linearLayoutMessage = FindViewById<LinearLayout>(Resource.Id.linearLayoutMessage);
             linearLayoutUseHeart = FindViewById<LinearLayout>(Resource.Id.linearLayoutUseHeart);
-            txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
-            btnNewGame = FindViewById<Button>(Resource.Id.btnNewGame);
+            //txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
+            btnNewGame = FindViewById<ImageView>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
 
             prgSilverTimes = FindViewById<ProgressBar>(Resource.Id.prgSilverTimes);
