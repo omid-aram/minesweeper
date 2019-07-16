@@ -2329,26 +2329,26 @@ namespace Minesweeper
 			// aapt resource value: 0x7f020053
 			public const int avd_hide_password = 2130837587;
 			
-			// aapt resource value: 0x7f0200b4
-			public const int avd_hide_password_1 = 2130837684;
+			// aapt resource value: 0x7f0200ba
+			public const int avd_hide_password_1 = 2130837690;
 			
-			// aapt resource value: 0x7f0200b5
-			public const int avd_hide_password_2 = 2130837685;
+			// aapt resource value: 0x7f0200bb
+			public const int avd_hide_password_2 = 2130837691;
 			
-			// aapt resource value: 0x7f0200b6
-			public const int avd_hide_password_3 = 2130837686;
+			// aapt resource value: 0x7f0200bc
+			public const int avd_hide_password_3 = 2130837692;
 			
 			// aapt resource value: 0x7f020054
 			public const int avd_show_password = 2130837588;
 			
-			// aapt resource value: 0x7f0200b7
-			public const int avd_show_password_1 = 2130837687;
+			// aapt resource value: 0x7f0200bd
+			public const int avd_show_password_1 = 2130837693;
 			
-			// aapt resource value: 0x7f0200b8
-			public const int avd_show_password_2 = 2130837688;
+			// aapt resource value: 0x7f0200be
+			public const int avd_show_password_2 = 2130837694;
 			
-			// aapt resource value: 0x7f0200b9
-			public const int avd_show_password_3 = 2130837689;
+			// aapt resource value: 0x7f0200bf
+			public const int avd_show_password_3 = 2130837695;
 			
 			// aapt resource value: 0x7f020055
 			public const int box_0 = 2130837589;
@@ -2447,193 +2447,211 @@ namespace Minesweeper
 			public const int btn_cancel = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int btn_game_done = 2130837621;
+			public const int btn_flag_to_target = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int btn_game_over = 2130837622;
+			public const int btn_game_done = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int btn_happy_face = 2130837623;
+			public const int btn_game_over = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int btn_heart = 2130837624;
+			public const int btn_happy_face = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int btn_plus = 2130837625;
+			public const int btn_heart = 2130837625;
 			
 			// aapt resource value: 0x7f02007a
-			public const int btn_star_to_heart = 2130837626;
+			public const int btn_plus = 2130837626;
 			
 			// aapt resource value: 0x7f02007b
-			public const int btn_star_to_plus = 2130837627;
+			public const int btn_star_to_gift = 2130837627;
 			
 			// aapt resource value: 0x7f02007c
-			public const int candy = 2130837628;
+			public const int btn_star_to_heart = 2130837628;
 			
 			// aapt resource value: 0x7f02007d
-			public const int design_bottom_navigation_item_background = 2130837629;
+			public const int btn_star_to_plus = 2130837629;
 			
 			// aapt resource value: 0x7f02007e
-			public const int design_fab_background = 2130837630;
+			public const int btn_target_to_flag = 2130837630;
 			
 			// aapt resource value: 0x7f02007f
-			public const int design_ic_visibility = 2130837631;
+			public const int candy = 2130837631;
 			
 			// aapt resource value: 0x7f020080
-			public const int design_ic_visibility_off = 2130837632;
+			public const int design_bottom_navigation_item_background = 2130837632;
 			
 			// aapt resource value: 0x7f020081
-			public const int design_password_eye = 2130837633;
+			public const int design_fab_background = 2130837633;
 			
 			// aapt resource value: 0x7f020082
-			public const int design_snackbar_background = 2130837634;
+			public const int design_ic_visibility = 2130837634;
 			
 			// aapt resource value: 0x7f020083
-			public const int diamond = 2130837635;
+			public const int design_ic_visibility_off = 2130837635;
 			
 			// aapt resource value: 0x7f020084
-			public const int flat_flag = 2130837636;
+			public const int design_password_eye = 2130837636;
 			
 			// aapt resource value: 0x7f020085
-			public const int flat_heart = 2130837637;
+			public const int design_snackbar_background = 2130837637;
 			
 			// aapt resource value: 0x7f020086
-			public const int flat_star = 2130837638;
+			public const int diamond = 2130837638;
 			
 			// aapt resource value: 0x7f020087
-			public const int magicwand = 2130837639;
+			public const int emoji_glasses = 2130837639;
 			
 			// aapt resource value: 0x7f020088
-			public const int navigation_empty_icon = 2130837640;
+			public const int emoji_sad = 2130837640;
 			
 			// aapt resource value: 0x7f020089
-			public const int notification_action_background = 2130837641;
+			public const int emoji_smiling = 2130837641;
 			
 			// aapt resource value: 0x7f02008a
-			public const int notification_bg = 2130837642;
+			public const int flat_flag = 2130837642;
 			
 			// aapt resource value: 0x7f02008b
-			public const int notification_bg_low = 2130837643;
+			public const int flat_heart = 2130837643;
 			
 			// aapt resource value: 0x7f02008c
-			public const int notification_bg_low_normal = 2130837644;
+			public const int flat_star = 2130837644;
 			
 			// aapt resource value: 0x7f02008d
-			public const int notification_bg_low_pressed = 2130837645;
+			public const int magicwand = 2130837645;
 			
 			// aapt resource value: 0x7f02008e
-			public const int notification_bg_normal = 2130837646;
+			public const int navigation_empty_icon = 2130837646;
 			
 			// aapt resource value: 0x7f02008f
-			public const int notification_bg_normal_pressed = 2130837647;
+			public const int notification_action_background = 2130837647;
 			
 			// aapt resource value: 0x7f020090
-			public const int notification_icon_background = 2130837648;
-			
-			// aapt resource value: 0x7f0200b2
-			public const int notification_template_icon_bg = 2130837682;
-			
-			// aapt resource value: 0x7f0200b3
-			public const int notification_template_icon_low_bg = 2130837683;
+			public const int notification_bg = 2130837648;
 			
 			// aapt resource value: 0x7f020091
-			public const int notification_tile_bg = 2130837649;
+			public const int notification_bg_low = 2130837649;
 			
 			// aapt resource value: 0x7f020092
-			public const int notify_panel_notification_icon_bg = 2130837650;
+			public const int notification_bg_low_normal = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int potion = 2130837651;
+			public const int notification_bg_low_pressed = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int red_diamond = 2130837652;
+			public const int notification_bg_normal = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int red_heart = 2130837653;
+			public const int notification_bg_normal_pressed = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int red_plus = 2130837654;
+			public const int notification_icon_background = 2130837654;
+			
+			// aapt resource value: 0x7f0200b8
+			public const int notification_template_icon_bg = 2130837688;
+			
+			// aapt resource value: 0x7f0200b9
+			public const int notification_template_icon_low_bg = 2130837689;
 			
 			// aapt resource value: 0x7f020097
-			public const int red_star = 2130837655;
+			public const int notification_tile_bg = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int redBox = 2130837656;
+			public const int notify_panel_notification_icon_bg = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int redCandy = 2130837657;
+			public const int potion = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int redDiamond = 2130837658;
+			public const int red_diamond = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int redGem = 2130837659;
+			public const int red_heart = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int redHeart = 2130837660;
+			public const int red_plus = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int redPotion = 2130837661;
+			public const int red_star = 2130837661;
 			
 			// aapt resource value: 0x7f02009e
-			public const int redPuzzle = 2130837662;
+			public const int redBox = 2130837662;
 			
 			// aapt resource value: 0x7f02009f
-			public const int redSquare = 2130837663;
+			public const int redCandy = 2130837663;
 			
 			// aapt resource value: 0x7f0200a0
-			public const int redstar = 2130837664;
+			public const int redDiamond = 2130837664;
 			
 			// aapt resource value: 0x7f0200a1
-			public const int seven_seg_0 = 2130837665;
+			public const int redGem = 2130837665;
 			
 			// aapt resource value: 0x7f0200a2
-			public const int seven_seg_1 = 2130837666;
+			public const int redHeart = 2130837666;
 			
 			// aapt resource value: 0x7f0200a3
-			public const int seven_seg_2 = 2130837667;
+			public const int redPotion = 2130837667;
 			
 			// aapt resource value: 0x7f0200a4
-			public const int seven_seg_3 = 2130837668;
+			public const int redPuzzle = 2130837668;
 			
 			// aapt resource value: 0x7f0200a5
-			public const int seven_seg_4 = 2130837669;
+			public const int redSquare = 2130837669;
 			
 			// aapt resource value: 0x7f0200a6
-			public const int seven_seg_5 = 2130837670;
+			public const int redstar = 2130837670;
 			
 			// aapt resource value: 0x7f0200a7
-			public const int seven_seg_6 = 2130837671;
+			public const int seven_seg_0 = 2130837671;
 			
 			// aapt resource value: 0x7f0200a8
-			public const int seven_seg_7 = 2130837672;
+			public const int seven_seg_1 = 2130837672;
 			
 			// aapt resource value: 0x7f0200a9
-			public const int seven_seg_8 = 2130837673;
+			public const int seven_seg_2 = 2130837673;
 			
 			// aapt resource value: 0x7f0200aa
-			public const int seven_seg_9 = 2130837674;
+			public const int seven_seg_3 = 2130837674;
 			
 			// aapt resource value: 0x7f0200ab
-			public const int seven_seg_column = 2130837675;
+			public const int seven_seg_4 = 2130837675;
 			
 			// aapt resource value: 0x7f0200ac
-			public const int seven_seg_minus = 2130837676;
+			public const int seven_seg_5 = 2130837676;
 			
 			// aapt resource value: 0x7f0200ad
-			public const int seven_seg_null = 2130837677;
+			public const int seven_seg_6 = 2130837677;
 			
 			// aapt resource value: 0x7f0200ae
-			public const int switch_flag = 2130837678;
+			public const int seven_seg_7 = 2130837678;
 			
 			// aapt resource value: 0x7f0200af
-			public const int switch_target = 2130837679;
+			public const int seven_seg_8 = 2130837679;
 			
 			// aapt resource value: 0x7f0200b0
-			public const int tooltip_frame_dark = 2130837680;
+			public const int seven_seg_9 = 2130837680;
 			
 			// aapt resource value: 0x7f0200b1
-			public const int tooltip_frame_light = 2130837681;
+			public const int seven_seg_column = 2130837681;
+			
+			// aapt resource value: 0x7f0200b2
+			public const int seven_seg_minus = 2130837682;
+			
+			// aapt resource value: 0x7f0200b3
+			public const int seven_seg_null = 2130837683;
+			
+			// aapt resource value: 0x7f0200b4
+			public const int switch_flag = 2130837684;
+			
+			// aapt resource value: 0x7f0200b5
+			public const int switch_target = 2130837685;
+			
+			// aapt resource value: 0x7f0200b6
+			public const int tooltip_frame_dark = 2130837686;
+			
+			// aapt resource value: 0x7f0200b7
+			public const int tooltip_frame_light = 2130837687;
 			
 			static Drawable()
 			{
@@ -2666,8 +2684,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090037
 			public const int SYM = 2131296311;
 			
-			// aapt resource value: 0x7f0900c0
-			public const int action0 = 2131296448;
+			// aapt resource value: 0x7f0900c2
+			public const int action0 = 2131296450;
 			
 			// aapt resource value: 0x7f09007c
 			public const int action_bar = 2131296380;
@@ -2690,17 +2708,17 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09005a
 			public const int action_bar_title = 2131296346;
 			
-			// aapt resource value: 0x7f0900bd
-			public const int action_container = 2131296445;
+			// aapt resource value: 0x7f0900bf
+			public const int action_container = 2131296447;
 			
 			// aapt resource value: 0x7f09007d
 			public const int action_context_bar = 2131296381;
 			
-			// aapt resource value: 0x7f0900c4
-			public const int action_divider = 2131296452;
+			// aapt resource value: 0x7f0900c6
+			public const int action_divider = 2131296454;
 			
-			// aapt resource value: 0x7f0900be
-			public const int action_image = 2131296446;
+			// aapt resource value: 0x7f0900c0
+			public const int action_image = 2131296448;
 			
 			// aapt resource value: 0x7f090003
 			public const int action_menu_divider = 2131296259;
@@ -2717,11 +2735,11 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09005c
 			public const int action_mode_close_button = 2131296348;
 			
-			// aapt resource value: 0x7f0900bf
-			public const int action_text = 2131296447;
+			// aapt resource value: 0x7f0900c1
+			public const int action_text = 2131296449;
 			
-			// aapt resource value: 0x7f0900cd
-			public const int actions = 2131296461;
+			// aapt resource value: 0x7f0900cf
+			public const int actions = 2131296463;
 			
 			// aapt resource value: 0x7f09005d
 			public const int activity_chooser_view_content = 2131296349;
@@ -2756,17 +2774,17 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09009c
 			public const int btnDontUseHeart = 2131296412;
 			
-			// aapt resource value: 0x7f09009a
-			public const int btnNewGame = 2131296410;
-			
-			// aapt resource value: 0x7f090098
-			public const int btnPlus = 2131296408;
+			// aapt resource value: 0x7f090099
+			public const int btnNewGame = 2131296409;
 			
 			// aapt resource value: 0x7f090097
-			public const int btnStarToHeart = 2131296407;
+			public const int btnPlus = 2131296407;
 			
-			// aapt resource value: 0x7f090096
-			public const int btnStarToPlus = 2131296406;
+			// aapt resource value: 0x7f090095
+			public const int btnRestartGame = 2131296405;
+			
+			// aapt resource value: 0x7f09009a
+			public const int btnStarToGift = 2131296410;
 			
 			// aapt resource value: 0x7f090094
 			public const int btnToggleFlagDefault = 2131296404;
@@ -2774,11 +2792,14 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09009d
 			public const int btnUseHeart = 2131296413;
 			
+			// aapt resource value: 0x7f0900ae
+			public const int button1 = 2131296430;
+			
 			// aapt resource value: 0x7f090063
 			public const int buttonPanel = 2131296355;
 			
-			// aapt resource value: 0x7f0900c1
-			public const int cancel_action = 2131296449;
+			// aapt resource value: 0x7f0900c3
+			public const int cancel_action = 2131296451;
 			
 			// aapt resource value: 0x7f090045
 			public const int center = 2131296325;
@@ -2792,8 +2813,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090073
 			public const int checkbox = 2131296371;
 			
-			// aapt resource value: 0x7f0900c9
-			public const int chronometer = 2131296457;
+			// aapt resource value: 0x7f0900cb
+			public const int chronometer = 2131296459;
 			
 			// aapt resource value: 0x7f09004e
 			public const int clip_horizontal = 2131296334;
@@ -2804,14 +2825,14 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090039
 			public const int collapseActionView = 2131296313;
 			
-			// aapt resource value: 0x7f0900af
-			public const int container = 2131296431;
+			// aapt resource value: 0x7f0900b1
+			public const int container = 2131296433;
 			
 			// aapt resource value: 0x7f090066
 			public const int contentPanel = 2131296358;
 			
-			// aapt resource value: 0x7f0900b0
-			public const int coordinator = 2131296432;
+			// aapt resource value: 0x7f0900b2
+			public const int coordinator = 2131296434;
 			
 			// aapt resource value: 0x7f09006d
 			public const int custom = 2131296365;
@@ -2825,20 +2846,20 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090060
 			public const int default_activity_button = 2131296352;
 			
-			// aapt resource value: 0x7f0900b2
-			public const int design_bottom_sheet = 2131296434;
+			// aapt resource value: 0x7f0900b4
+			public const int design_bottom_sheet = 2131296436;
+			
+			// aapt resource value: 0x7f0900bb
+			public const int design_menu_item_action_area = 2131296443;
+			
+			// aapt resource value: 0x7f0900ba
+			public const int design_menu_item_action_area_stub = 2131296442;
 			
 			// aapt resource value: 0x7f0900b9
-			public const int design_menu_item_action_area = 2131296441;
+			public const int design_menu_item_text = 2131296441;
 			
 			// aapt resource value: 0x7f0900b8
-			public const int design_menu_item_action_area_stub = 2131296440;
-			
-			// aapt resource value: 0x7f0900b7
-			public const int design_menu_item_text = 2131296439;
-			
-			// aapt resource value: 0x7f0900b6
-			public const int design_navigation_view = 2131296438;
+			public const int design_navigation_view = 2131296440;
 			
 			// aapt resource value: 0x7f0900aa
 			public const int dgtHeart0 = 2131296426;
@@ -2867,8 +2888,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090030
 			public const int end = 2131296304;
 			
-			// aapt resource value: 0x7f0900cf
-			public const int end_padder = 2131296463;
+			// aapt resource value: 0x7f0900d1
+			public const int end_padder = 2131296465;
 			
 			// aapt resource value: 0x7f09003f
 			public const int enterAlways = 2131296319;
@@ -2915,8 +2936,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090062
 			public const int icon = 2131296354;
 			
-			// aapt resource value: 0x7f0900ce
-			public const int icon_group = 2131296462;
+			// aapt resource value: 0x7f0900d0
+			public const int icon_group = 2131296464;
 			
 			// aapt resource value: 0x7f09003a
 			public const int ifRoom = 2131296314;
@@ -2927,8 +2948,11 @@ namespace Minesweeper
 			// aapt resource value: 0x7f0900a3
 			public const int imageView1 = 2131296419;
 			
-			// aapt resource value: 0x7f0900ca
-			public const int info = 2131296458;
+			// aapt resource value: 0x7f0900cc
+			public const int info = 2131296460;
+			
+			// aapt resource value: 0x7f0900ad
+			public const int initLayout = 2131296429;
 			
 			// aapt resource value: 0x7f090059
 			public const int italic = 2131296345;
@@ -2936,8 +2960,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090000
 			public const int item_touch_helper_previous_elevation = 2131296256;
 			
-			// aapt resource value: 0x7f0900ae
-			public const int largeLabel = 2131296430;
+			// aapt resource value: 0x7f0900b0
+			public const int largeLabel = 2131296432;
 			
 			// aapt resource value: 0x7f090049
 			public const int left = 2131296329;
@@ -2963,8 +2987,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09008b
 			public const int linearLayoutMain = 2131296395;
 			
-			// aapt resource value: 0x7f090099
-			public const int linearLayoutMessage = 2131296409;
+			// aapt resource value: 0x7f090098
+			public const int linearLayoutMessage = 2131296408;
 			
 			// aapt resource value: 0x7f09009b
 			public const int linearLayoutUseHeart = 2131296411;
@@ -2975,14 +2999,14 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090061
 			public const int list_item = 2131296353;
 			
+			// aapt resource value: 0x7f0900d4
+			public const int masked = 2131296468;
+			
+			// aapt resource value: 0x7f0900c5
+			public const int media_actions = 2131296453;
+			
 			// aapt resource value: 0x7f0900d2
-			public const int masked = 2131296466;
-			
-			// aapt resource value: 0x7f0900c3
-			public const int media_actions = 2131296451;
-			
-			// aapt resource value: 0x7f0900d0
-			public const int message = 2131296464;
+			public const int message = 2131296466;
 			
 			// aapt resource value: 0x7f090031
 			public const int middle = 2131296305;
@@ -2993,8 +3017,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090028
 			public const int multiply = 2131296296;
 			
-			// aapt resource value: 0x7f0900b5
-			public const int navigation_header_container = 2131296437;
+			// aapt resource value: 0x7f0900b7
+			public const int navigation_header_container = 2131296439;
 			
 			// aapt resource value: 0x7f09003b
 			public const int never = 2131296315;
@@ -3005,14 +3029,14 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09001e
 			public const int normal = 2131296286;
 			
-			// aapt resource value: 0x7f0900cc
-			public const int notification_background = 2131296460;
+			// aapt resource value: 0x7f0900ce
+			public const int notification_background = 2131296462;
 			
-			// aapt resource value: 0x7f0900c6
-			public const int notification_main_column = 2131296454;
+			// aapt resource value: 0x7f0900c8
+			public const int notification_main_column = 2131296456;
 			
-			// aapt resource value: 0x7f0900c5
-			public const int notification_main_column_container = 2131296453;
+			// aapt resource value: 0x7f0900c7
+			public const int notification_main_column_container = 2131296455;
 			
 			// aapt resource value: 0x7f09004c
 			public const int parallax = 2131296332;
@@ -3056,11 +3080,11 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09004a
 			public const int right = 2131296330;
 			
-			// aapt resource value: 0x7f0900cb
-			public const int right_icon = 2131296459;
+			// aapt resource value: 0x7f0900cd
+			public const int right_icon = 2131296461;
 			
-			// aapt resource value: 0x7f0900c7
-			public const int right_side = 2131296455;
+			// aapt resource value: 0x7f0900c9
+			public const int right_side = 2131296457;
 			
 			// aapt resource value: 0x7f09000c
 			public const int save_image_matrix = 2131296268;
@@ -3134,20 +3158,20 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090025
 			public const int showTitle = 2131296293;
 			
-			// aapt resource value: 0x7f0900ad
-			public const int smallLabel = 2131296429;
+			// aapt resource value: 0x7f0900af
+			public const int smallLabel = 2131296431;
 			
-			// aapt resource value: 0x7f0900b4
-			public const int snackbar_action = 2131296436;
+			// aapt resource value: 0x7f0900b6
+			public const int snackbar_action = 2131296438;
 			
-			// aapt resource value: 0x7f0900b3
-			public const int snackbar_text = 2131296435;
+			// aapt resource value: 0x7f0900b5
+			public const int snackbar_text = 2131296437;
 			
 			// aapt resource value: 0x7f090043
 			public const int snap = 2131296323;
 			
-			// aapt resource value: 0x7f090095
-			public const int space1 = 2131296405;
+			// aapt resource value: 0x7f090096
+			public const int space1 = 2131296406;
 			
 			// aapt resource value: 0x7f090064
 			public const int spacer = 2131296356;
@@ -3167,8 +3191,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09004b
 			public const int start = 2131296331;
 			
-			// aapt resource value: 0x7f0900c2
-			public const int status_bar_latest_event_content = 2131296450;
+			// aapt resource value: 0x7f0900c4
+			public const int status_bar_latest_event_content = 2131296452;
 			
 			// aapt resource value: 0x7f090076
 			public const int submenuarrow = 2131296374;
@@ -3194,14 +3218,14 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090069
 			public const int textSpacerNoTitle = 2131296361;
 			
-			// aapt resource value: 0x7f0900bb
-			public const int textView1 = 2131296443;
+			// aapt resource value: 0x7f0900bd
+			public const int textView1 = 2131296445;
+			
+			// aapt resource value: 0x7f0900be
+			public const int textView2 = 2131296446;
 			
 			// aapt resource value: 0x7f0900bc
-			public const int textView2 = 2131296444;
-			
-			// aapt resource value: 0x7f0900ba
-			public const int text_input_password_toggle = 2131296442;
+			public const int text_input_password_toggle = 2131296444;
 			
 			// aapt resource value: 0x7f090014
 			public const int textinput_counter = 2131296276;
@@ -3209,8 +3233,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090015
 			public const int textinput_error = 2131296277;
 			
-			// aapt resource value: 0x7f0900c8
-			public const int time = 2131296456;
+			// aapt resource value: 0x7f0900ca
+			public const int time = 2131296458;
 			
 			// aapt resource value: 0x7f0900a0
 			public const int timerDigit_col = 2131296416;
@@ -3242,8 +3266,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f09006e
 			public const int topPanel = 2131296366;
 			
-			// aapt resource value: 0x7f0900b1
-			public const int touch_outside = 2131296433;
+			// aapt resource value: 0x7f0900b3
+			public const int touch_outside = 2131296435;
 			
 			// aapt resource value: 0x7f09000f
 			public const int transition_current_scene = 2131296271;
@@ -3272,8 +3296,8 @@ namespace Minesweeper
 			// aapt resource value: 0x7f090016
 			public const int view_offset_helper = 2131296278;
 			
-			// aapt resource value: 0x7f0900d1
-			public const int visible = 2131296465;
+			// aapt resource value: 0x7f0900d3
+			public const int visible = 2131296467;
 			
 			// aapt resource value: 0x7f09003c
 			public const int withText = 2131296316;

@@ -24,15 +24,16 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToPlus, btnStarToHeart, btnNewGame, btnUseHeart, btnDontUseHeart;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
         //TextView /*txtTimer, txtGolden,*/ txtMessage;
         //Button /*btnStar, /*btnGreenFlag, /*btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart*/;
-        LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart;
+        LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
+        Button button1;
 
         #endregion
 
@@ -54,7 +55,7 @@ namespace Minesweeper
         }
         private int minAroundPressedCellsValue(int r, int c)
         {
-            var result = 10;
+            var result = 9;
 
             if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 1, c - 1].Value);
             if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status == CellStatus.Pressed) result = Math.Min(result, game.BoardCells[r - 1, c - 0].Value);
@@ -69,13 +70,19 @@ namespace Minesweeper
         }
         private void initApp()
         {
+            initLayout = FindViewById<LinearLayout>(Resource.Id.initLayout);
+            gridWidth = initLayout.Width;
+            gridHeight = initLayout.Height;
+            initLayout.Visibility = ViewStates.Gone;
+
             gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
+            gridLayout.Visibility = ViewStates.Visible;
 
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
 
-            gridWidth = gridLayout.Width;
-            gridHeight = gridLayout.Height;
+            //gridWidth = gridLayout.Width;
+            //gridHeight = gridLayout.Height;
 
             var minSizeCm = 0.5;
             maxColCount = (int)Math.Round(gridWidth / screenXdpi * 2.54 / minSizeCm);
@@ -117,7 +124,7 @@ namespace Minesweeper
             heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
             heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
 
-            isFlagDefault = false;
+            //isFlagDefault = false;
             setFlagDefaultButton();
 
             setBonusNumbers();
@@ -126,7 +133,7 @@ namespace Minesweeper
         }
         private void setFlagDefaultButton()
         {
-            btnToggleFlagDefault.SetImageResource(isFlagDefault ? Resource.Drawable.switch_flag : Resource.Drawable.switch_target);
+            btnToggleFlagDefault.SetImageResource(isFlagDefault ? Resource.Drawable.btn_flag_to_target : Resource.Drawable.btn_target_to_flag);
         }
         private void setImageDigits(ImageView[] imageViewArray, char[] digitArray, string value)
         {
@@ -137,6 +144,7 @@ namespace Minesweeper
                     digitArray[i] = value[i];
                     setSevenSegmentImage(imageViewArray[i], value[i]);
                 }
+                imageViewArray[i].Visibility = ViewStates.Visible;
             }
             for (int i = value.Length; i < digitArray.Length; i++)
             {
@@ -156,23 +164,26 @@ namespace Minesweeper
             var lastMinePercent = game.MinePercent;
             var islastGameDone = (game.Status == GameStatus.Done);
 
-            gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
+            //gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
 
             gridLayout.RemoveAllViews();
 
             gridLayout.Orientation = GridOrientation.Horizontal;
 
-            var gameMinColCount = islastGameDone ? lastColCount : minColCount;
-            var gameMaxColCount = islastGameDone ? maxColCount : lastColCount;
-
-            if (islastGameDone && gameMinColCount < maxColCount)
-            {
-                gameMinColCount++;
-            }
-
             var random = new Random();
 
-            game.ColCount = random.Next(gameMinColCount, gameMaxColCount);
+            if (game.Status == GameStatus.Done || game.Status == GameStatus.Fail || game.MineCount == 0)
+            {
+                var gameMinColCount = islastGameDone ? lastColCount : minColCount;
+                var gameMaxColCount = islastGameDone ? maxColCount : lastColCount;
+
+                if (islastGameDone && gameMinColCount < maxColCount)
+                {
+                    gameMinColCount++;
+                }
+
+                game.ColCount = random.Next(gameMinColCount, gameMaxColCount);
+            }
             var firstBtnWidth = (int)Math.Round((decimal)gridWidth / game.ColCount);
             if (game.ColCount < minColCount) { game.ColCount = minColCount; }
             if (game.ColCount > maxColCount) { game.ColCount = maxColCount; }
@@ -182,16 +193,19 @@ namespace Minesweeper
             if (game.RowCount < minRowCount) { game.RowCount = minRowCount; }
             if (game.RowCount > maxRowCount) { game.RowCount = maxRowCount; }
 
-            var gameMinMinePercent = islastGameDone ? lastMinePercent : minMinePercent;
-            var gameMaxMinePercent = islastGameDone ? maxMinePercent : lastMinePercent;
-
-            if (islastGameDone && gameMinMinePercent < maxMinePercent)
+            if (game.Status == GameStatus.Done || game.Status == GameStatus.Fail || game.MineCount == 0)
             {
-                gameMinMinePercent++;
-            }
+                var gameMinMinePercent = islastGameDone ? lastMinePercent : minMinePercent;
+                var gameMaxMinePercent = islastGameDone ? maxMinePercent : lastMinePercent;
 
-            game.MinePercent = random.Next(gameMinMinePercent, gameMaxMinePercent);
-            game.MineCount = (int)Math.Round((double)game.MinePercent * game.RowCount * game.ColCount / 100); //easy: 15%, medium: 21%, hard: 27%
+                if (islastGameDone && gameMinMinePercent < maxMinePercent)
+                {
+                    gameMinMinePercent++;
+                }
+
+                game.MinePercent = random.Next(gameMinMinePercent, gameMaxMinePercent);
+                game.MineCount = (int)Math.Round((double)game.MinePercent * game.RowCount * game.ColCount / 100); //easy: 15%, medium: 21%, hard: 27%
+            }
             game.FlagRemainCount = game.MineCount;
             setFlagsView();
 
@@ -503,6 +517,13 @@ namespace Minesweeper
             {
                 starCount++;
             }
+
+            //جایزه مرحله آخر
+            if (game.GameLevelPercent == 100)
+            {
+                starCount += 9;
+            }
+
             setBonusNumbers();
 
             //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
@@ -516,7 +537,7 @@ namespace Minesweeper
             //});
             //alert.Show();
             //txtMessage.Text = "برنده شدی";
-            btnNewGame.SetImageResource(Resource.Drawable.btn_game_done);
+            btnNewGame.SetImageResource(Resource.Drawable.emoji_glasses);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
@@ -529,12 +550,13 @@ namespace Minesweeper
             var starValue = starCount > 99 ? "99" : starCount.ToString();
             setImageDigits(starDigitsImages, starDigits, starValue);
 
-            btnStarToPlus.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
-            btnStarToHeart.Visibility = (starCount >= 5) ? ViewStates.Visible : ViewStates.Gone;
+            //btnStarToPlus.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
+            //btnStarToHeart.Visibility = (starCount >= 5) ? ViewStates.Visible : ViewStates.Gone;
+            btnStarToGift.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
 
             var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
             setImageDigits(plusDigitsImages, plusDigits, plusValue);
-            btnPlus.Visibility = (greenFlagCount > 0) ? ViewStates.Visible : ViewStates.Gone; 
+            btnPlus.Visibility = (greenFlagCount > 0) ? ViewStates.Visible : ViewStates.Gone;
 
             var heartValue = heartCount > 99 ? "99" : heartCount.ToString();
             setImageDigits(heartDigitsImages, heartDigits, heartValue);
@@ -691,7 +713,7 @@ namespace Minesweeper
             //});
             //alert.Show();
             //txtMessage.Text = "ترکیدی که";
-            btnNewGame.SetImageResource(Resource.Drawable.btn_game_over);
+            btnNewGame.SetImageResource(Resource.Drawable.emoji_sad);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
@@ -785,7 +807,7 @@ namespace Minesweeper
 
             timer = new Timer(1000);
             timer.Elapsed += Timer_Elapsed;
-            timer.Start();
+            //timer.Start();
 
             btnToggleFlagDefault = FindViewById<ImageView>(Resource.Id.btnToggleFlagDefault);
             btnToggleFlagDefault.Click += BtnToggleFlagDefault_Click;
@@ -800,10 +822,12 @@ namespace Minesweeper
             //btnStar = FindViewById<Button>(Resource.Id.btnStar);
             //btnStar.Click += BtnStar_Click;
 
-            btnStarToPlus = FindViewById<ImageView>(Resource.Id.btnStarToPlus);
-            btnStarToPlus.Click += btnStarToPlus_Click;
-            btnStarToHeart = FindViewById<ImageView>(Resource.Id.btnStarToHeart);
-            btnStarToHeart.Click += btnStarToHeart_Click;
+            //btnStarToPlus = FindViewById<ImageView>(Resource.Id.btnStarToPlus);
+            //btnStarToPlus.Click += btnStarToPlus_Click;
+            //btnStarToHeart = FindViewById<ImageView>(Resource.Id.btnStarToHeart);
+            //btnStarToHeart.Click += btnStarToHeart_Click;
+            btnStarToGift = FindViewById<ImageView>(Resource.Id.btnStarToGift);
+            btnStarToGift.Click += btnStarToGift_Click;
 
             btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
             btnPlus.Click += btnPlus_Click;
@@ -823,9 +847,22 @@ namespace Minesweeper
             btnNewGame = FindViewById<ImageView>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
 
+            btnRestartGame = FindViewById<ImageView>(Resource.Id.btnRestartGame);
+            btnRestartGame.Click += BtnNewGame_Click;
+
             prgSilverTimes = FindViewById<ProgressBar>(Resource.Id.prgSilverTimes);
             prgGoldenTimes = FindViewById<ProgressBar>(Resource.Id.prgGoldenTimes);
+
+            button1 = FindViewById<Button>(Resource.Id.button1);
+            button1.Click += Button1_Click;
         }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            initApp();
+            newGame();
+        }
+
         private void BtnDontUseHeart_Click(object sender, EventArgs e)
         {
             gameOver();
@@ -868,35 +905,46 @@ namespace Minesweeper
 
             checkIsWin();
         }
-        private void btnStarToPlus_Click(object sender, EventArgs e)
+        //private void btnStarToPlus_Click(object sender, EventArgs e)
+        //{
+        //    if (starCount >= 3)
+        //    {
+        //        starCount -= 3;
+        //        greenFlagCount++;
+        //    }
+        //    else
+        //    {
+        //        Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
+        //    }
+        //    setBonusNumbers();
+        //}
+        //private void btnStarToHeart_Click(object sender, EventArgs e)
+        //{
+        //    if (starCount >= 5)
+        //    {
+        //        starCount -= 5;
+        //        heartCount++;
+        //    }
+        //    else
+        //    {
+        //        Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
+        //    }
+        //    setBonusNumbers();
+        //}
+        private void btnStarToGift_Click(object sender, EventArgs e)
         {
             if (starCount >= 3)
             {
-                starCount -= 3;
-                greenFlagCount++;
+                greenFlagCount += starCount / 3;
+                heartCount += starCount / 5;
+                starCount = Math.Min(starCount % 3, starCount % 5);
+
+                setBonusNumbers();
             }
-            else
-            {
-                Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
-            }
-            setBonusNumbers();
-        }
-        private void btnStarToHeart_Click(object sender, EventArgs e)
-        {
-            if (starCount >= 5)
-            {
-                starCount -= 5;
-                heartCount++;
-            }
-            else
-            {
-                Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
-            }
-            setBonusNumbers();
         }
         private void btnPlus_Click(object sender, EventArgs e)
         {
-            if (game.Status != GameStatus.Playing) return;
+            if (game == null || game.Status != GameStatus.Playing) return;
 
             if (greenFlagCount == 0 || game.FlagRemainCount <= 0)
             {
@@ -904,7 +952,7 @@ namespace Minesweeper
                 return;
             }
 
-            var targetPoint = new KeyValuePair<Point, int>(new Point(), 9);
+            var targetPoint = new KeyValuePair<Point, int>(new Point(), 10);
 
             for (int r = 0; r < game.RowCount; r++)
             {
@@ -920,7 +968,7 @@ namespace Minesweeper
                     }
                 }
             }
-            if (targetPoint.Value < 9)
+            if (targetPoint.Value <= 9)
             {
                 putGreenFlag(targetPoint.Key.X, targetPoint.Key.Y);
                 greenFlagCount--;
