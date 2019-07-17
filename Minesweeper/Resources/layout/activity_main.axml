@@ -312,12 +312,45 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/initLayout">
-        <Button
-            android:text="Start"
+        <Space
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minWidth="25px"
-            android:minHeight="25px"
-            android:id="@+id/button1" />
+            android:layout_height="0dp"
+            android:layout_weight="0.2" />
+        <ImageView
+            android:src="@drawable/start"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.3"
+            android:scaleType="fitCenter"
+            android:id="@+id/btnStart" />
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.17" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_weight="0.17">
+            <ImageView
+                android:src="@drawable/thumbs_up"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:padding="10dp"
+                android:id="@+id/btnStarToGift" />
+            <ImageView
+                android:src="@drawable/deal"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:scaleType="fitCenter"
+                android:id="@+id/btnStarToGift" />
+        </LinearLayout>
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="0.16" />
     </LinearLayout>
 </LinearLayout>

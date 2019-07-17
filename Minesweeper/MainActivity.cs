@@ -24,7 +24,7 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
@@ -33,7 +33,7 @@ namespace Minesweeper
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
-        Button button1;
+        //Button button1;
 
         #endregion
 
@@ -153,6 +153,11 @@ namespace Minesweeper
         }
         private void newGame()
         {
+            if (!isAppInitialized)
+            {
+                initApp();
+            }
+
             if (game == null)
             {
                 game = new Game();
@@ -853,13 +858,13 @@ namespace Minesweeper
             prgSilverTimes = FindViewById<ProgressBar>(Resource.Id.prgSilverTimes);
             prgGoldenTimes = FindViewById<ProgressBar>(Resource.Id.prgGoldenTimes);
 
-            button1 = FindViewById<Button>(Resource.Id.button1);
-            button1.Click += Button1_Click;
+            btnStart = FindViewById<ImageView>(Resource.Id.btnStart);
+            btnStart.Click += btnStart_Click;
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        private void btnStart_Click(object sender, EventArgs e)
         {
-            initApp();
+            //initApp();
             newGame();
         }
 
@@ -1006,13 +1011,13 @@ namespace Minesweeper
         {
             RunOnUiThread(() =>
             {
-                if (!isAppInitialized)
-                {
-                    initApp();
+                //if (!isAppInitialized)
+                //{
+                //    initApp();
 
-                    timer.Stop();
-                    newGame();
-                }
+                //    timer.Stop();
+                //    newGame();
+                //}
 
                 if (game != null && (game.Status == GameStatus.Playing || game.Status == GameStatus.Paused))
                 {
