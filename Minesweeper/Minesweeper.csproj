@@ -346,10 +346,16 @@
     <AndroidResource Include="Resources\Drawable\start.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\thumbs-up.png" />
+    <AndroidResource Include="Resources\Drawable\thumbs_up.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\Drawable\thumbs_up.png" />
+    <AndroidResource Include="Resources\Drawable\deal_330.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\thumbs_up_330.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\Drawable\start_330.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

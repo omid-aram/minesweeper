@@ -311,13 +311,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/initLayout">
+        android:id="@+id/initLayout"
+        android:background="#fffffde7">
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2" />
         <ImageView
-            android:src="@drawable/start"
+            android:src="@drawable/start_330"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.3"
@@ -333,15 +334,14 @@
             android:layout_height="10dp"
             android:layout_weight="0.17">
             <ImageView
-                android:src="@drawable/thumbs_up"
+                android:src="@drawable/thumbs_up_330"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:padding="10dp"
                 android:id="@+id/btnStarToGift" />
             <ImageView
-                android:src="@drawable/deal"
+                android:src="@drawable/deal_330"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
