@@ -132,7 +132,15 @@
                     android:orientation="horizontal"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.5" />
+                    android:layout_weight="0.5">
+                    <ImageView
+                        android:src="@drawable/btn_home"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="0"
+                        android:scaleType="fitXY"
+                        android:id="@+id/btnHome" />
+                </LinearLayout>
                 <ImageView
                     android:src="@drawable/emoji_glasses"
                     android:layout_width="32dp"
@@ -339,14 +347,14 @@
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:id="@+id/btnStarToGift" />
+                android:id="@+id/btnAppLike" />
             <ImageView
                 android:src="@drawable/deal_330"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="0.5"
                 android:scaleType="fitCenter"
-                android:id="@+id/btnStarToGift" />
+                android:id="@+id/btnAppDonate" />
         </LinearLayout>
         <Space
             android:layout_width="match_parent"

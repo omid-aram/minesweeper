@@ -10,6 +10,7 @@ using System;
 using Xamarin.Essentials;
 using System.Timers;
 using System.Drawing;
+using Android.Content;
 
 namespace Minesweeper
 {
@@ -24,7 +25,7 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart, btnAppLike, btnAppDonate, btnHome;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
@@ -73,10 +74,8 @@ namespace Minesweeper
             initLayout = FindViewById<LinearLayout>(Resource.Id.initLayout);
             gridWidth = initLayout.Width;
             gridHeight = initLayout.Height;
-            initLayout.Visibility = ViewStates.Gone;
 
             gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
-            gridLayout.Visibility = ViewStates.Visible;
 
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
@@ -157,6 +156,9 @@ namespace Minesweeper
             {
                 initApp();
             }
+
+            initLayout.Visibility = ViewStates.Gone;
+            gridLayout.Visibility = ViewStates.Visible;
 
             if (game == null)
             {
@@ -799,6 +801,26 @@ namespace Minesweeper
         {
             return (r >= 0 && c >= 0 && r < game.RowCount && c < game.ColCount);
         }
+        public static string En2Fa(string sNum)
+        {
+            if (string.IsNullOrEmpty(sNum))
+                return string.Empty;
+
+            var sFrNum = "";
+            const string vInt = "1234567890";
+
+            sNum = sNum.Trim();
+
+            var mystring = sNum.ToCharArray(0, sNum.Length);
+
+            for (var i = 0; i <= (mystring.Length - 1); i++)
+                if (vInt.IndexOf(mystring[i]) == -1)
+                    sFrNum += mystring[i];
+                else
+                    sFrNum += ((char)((int)mystring[i] + 1728));
+
+            return sFrNum;
+        }
 
         #endregion
 
@@ -860,12 +882,65 @@ namespace Minesweeper
 
             btnStart = FindViewById<ImageView>(Resource.Id.btnStart);
             btnStart.Click += btnStart_Click;
+
+            btnAppLike = FindViewById<ImageView>(Resource.Id.btnAppLike);
+            btnAppLike.Click += btnAppLike_Click;
+
+            btnAppDonate = FindViewById<ImageView>(Resource.Id.btnAppDonate);
+            btnAppDonate.Click += btnAppDonate_Click;
+
+            btnHome = FindViewById<ImageView>(Resource.Id.btnHome);
+            btnHome.Click += btnHome_Click;
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            initLayout.Visibility = ViewStates.Visible;
+            gridLayout.Visibility = ViewStates.Gone;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
         {
             //initApp();
             newGame();
+        }
+
+        private void btnAppLike_Click(object sender, EventArgs e)
+        {
+            Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
+            alertDiag.SetTitle("راضی هستی؟"/*"Enjoying the game?"*/);
+            alertDiag.SetMessage(En2Fa("5") + " تا ستاره بده!"/*"Give us a 5 star review!"*/);
+            alertDiag.SetPositiveButton("ثبت نظر"/*"Rate"*/, (senderAlert, args) =>
+            {
+                var uri = Android.Net.Uri.Parse("http://www.google.com");
+                var intent = new Intent(Intent.ActionView, uri);
+                StartActivity(intent);
+            });
+            alertDiag.SetNegativeButton("نه ممنون"/*"No Thanks"*/, (senderAlert, args) =>
+            {
+                alertDiag.Dispose();
+            });
+            Dialog diag = alertDiag.Create();
+            diag.Show();
+        }
+
+        private void btnAppDonate_Click(object sender, EventArgs e)
+        {
+            Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
+            alertDiag.SetTitle("تشکر ویژه از حمایت شما");
+            alertDiag.SetMessage("برنامه های واقعا رایگان (بدون تبلیغ) نیازمند حمایت سبز شما هستند :)");
+            alertDiag.SetPositiveButton("یه قهوه مهمون من", (senderAlert, args) =>
+            {
+                var uri = Android.Net.Uri.Parse("http://www.google.com");
+                var intent = new Intent(Intent.ActionView, uri);
+                StartActivity(intent);
+            });
+            alertDiag.SetNegativeButton("الان نه", (senderAlert, args) =>
+            {
+                alertDiag.Dispose();
+            });
+            Dialog diag = alertDiag.Create();
+            diag.Show();
         }
 
         private void BtnDontUseHeart_Click(object sender, EventArgs e)
@@ -938,14 +1013,29 @@ namespace Minesweeper
         //}
         private void btnStarToGift_Click(object sender, EventArgs e)
         {
-            if (starCount >= 3)
-            {
-                greenFlagCount += starCount / 3;
-                heartCount += starCount / 5;
-                starCount = Math.Min(starCount % 3, starCount % 5);
+            var _plusCount = starCount / 3;
+            var _heartCount = starCount / 5;
 
-                setBonusNumbers();
-            }
+            Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
+            alertDiag.SetTitle("خرج ستاره ها");
+            alertDiag.SetMessage(En2Fa($"با {starCount} تا ستاره، میتونی {_plusCount} کمک و {_heartCount} جون بگیری.\n\nاگه بیشتر میخوای صبر کن!"));
+            alertDiag.SetPositiveButton("میخوام", (senderAlert, args) =>
+            {
+                if (starCount >= 3)
+                {
+                    greenFlagCount += starCount / 3;
+                    heartCount += starCount / 5;
+                    starCount = Math.Min(starCount % 3, starCount % 5);
+
+                    setBonusNumbers();
+                }
+            });
+            alertDiag.SetNegativeButton("صبر میکنم", (senderAlert, args) =>
+            {
+                alertDiag.Dispose();
+            });
+            Dialog diag = alertDiag.Create();
+            diag.Show();
         }
         private void btnPlus_Click(object sender, EventArgs e)
         {
