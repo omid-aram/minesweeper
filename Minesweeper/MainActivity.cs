@@ -94,6 +94,10 @@ namespace Minesweeper
             minMinePercent = 15;
             maxMinePercent = 27;
 
+            //calculating max bomb count
+            var maxMineCount = (int)Math.Round((double)maxMinePercent * maxRowCount * maxColCount / 100);
+            Toast.MakeText(Application.Context, $"سعی کن برنده مرحله {En2Fa(maxMineCount.ToString())} بمب بشی", ToastLength.Long).Show();
+
             timerDigits = new char[5];
             timerDigitsImages = new ImageView[5];
             timerDigitsImages[0] = FindViewById<ImageView>(Resource.Id.timerDigit_h1);
