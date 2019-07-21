@@ -1,6 +1,5 @@
 ﻿using Android.App;
 using Android.OS;
-using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using System.Collections.Generic;
@@ -12,10 +11,10 @@ using System.Timers;
 using System.Drawing;
 using Android.Content;
 
-namespace Minesweeper
+namespace MinesweeperPlus
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait)]
-    public class MainActivity : AppCompatActivity
+    public class MainActivity : Activity
     {
         #region Properties
 
@@ -256,8 +255,6 @@ namespace Minesweeper
                     gridLayout.AddView(button);
                 }
             }
-
-            game.NumbersMode = NumbersMode.Dot; //(NumbersMode)random.Next(1, 4);
 
             game.Status = GameStatus.Created;
 
@@ -687,52 +684,28 @@ namespace Minesweeper
                     cellImage = isAutoClick ? Resource.Drawable.box_bomb : Resource.Drawable.box_bomb_red;
                     break;
                 case 1:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_1 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_1 :
-                        Resource.Drawable.box_dot_1;
+                    cellImage = Resource.Drawable.box_dot_1;
                     break;
                 case 2:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_2 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_2 :
-                        Resource.Drawable.box_dot_2;
+                    cellImage = Resource.Drawable.box_dot_2;
                     break;
                 case 3:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_3 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_3 :
-                        Resource.Drawable.box_dot_3;
+                    cellImage = Resource.Drawable.box_dot_3;
                     break;
                 case 4:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_4 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_4 :
-                        Resource.Drawable.box_dot_4;
+                    cellImage = Resource.Drawable.box_dot_4;
                     break;
                 case 5:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_5 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_5 :
-                        Resource.Drawable.box_dot_5;
+                    cellImage = Resource.Drawable.box_dot_5;
                     break;
                 case 6:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_6 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_6 :
-                        Resource.Drawable.box_dot_6;
+                    cellImage = Resource.Drawable.box_dot_6;
                     break;
                 case 7:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_7 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_7 :
-                        Resource.Drawable.box_dot_7;
+                    cellImage = Resource.Drawable.box_dot_7;
                     break;
                 case 8:
-                    cellImage =
-                        game.NumbersMode == NumbersMode.Farsi ? Resource.Drawable.box_8 :
-                        game.NumbersMode == NumbersMode.English ? Resource.Drawable.box_en_8 :
-                        Resource.Drawable.box_dot_8;
+                    cellImage = Resource.Drawable.box_dot_8;
                     break;
             }
             setCellImage(r, c, cellImage);
@@ -1146,7 +1119,6 @@ namespace Minesweeper
         public int SilverTimeSeconds { get; set; }
         public BoardCell[,] BoardCells { get; set; }
         public GameStatus Status { get; set; }
-        public NumbersMode NumbersMode { get; set; }
         public DateTime GameStartedTime { get; set; }
         public TimeSpan GamePlayingTime { get; set; }
         public bool IsInGoldenTime => (int)GamePlayingTime.TotalSeconds < GoldenTimeSeconds;
@@ -1174,12 +1146,5 @@ namespace Minesweeper
         NotPressed,
         Pressed,
         Flagged,
-    }
-
-    public enum NumbersMode
-    {
-        Farsi = 1,
-        English = 2,
-        Dot = 3,
     }
 }
