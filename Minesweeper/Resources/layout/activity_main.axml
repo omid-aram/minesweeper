@@ -78,20 +78,6 @@
                         android:scaleType="fitXY"
                         android:id="@+id/btnToggleFlagDefault" />
                 </LinearLayout>
-                <!--<ImageView
-                    android:src="@drawable/btn_star_to_plus"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_weight="0"
-                    android:scaleType="fitXY"
-                    android:id="@+id/btnStarToPlus" />
-                <ImageView
-                    android:src="@drawable/btn_star_to_heart"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_weight="0"
-                    android:scaleType="fitXY"
-                    android:id="@+id/btnStarToHeart" />-->
                 <ImageView
                     android:src="@drawable/emoji_smiling"
                     android:layout_width="32dp"

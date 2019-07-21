@@ -25,16 +25,13 @@ namespace Minesweeper
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, /*btnStarToPlus, btnStarToHeart, */btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart, btnAppLike, btnAppDonate, btnHome;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart, btnAppLike, btnAppDonate, btnHome;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
-        //TextView /*txtTimer, txtGolden,*/ txtMessage;
-        //Button /*btnStar, /*btnGreenFlag, /*btnHeart, btnNewGame, btnUseHeart, btnDontUseHeart*/;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
-        //Button button1;
 
         #endregion
 
@@ -80,9 +77,6 @@ namespace Minesweeper
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
 
-            //gridWidth = gridLayout.Width;
-            //gridHeight = gridLayout.Height;
-
             var minSizeCm = 0.5;
             maxColCount = (int)Math.Round(gridWidth / screenXdpi * 2.54 / minSizeCm);
             maxRowCount = (int)Math.Round(gridHeight / screenYdpi * 2.54 / minSizeCm);
@@ -127,7 +121,6 @@ namespace Minesweeper
             heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
             heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
 
-            //isFlagDefault = false;
             setFlagDefaultButton();
 
             setBonusNumbers();
@@ -174,8 +167,6 @@ namespace Minesweeper
             var lastColCount = game.ColCount;
             var lastMinePercent = game.MinePercent;
             var islastGameDone = (game.Status == GameStatus.Done);
-
-            //gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
 
             gridLayout.RemoveAllViews();
 
@@ -503,9 +494,8 @@ namespace Minesweeper
             {
                 for (int c = 0; c < game.ColCount; c++)
                 {
-                    if (game.BoardCells[r, c].Value == -1 /*&& game.BoardCells[r, c].Status != CellStatus.Flagged*/)
+                    if (game.BoardCells[r, c].Value == -1)
                     {
-                        //toggleFlag(r, c);
                         putGreenFlag(r, c);
                     }
                 }
@@ -537,17 +527,6 @@ namespace Minesweeper
 
             setBonusNumbers();
 
-            //Toast.MakeText(Application.Context, "Winner :D", ToastLength.Short).Show();
-            //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
-            //Android.App.AlertDialog alert = dialog.Create();
-            //alert.SetTitle("برنده شدی");
-            //alert.SetMessage("بریم دست بعدی؟");
-            //alert.SetButton("بریم", (c, ev) =>
-            //{
-            //    newGame();
-            //});
-            //alert.Show();
-            //txtMessage.Text = "برنده شدی";
             btnNewGame.SetImageResource(Resource.Drawable.emoji_glasses);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
@@ -555,14 +534,9 @@ namespace Minesweeper
         }
         private void setBonusNumbers()
         {
-            //btnStar.Text = $"{starCount}";
-            //btnGreenFlag.Text = $"{greenFlagCount}";
-            //btnHeart.Text = $"{heartCount}";
             var starValue = starCount > 99 ? "99" : starCount.ToString();
             setImageDigits(starDigitsImages, starDigits, starValue);
 
-            //btnStarToPlus.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
-            //btnStarToHeart.Visibility = (starCount >= 5) ? ViewStates.Visible : ViewStates.Gone;
             btnStarToGift.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
 
             var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
@@ -610,34 +584,9 @@ namespace Minesweeper
         {
             var value = Math.Min(game.FlagRemainCount, 999).ToString("D3");
             setImageDigits(remainFlagsImages, bombsDigits, value);
-
-            //var d100 = /*value[0] == '0' ? ' ' :*/ value[0];
-            //var d10 = /*value[0] == '0' && value[1] == '0' ? ' ' :*/ value[1];
-            //var d1 = value[2];
-
-            //if (d100 != bombsDigits[0])
-            //{
-            //    bombsDigits[0] = d100;
-            //    setSevenSegmentImage(remainFlagDigit100, d100);
-            //}
-            //if (d10 != bombsDigits[1])
-            //{
-            //    bombsDigits[1] = d10;
-            //    setSevenSegmentImage(remainFlagDigit10, d10);
-            //}
-            //if (d1 != bombsDigits[2])
-            //{
-            //    bombsDigits[2] = d1;
-            //    setSevenSegmentImage(remainFlagDigit1, d1);
-            //}
-
-            //var txtFlagRemainCount = FindViewById<TextView>(Resource.Id.textView1);
-            //txtFlagRemainCount.Text = game.FlagRemainCount.ToString();
         }
         private void setSevenSegmentImage(ImageView imageView, char value)
         {
-            //imageView.Visibility = (value == ' ') ? ViewStates.Gone : ViewStates.Visible;
-
             switch (value)
             {
                 case '0':
@@ -713,17 +662,6 @@ namespace Minesweeper
             }
 
             game.Status = GameStatus.Fail;
-            //Toast.MakeText(Application.Context, "BOOOOOOM :(", ToastLength.Short).Show();
-            //Android.App.AlertDialog.Builder dialog = new Android.App.AlertDialog.Builder(this);
-            //Android.App.AlertDialog alert = dialog.Create();
-            //alert.SetTitle("پات رفت رو مین");
-            //alert.SetMessage("بریم یه دست دیگه؟");
-            //alert.SetButton("بریم", (c, ev) =>
-            //{
-            //    newGame();
-            //});
-            //alert.Show();
-            //txtMessage.Text = "ترکیدی که";
             btnNewGame.SetImageResource(Resource.Drawable.emoji_sad);
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
@@ -843,27 +781,11 @@ namespace Minesweeper
             btnToggleFlagDefault = FindViewById<ImageView>(Resource.Id.btnToggleFlagDefault);
             btnToggleFlagDefault.Click += BtnToggleFlagDefault_Click;
 
-            //remainFlagDigit100 = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
-            //remainFlagDigit10 = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
-            //remainFlagDigit1 = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
-
-            //txtTimer = FindViewById<TextView>(Resource.Id.txtTimer);
-            //txtGolden = FindViewById<TextView>(Resource.Id.txtGolden);
-
-            //btnStar = FindViewById<Button>(Resource.Id.btnStar);
-            //btnStar.Click += BtnStar_Click;
-
-            //btnStarToPlus = FindViewById<ImageView>(Resource.Id.btnStarToPlus);
-            //btnStarToPlus.Click += btnStarToPlus_Click;
-            //btnStarToHeart = FindViewById<ImageView>(Resource.Id.btnStarToHeart);
-            //btnStarToHeart.Click += btnStarToHeart_Click;
             btnStarToGift = FindViewById<ImageView>(Resource.Id.btnStarToGift);
             btnStarToGift.Click += btnStarToGift_Click;
 
             btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
             btnPlus.Click += btnPlus_Click;
-
-            //btnHeart = FindViewById<Button>(Resource.Id.btnHeart);
 
             btnUseHeart = FindViewById<ImageView>(Resource.Id.btnUseHeart);
             btnUseHeart.Click += BtnUseHeart_Click;
@@ -874,7 +796,7 @@ namespace Minesweeper
             linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
             linearLayoutMessage = FindViewById<LinearLayout>(Resource.Id.linearLayoutMessage);
             linearLayoutUseHeart = FindViewById<LinearLayout>(Resource.Id.linearLayoutUseHeart);
-            //txtMessage = FindViewById<TextView>(Resource.Id.txtMessage);
+
             btnNewGame = FindViewById<ImageView>(Resource.Id.btnNewGame);
             btnNewGame.Click += BtnNewGame_Click;
 
@@ -905,7 +827,6 @@ namespace Minesweeper
 
         private void btnStart_Click(object sender, EventArgs e)
         {
-            //initApp();
             newGame();
         }
 
@@ -989,32 +910,6 @@ namespace Minesweeper
 
             checkIsWin();
         }
-        //private void btnStarToPlus_Click(object sender, EventArgs e)
-        //{
-        //    if (starCount >= 3)
-        //    {
-        //        starCount -= 3;
-        //        greenFlagCount++;
-        //    }
-        //    else
-        //    {
-        //        Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
-        //    }
-        //    setBonusNumbers();
-        //}
-        //private void btnStarToHeart_Click(object sender, EventArgs e)
-        //{
-        //    if (starCount >= 5)
-        //    {
-        //        starCount -= 5;
-        //        heartCount++;
-        //    }
-        //    else
-        //    {
-        //        Toast.MakeText(Application.Context, "ستاره کم داری", ToastLength.Short).Show();
-        //    }
-        //    setBonusNumbers();
-        //}
         private void btnStarToGift_Click(object sender, EventArgs e)
         {
             var _plusCount = starCount / 3;
@@ -1023,7 +918,7 @@ namespace Minesweeper
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("خرج ستاره ها");
             alertDiag.SetMessage(En2Fa($"با {starCount} تا ستاره، میتونی {_plusCount} کمک و {_heartCount} جون بگیری.\n\nاگه بیشتر میخوای صبر کن!"));
-            alertDiag.SetPositiveButton("میخوام", (senderAlert, args) =>
+            alertDiag.SetPositiveButton("میگیرم", (senderAlert, args) =>
             {
                 if (starCount >= 3)
                 {
@@ -1105,14 +1000,6 @@ namespace Minesweeper
         {
             RunOnUiThread(() =>
             {
-                //if (!isAppInitialized)
-                //{
-                //    initApp();
-
-                //    timer.Stop();
-                //    newGame();
-                //}
-
                 if (game != null && (game.Status == GameStatus.Playing || game.Status == GameStatus.Paused))
                 {
                     game.GamePlayingTime = DateTime.Now - game.GameStartedTime;
@@ -1125,12 +1012,10 @@ namespace Minesweeper
                         minutes = 99;
                         seconds = 99;
                     }
-                    //txtTimer.Text = $"{minutes:D2}:{seconds:D2}";
                     setImageDigits(timerDigitsImages, timerDigits, $"{minutes:D2}:{seconds:D2}");
 
                     var goldenProgress = prgGoldenTimes.Max - game.GamePlayingTime.TotalSeconds;
                     var silverProgress = prgSilverTimes.Max - (game.GamePlayingTime.TotalSeconds - prgGoldenTimes.Max);
-                    //txtGolden.Text = game.IsInGoldenTime ? goldenProgress.ToString() : game.IsInSilverTime ? silverProgress.ToString() : string.Empty;
 
                     prgGoldenTimes.Progress = goldenProgress < 0 ? 0 : (int)Math.Round(goldenProgress);
                     prgSilverTimes.Progress = silverProgress < 0 ? 0 : (int)Math.Round(silverProgress);
@@ -1214,7 +1099,6 @@ namespace Minesweeper
 
             Vibrate(50);
 
-            //TODO: 
             if (game.Status == GameStatus.Done || game.Status == GameStatus.Fail)
             {
                 newGame();
