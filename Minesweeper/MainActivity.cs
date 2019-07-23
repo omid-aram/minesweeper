@@ -826,7 +826,7 @@ namespace MinesweeperPlus
         {
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("تشکر ویژه از حمایت شما");
-            alertDiag.SetMessage("برنامه های واقعا رایگان (بدون تبلیغ) نیازمند حمایت سبز شما هستند :)");
+            alertDiag.SetMessage("برنامه های واقعا رایگان (بدون تبلیغ) نیازمند حمایت سبز شما هستند.");
             alertDiag.SetPositiveButton("یه قهوه مهمون من", (senderAlert, args) =>
             {
                 var uri = Android.Net.Uri.Parse("http://www.google.com");
@@ -890,7 +890,7 @@ namespace MinesweeperPlus
 
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("خرج ستاره ها");
-            alertDiag.SetMessage(En2Fa($"با {starCount} تا ستاره، میتونی {_plusCount} کمک و {_heartCount} جون بگیری.\n\nاگه بیشتر میخوای صبر کن!"));
+            alertDiag.SetMessage(En2Fa($"با {starCount} تا ستاره، میتونی {_plusCount} کمک و {_heartCount} جون بگیری.\n\nاگه بیشتر میخوای بیشتر بازی کن!"));
             alertDiag.SetPositiveButton("میگیرم", (senderAlert, args) =>
             {
                 if (starCount >= 3)
@@ -902,7 +902,7 @@ namespace MinesweeperPlus
                     setBonusNumbers();
                 }
             });
-            alertDiag.SetNegativeButton("صبر میکنم", (senderAlert, args) =>
+            alertDiag.SetNegativeButton("بازی میکنم", (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });

@@ -19,9 +19,10 @@
             android:id="@+id/prgGameLevel"
             android:layout_width="match_parent"
             android:layout_height="5dp"
-            android:progress="67"
+            android:progress="0"
             style="?android:attr/progressBarStyleHorizontal"
-            android:progressTint="#ff400000" />
+            android:progressTint="#ff400000"
+            android:progressBackgroundTint="#ff000000" />
         <LinearLayout
             android:orientation="horizontal"
             android:minWidth="25px"
@@ -244,7 +245,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".17"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progressTint="#ffd50000"  />
+                android:progressTint="#ffd50000"
+                android:progressBackgroundTint="#ff000000" />
             <ImageView
                 android:src="@drawable/red_plus"
                 android:layout_width="10dp"
@@ -269,7 +271,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight=".83"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:progressTint="#ffd50000" />
+                android:progressTint="#ffd50000"
+                android:progressBackgroundTint="#ff000000" />
             <ImageView
                 android:src="@drawable/red_heart"
                 android:layout_width="10dp"
