@@ -830,7 +830,7 @@ namespace MinesweeperPlus
             alertDiag.SetPositiveButton("یه قهوه مهمون من", (senderAlert, args) =>
             {
                 var uri = Android.Net.Uri.Parse("http://www.google.com");
-                var intent = new Intent(Intent.ActionView, uri); 
+                var intent = new Intent(Intent.ActionView, uri);
                 StartActivity(intent);
             });
             alertDiag.SetNegativeButton("الان نه", (senderAlert, args) =>
