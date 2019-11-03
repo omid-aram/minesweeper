@@ -20,7 +20,7 @@ namespace MinesweeperPlus
 
         Game game;
         int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
-            starCount = 0, greenFlagCount = 0, heartCount = 0;
+            starCount = 3, greenFlagCount = 0, heartCount = 0;
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
@@ -810,9 +810,23 @@ namespace MinesweeperPlus
             alertDiag.SetMessage(En2Fa("5") + " تا ستاره بده!"/*"Give us a 5 star review!"*/);
             alertDiag.SetPositiveButton("ثبت نظر"/*"Rate"*/, (senderAlert, args) =>
             {
-                var uri = Android.Net.Uri.Parse("http://www.google.com");
-                var intent = new Intent(Intent.ActionView, uri);
-                StartActivity(intent);
+                try
+                {
+                    var uri = Android.Net.Uri.Parse("bazaar://details?id=" + AppInfo.PackageName);
+                    //var uri = Android.Net.Uri.Parse("market://details?id=" + AppInfo.PackageName);
+                    var intent = new Intent(Intent.ActionView, uri);
+                    Intent.SetPackage("com.farsitel.bazaar");
+                    StartActivity(intent);
+                }
+                catch (Exception)
+                {
+                    //Toast.MakeText(Application.Context, "کافه بازار نصب نیست", ToastLength.Short).Show();
+
+                    var uri = Android.Net.Uri.Parse("https://cafebazaar.ir/app/" + AppInfo.PackageName);
+                    //var uri = Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + AppInfo.PackageName);
+                    var intent = new Intent(Intent.ActionView, uri);
+                    StartActivity(intent);
+                }
             });
             alertDiag.SetNegativeButton("نه ممنون"/*"No Thanks"*/, (senderAlert, args) =>
             {
@@ -829,7 +843,7 @@ namespace MinesweeperPlus
             alertDiag.SetMessage("برنامه های واقعا رایگان (بدون تبلیغ) نیازمند حمایت سبز شما هستند.");
             alertDiag.SetPositiveButton("یه قهوه مهمون من", (senderAlert, args) =>
             {
-                var uri = Android.Net.Uri.Parse("http://www.google.com");
+                var uri = Android.Net.Uri.Parse("https://www.omidaram.ir");
                 var intent = new Intent(Intent.ActionView, uri);
                 StartActivity(intent);
             });
@@ -887,10 +901,14 @@ namespace MinesweeperPlus
         {
             var _plusCount = starCount / 3;
             var _heartCount = starCount / 5;
+            var nextPlus = (_plusCount + 1) * 3;
+            var _nextPlus_HeartCount = nextPlus / 5;
+            var nextHeart = (_heartCount + 1) * 5;
+            var _nextHeart_PlusCount = nextHeart / 3;
 
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("خرج ستاره ها");
-            alertDiag.SetMessage(En2Fa($"با {starCount} تا ستاره، میتونی {_plusCount} کمک و {_heartCount} جون بگیری.\n\nاگه بیشتر میخوای بیشتر بازی کن!"));
+            alertDiag.SetMessage(En2Fa($"{starCount} ستاره داری = {_plusCount} راهنما + {_heartCount} جون\n\nاگه بیشتر میخوای بیشتر بازی کن!\n\n{nextPlus} ستاره = {_plusCount + 1} راهنما + {_nextPlus_HeartCount} جون\n{nextHeart} ستاره = {_nextHeart_PlusCount} راهنما + {_heartCount+1} جون\n"));
             alertDiag.SetPositiveButton("میگیرم", (senderAlert, args) =>
             {
                 if (starCount >= 3)
