@@ -579,7 +579,8 @@ namespace MinesweeperPlus
         }
         private void setFlagsView()
         {
-            var value = Math.Min(game.FlagRemainCount, 999).ToString("D3");
+            var flagCount = game.FlagRemainCount < 0 ? 0 : game.FlagRemainCount;
+            var value = Math.Min(flagCount, 999).ToString("D3");
             setImageDigits(remainFlagsImages, bombsDigits, value);
         }
         private void setSevenSegmentImage(ImageView imageView, char value)
@@ -806,9 +807,9 @@ namespace MinesweeperPlus
         private void btnAppLike_Click(object sender, EventArgs e)
         {
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
-            alertDiag.SetTitle("راضی هستی؟"/*"Enjoying the game?"*/);
-            alertDiag.SetMessage(En2Fa("5") + " تا ستاره بده!"/*"Give us a 5 star review!"*/);
-            alertDiag.SetPositiveButton("ثبت نظر"/*"Rate"*/, (senderAlert, args) =>
+            alertDiag.SetTitle("چطورم؟"/*"Enjoying the game?"*/);
+            alertDiag.SetMessage("نظرت رو تو کافه بازار بهمون بگو"/*"Give us a 5 star review!"*/);
+            alertDiag.SetPositiveButton("باشه"/*"Rate"*/, (senderAlert, args) =>
             {
                 try
                 {
@@ -828,7 +829,7 @@ namespace MinesweeperPlus
                     StartActivity(intent);
                 }
             });
-            alertDiag.SetNegativeButton("نه ممنون"/*"No Thanks"*/, (senderAlert, args) =>
+            alertDiag.SetNegativeButton("الان نه"/*"No Thanks"*/, (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });
@@ -840,14 +841,15 @@ namespace MinesweeperPlus
         {
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("تشکر ویژه از حمایت شما");
-            alertDiag.SetMessage("برنامه های واقعا رایگان (بدون تبلیغ) نیازمند حمایت سبز شما هستند.");
-            alertDiag.SetPositiveButton("یه قهوه مهمون من", (senderAlert, args) =>
+            alertDiag.SetMessage("برای حمایت از ما این بازی رو به دوستان خود معرفی کنید");
+            alertDiag.SetPositiveButton("باشه", (senderAlert, args) =>
             {
-                var uri = Android.Net.Uri.Parse("https://www.omidaram.ir");
-                var intent = new Intent(Intent.ActionView, uri);
-                StartActivity(intent);
+                //var uri = Android.Net.Uri.Parse("https://www.omidaram.ir");
+                //var intent = new Intent(Intent.ActionView, uri);
+                //StartActivity(intent);
+                alertDiag.Dispose();
             });
-            alertDiag.SetNegativeButton("الان نه", (senderAlert, args) =>
+            alertDiag.SetNegativeButton("نمیخوام", (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });

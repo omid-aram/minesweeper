@@ -308,19 +308,11 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:id="@+id/initLayout"
-        android:background="#fffffde7">
+        android:background="#FF1A1A1A">
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.2" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Minesweeper Plus"
-            android:textSize="8pt"
-            android:textAlignment="center"
-            android:textColor="@android:color/holo_red_dark"
-        />
         <ImageView
             android:src="@drawable/start_330"
             android:layout_width="match_parent"
@@ -356,5 +348,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.16" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Minesweeper Plus.     ©2020.     version: 1.1.2.7"
+            android:textSize="4pt"
+            android:textAlignment="center"
+            android:textColor="#FFFAFAFA"
+        />
     </LinearLayout>
 </LinearLayout>
