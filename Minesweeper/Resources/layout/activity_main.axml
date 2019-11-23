@@ -226,7 +226,7 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:id="@+id/imageView1" />
+                android:id="@+id/imgBonusStar" />
             <ImageView
                 android:src="@drawable/seven_seg_0"
                 android:layout_width="7dp"
@@ -252,7 +252,7 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:id="@+id/imageView1" />
+                android:id="@+id/imgBonusPlus" />
             <ImageView
                 android:src="@drawable/seven_seg_0"
                 android:layout_width="7dp"
@@ -278,7 +278,7 @@
                 android:layout_width="10dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"
-                android:id="@+id/imageView1" />
+                android:id="@+id/imgBonusHeart" />
             <ImageView
                 android:src="@drawable/seven_seg_0"
                 android:layout_width="7dp"

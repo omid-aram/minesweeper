@@ -10,6 +10,7 @@ using Xamarin.Essentials;
 using System.Timers;
 using System.Drawing;
 using Android.Content;
+using Timer = System.Timers.Timer;
 
 namespace MinesweeperPlus
 {
@@ -24,7 +25,8 @@ namespace MinesweeperPlus
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, btnStart, btnAppLike, btnAppDonate, btnHome;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, 
+                    btnStart, btnAppLike, btnAppDonate, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer;
@@ -514,6 +516,7 @@ namespace MinesweeperPlus
             else
             {
                 starCount++;
+                //var thread = new Thread(new ThreadStart(() => blinkImage(imgBonusStar, Resource.Drawable.redstar, 0, 100, true)));
             }
 
             //جایزه مرحله آخر
@@ -529,6 +532,31 @@ namespace MinesweeperPlus
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
+
+
+        private void blinkImage(ImageView imageView, int mainResId, int secondResId, int sleepMilliSecond, bool isMain)
+        {
+            RunOnUiThread(() =>
+            {
+                imageView.SetImageResource(isMain ? secondResId : mainResId);
+            });
+
+            var newSleepMilliSecond = sleepMilliSecond * 1.2;
+            if (newSleepMilliSecond < 1000)
+            {
+                //Thread.Sleep((int)newSleepMilliSecond);
+                blinkImage(imageView, mainResId, secondResId, sleepMilliSecond, !isMain);
+            }
+            else
+            {
+                RunOnUiThread(() =>
+                {
+                    imageView.SetImageResource(mainResId);
+                });
+                //Thread.CurrentThread.Abort();
+            }
+        }
+
         private void setBonusNumbers()
         {
             var starValue = starCount > 99 ? "99" : starCount.ToString();
@@ -791,6 +819,10 @@ namespace MinesweeperPlus
 
             btnHome = FindViewById<ImageView>(Resource.Id.btnHome);
             btnHome.Click += btnHome_Click;
+
+            imgBonusStar = FindViewById<ImageView>(Resource.Id.imgBonusStar);
+            imgBonusPlus = FindViewById<ImageView>(Resource.Id.imgBonusPlus);
+            imgBonusHeart = FindViewById<ImageView>(Resource.Id.imgBonusHeart);
         }
 
         private void btnHome_Click(object sender, EventArgs e)
