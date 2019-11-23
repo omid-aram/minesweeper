@@ -840,23 +840,24 @@ namespace MinesweeperPlus
         {
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("چطورم؟"/*"Enjoying the game?"*/);
-            alertDiag.SetMessage("نظرت رو تو کافه بازار بهمون بگو"/*"Give us a 5 star review!"*/);
+            ////alertDiag.SetMessage("نظرت رو تو کافه بازار بهمون بگو");
+            alertDiag.SetMessage("نظرت رو تو مایکت بهمون بگو");
             alertDiag.SetPositiveButton("باشه"/*"Rate"*/, (senderAlert, args) =>
             {
                 try
                 {
-                    var uri = Android.Net.Uri.Parse("bazaar://details?id=" + AppInfo.PackageName);
                     //var uri = Android.Net.Uri.Parse("market://details?id=" + AppInfo.PackageName);
+                    ////var uri = Android.Net.Uri.Parse("bazaar://details?id=" + AppInfo.PackageName);
+                    var uri = Android.Net.Uri.Parse("myket://comment?id=" + AppInfo.PackageName);
                     var intent = new Intent(Intent.ActionView, uri);
-                    Intent.SetPackage("com.farsitel.bazaar");
+                    ////Intent.SetPackage("com.farsitel.bazaar");
                     StartActivity(intent);
                 }
                 catch (Exception)
                 {
-                    //Toast.MakeText(Application.Context, "کافه بازار نصب نیست", ToastLength.Short).Show();
-
-                    var uri = Android.Net.Uri.Parse("https://cafebazaar.ir/app/" + AppInfo.PackageName);
                     //var uri = Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + AppInfo.PackageName);
+                    ////var uri = Android.Net.Uri.Parse("https://cafebazaar.ir/app/" + AppInfo.PackageName);
+                    var uri = Android.Net.Uri.Parse("https://myket.ir/app/" + AppInfo.PackageName);
                     var intent = new Intent(Intent.ActionView, uri);
                     StartActivity(intent);
                 }
