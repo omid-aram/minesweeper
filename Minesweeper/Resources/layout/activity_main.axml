@@ -170,6 +170,12 @@
                     android:scaleType="fitXY"
                     android:id="@+id/btnDontUseHeart" />
                 <ImageView
+                    android:src="@drawable/emoji_surprised_yellow"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/imgSurprised" />
+                <ImageView
                     android:src="@drawable/btn_heart"
                     android:layout_width="32dp"
                     android:layout_height="32dp"

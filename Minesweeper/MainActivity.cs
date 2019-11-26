@@ -11,6 +11,7 @@ using System.Timers;
 using System.Drawing;
 using Android.Content;
 using Timer = System.Timers.Timer;
+using Android.Support.V4.Content.Res;
 
 namespace MinesweeperPlus
 {
@@ -25,11 +26,12 @@ namespace MinesweeperPlus
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart, 
-                    btnStart, btnAppLike, btnAppDonate, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
+                    btnStart, btnAppLike, btnAppDonate, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
-        Timer timer;
+        Timer timer, blinkTimer;
+        List<Tuple<ImageView, int, int>> blinkers;
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
@@ -267,6 +269,8 @@ namespace MinesweeperPlus
             linearLayoutMessage.Visibility = ViewStates.Gone;
             linearLayoutButtons.Visibility = ViewStates.Visible;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
+
+            StopBlinking();
         }
         private void createNewBoard(int firstR, int firstC)
         {
@@ -369,7 +373,7 @@ namespace MinesweeperPlus
             timer.Interval = 1000;
             timer.Start();
         }
-        private void setCellImage(int r, int c, int resImage)
+        private void setCellImage(int r, int c, int resImage, bool isBlinking = false)
         {
             if (!isInBoard(r, c) || game.BoardCells[r, c].Status == CellStatus.Pressed) return;
 
@@ -377,6 +381,11 @@ namespace MinesweeperPlus
             var button = (ImageView)gridLayout.GetChildAt(position);
 
             button.SetImageResource(resImage);
+
+            if (isBlinking)
+            {
+                StartBlinking(button);
+            }
         }
         private void addMine(int r, int c)
         {
@@ -420,6 +429,8 @@ namespace MinesweeperPlus
                     linearLayoutMessage.Visibility = ViewStates.Gone;
                     linearLayoutButtons.Visibility = ViewStates.Gone;
                     linearLayoutUseHeart.Visibility = ViewStates.Visible;
+
+                    StartBlinking(imgSurprised);
                 }
                 else
                 {
@@ -507,16 +518,21 @@ namespace MinesweeperPlus
                 heartCount++;
                 greenFlagCount++;
                 starCount++;
+
+                StartBlinking(btnNewGame, imgBonusStar, imgBonusPlus, imgBonusHeart);
             }
             else if (game.IsInSilverTime)
             {
                 greenFlagCount++;
                 starCount++;
+
+                StartBlinking(btnNewGame, imgBonusStar, imgBonusPlus);
             }
             else
             {
                 starCount++;
                 //var thread = new Thread(new ThreadStart(() => blinkImage(imgBonusStar, Resource.Drawable.redstar, 0, 100, true)));
+                StartBlinking(btnNewGame, imgBonusStar);
             }
 
             //جایزه مرحله آخر
@@ -533,29 +549,99 @@ namespace MinesweeperPlus
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
 
-
-        private void blinkImage(ImageView imageView, int mainResId, int secondResId, int sleepMilliSecond, bool isMain)
+        private void StartBlinking(params ImageView[] imageViews)
         {
-            RunOnUiThread(() =>
-            {
-                imageView.SetImageResource(isMain ? secondResId : mainResId);
-            });
+            StopBlinking();
 
-            var newSleepMilliSecond = sleepMilliSecond * 1.2;
-            if (newSleepMilliSecond < 1000)
+            blinkers = new List<Tuple<ImageView, int, int>>();
+
+            foreach (var imageView in imageViews)
             {
-                //Thread.Sleep((int)newSleepMilliSecond);
-                blinkImage(imageView, mainResId, secondResId, sleepMilliSecond, !isMain);
-            }
-            else
-            {
-                RunOnUiThread(() =>
+                int mainImage = 0, blinkImage = 0;
+
+                if (imageView == imgBonusStar)
                 {
-                    imageView.SetImageResource(mainResId);
-                });
-                //Thread.CurrentThread.Abort();
+                    mainImage = Resource.Drawable.red_star;
+                    blinkImage = Resource.Drawable.emoji_glasses;
+                }
+                else if (imageView == imgBonusPlus)
+                {
+                    mainImage = Resource.Drawable.red_plus;
+                    blinkImage = Resource.Drawable.emoji_glasses;
+                }
+                else if (imageView == imgBonusHeart)
+                {
+                    mainImage = Resource.Drawable.red_heart;
+                    blinkImage = Resource.Drawable.emoji_glasses;
+                }
+                else if (imageView == btnNewGame)
+                {
+                    if (game.Status == GameStatus.Done)
+                    {
+                        mainImage = Resource.Drawable.emoji_glasses;
+                        blinkImage = Resource.Drawable.emoji_glasses_top;
+                    }
+                    if (game.Status == GameStatus.Fail)
+                    {
+                        mainImage = Resource.Drawable.emoji_sad;
+                        blinkImage = Resource.Drawable.emoji_crying;
+                    }
+                }
+                else if (imageView == imgSurprised)
+                {
+                    mainImage = Resource.Drawable.emoji_surprised_yellow;
+                    blinkImage = Resource.Drawable.emoji_surprised_red;
+                }
+                else
+                {
+                    mainImage = Resource.Drawable.box_flag_green;
+                    blinkImage = Resource.Drawable.box_flag;                    
+                }
+
+                blinkers.Add(new Tuple<ImageView, int, int>(imageView, mainImage, blinkImage));
             }
+
+            blinkTimer.Start();
         }
+
+        private void StopBlinking()
+        {
+            if (blinkers == null) blinkers = new List<Tuple<ImageView, int, int>>();
+
+            foreach (var blinker in blinkers)
+            {
+                var imageView = blinker.Item1;
+                var mainImage = blinker.Item2;
+
+                imageView.SetImageResource(mainImage);
+            }
+
+            blinkTimer.Stop();
+        }
+
+        //private void blinkImage(ImageView imageView, int mainResId, int secondResId, int sleepMilliSecond, bool isMain)
+        //{
+        //    RunOnUiThread(() =>
+        //    {
+        //        imageView.SetImageResource(isMain ? secondResId : mainResId);
+        //    });
+
+        //    var newSleepMilliSecond = sleepMilliSecond * 1.2;
+        //    if (newSleepMilliSecond < 1000)
+        //    {
+        //        //Thread.Sleep((int)newSleepMilliSecond);
+        //        blinkImage(imageView, mainResId, secondResId, sleepMilliSecond, !isMain);
+        //    }
+        //    else
+        //    {
+        //        RunOnUiThread(() =>
+        //        {
+        //            imageView.SetImageResource(mainResId);
+
+        //        });
+        //        //Thread.CurrentThread.Abort();
+        //    }
+        //}
 
         private void setBonusNumbers()
         {
@@ -593,7 +679,7 @@ namespace MinesweeperPlus
 
             setFlagsView();
         }
-        private void putGreenFlag(int r, int c)
+        private void putGreenFlag(int r, int c, bool isBlinking = false)
         {
             if (game.BoardCells[r, c].Status != CellStatus.Flagged)
             {
@@ -601,7 +687,7 @@ namespace MinesweeperPlus
                 game.FlagRemainCount--;
             }
             game.BoardCells[r, c].IsGreenFlag = true;
-            setCellImage(r, c, Resource.Drawable.box_flag_green);
+            setCellImage(r, c, Resource.Drawable.box_flag_green, isBlinking);
 
             setFlagsView();
         }
@@ -674,6 +760,8 @@ namespace MinesweeperPlus
         }
         private void gameOver()
         {
+            StopBlinking();
+
             timer.Stop();
             game.GamePlayingTime = DateTime.Now - game.GameStartedTime;
             Vibrate(100);
@@ -692,6 +780,8 @@ namespace MinesweeperPlus
             linearLayoutMessage.Visibility = ViewStates.Visible;
             linearLayoutButtons.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
+
+            StartBlinking(btnNewGame);
         }
         private void checkFlagCorrect(int r, int c)
         {
@@ -780,6 +870,9 @@ namespace MinesweeperPlus
             timer.Elapsed += Timer_Elapsed;
             //timer.Start();
 
+            blinkTimer = new Timer(500);
+            blinkTimer.Elapsed += BlinkTimer_Elapsed;
+
             btnToggleFlagDefault = FindViewById<ImageView>(Resource.Id.btnToggleFlagDefault);
             btnToggleFlagDefault.Click += BtnToggleFlagDefault_Click;
 
@@ -823,6 +916,7 @@ namespace MinesweeperPlus
             imgBonusStar = FindViewById<ImageView>(Resource.Id.imgBonusStar);
             imgBonusPlus = FindViewById<ImageView>(Resource.Id.imgBonusPlus);
             imgBonusHeart = FindViewById<ImageView>(Resource.Id.imgBonusHeart);
+            imgSurprised = FindViewById<ImageView>(Resource.Id.imgSurprised);
         }
 
         private void btnHome_Click(object sender, EventArgs e)
@@ -943,7 +1037,7 @@ namespace MinesweeperPlus
 
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("خرج ستاره ها");
-            alertDiag.SetMessage(En2Fa($"{starCount} ستاره داری = {_plusCount} راهنما + {_heartCount} جون\n\nاگه بیشتر میخوای بیشتر بازی کن!\n\n{nextPlus} ستاره = {_plusCount + 1} راهنما + {_nextPlus_HeartCount} جون\n{nextHeart} ستاره = {_nextHeart_PlusCount} راهنما + {_heartCount+1} جون\n"));
+            alertDiag.SetMessage(En2Fa($"{starCount} ستاره داری = {_plusCount} راهنما + {_heartCount} جون\n\nاگه بیشتر میخوای بیشتر بازی کن!\n\n{nextPlus} ستاره = {_plusCount + 1} راهنما + {_nextPlus_HeartCount} جون\n{nextHeart} ستاره = {_nextHeart_PlusCount} راهنما + {_heartCount + 1} جون\n"));
             alertDiag.SetPositiveButton("میگیرم", (senderAlert, args) =>
             {
                 if (starCount >= 3)
@@ -990,7 +1084,7 @@ namespace MinesweeperPlus
             }
             if (targetPoint.Value <= 9)
             {
-                putGreenFlag(targetPoint.Key.X, targetPoint.Key.Y);
+                putGreenFlag(targetPoint.Key.X, targetPoint.Key.Y, true);
                 greenFlagCount--;
                 setBonusNumbers();
                 return;
@@ -1049,6 +1143,28 @@ namespace MinesweeperPlus
             });
         }
 
+        private void BlinkTimer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            RunOnUiThread(() =>
+            {
+                foreach (var blinker in blinkers)
+                {
+                    var imageView = blinker.Item1;
+                    var mainImage = blinker.Item2;
+                    var blinkImage = blinker.Item3;
+
+                    if (imageView.Drawable.GetConstantState() == ResourcesCompat.GetDrawable(Resources, mainImage, null).GetConstantState())
+                    {
+                        if (blinkImage > 0) imageView.SetImageResource(blinkImage);
+                    }
+                    else
+                    {
+                        if (mainImage > 0) imageView.SetImageResource(mainImage);
+                    }
+                }
+            });
+        }
+
         //private void Button_Touch(object sender, View.TouchEventArgs e)
         //{
         //    var button = (ImageView)sender;
@@ -1096,6 +1212,8 @@ namespace MinesweeperPlus
         {
             if (game.Status == GameStatus.Paused) return;
 
+            StopBlinking();
+
             var button = (ImageView)sender;
             int position = gridLayout.IndexOfChild(button);
 
@@ -1122,6 +1240,8 @@ namespace MinesweeperPlus
         private void Button_LongClick(object sender, View.LongClickEventArgs e)
         {
             if (game.Status == GameStatus.Paused) return;
+
+            StopBlinking();
 
             Vibrate(50);
 
