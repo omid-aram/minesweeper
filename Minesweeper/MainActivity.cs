@@ -26,7 +26,7 @@ namespace MinesweeperPlus
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnStarToGift2, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
                     btnStart, btnAppLike, btnAppDonate, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
@@ -35,6 +35,7 @@ namespace MinesweeperPlus
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
+        TextView txtTest;
 
         #endregion
 
@@ -126,7 +127,7 @@ namespace MinesweeperPlus
 
             setFlagDefaultButton();
 
-            setBonusNumbers();
+            //setBonusNumbers();
 
             isAppInitialized = true;
         }
@@ -166,6 +167,9 @@ namespace MinesweeperPlus
                 game.ColCount = maxColCount;
                 game.MinePercent = maxMinePercent;
             }
+
+            StopBlinking();
+            setBonusNumbers();
 
             var lastColCount = game.ColCount;
             var lastMinePercent = game.MinePercent;
@@ -253,9 +257,10 @@ namespace MinesweeperPlus
 
                     button.SetImageResource(Resource.Drawable.box_up);
 
+                    //button.Touch += Button_Touch;
                     button.Click += Button_Click;
                     button.LongClick += Button_LongClick;
-                    //button.Touch += Button_Touch;
+                    
                     gridLayout.AddView(button);
                 }
             }
@@ -369,6 +374,9 @@ namespace MinesweeperPlus
         private void startGame()
         {
             game.Status = GameStatus.Playing;
+
+            setBonusNumbers();
+
             game.GameStartedTime = DateTime.Now;
             timer.Interval = 1000;
             timer.Start();
@@ -619,40 +627,17 @@ namespace MinesweeperPlus
             blinkTimer.Stop();
         }
 
-        //private void blinkImage(ImageView imageView, int mainResId, int secondResId, int sleepMilliSecond, bool isMain)
-        //{
-        //    RunOnUiThread(() =>
-        //    {
-        //        imageView.SetImageResource(isMain ? secondResId : mainResId);
-        //    });
-
-        //    var newSleepMilliSecond = sleepMilliSecond * 1.2;
-        //    if (newSleepMilliSecond < 1000)
-        //    {
-        //        //Thread.Sleep((int)newSleepMilliSecond);
-        //        blinkImage(imageView, mainResId, secondResId, sleepMilliSecond, !isMain);
-        //    }
-        //    else
-        //    {
-        //        RunOnUiThread(() =>
-        //        {
-        //            imageView.SetImageResource(mainResId);
-
-        //        });
-        //        //Thread.CurrentThread.Abort();
-        //    }
-        //}
-
         private void setBonusNumbers()
         {
             var starValue = starCount > 99 ? "99" : starCount.ToString();
             setImageDigits(starDigitsImages, starDigits, starValue);
 
             btnStarToGift.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
+            btnStarToGift2.Visibility = game.Status == GameStatus.Playing ? ViewStates.Gone : btnStarToGift.Visibility;
 
             var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
             setImageDigits(plusDigitsImages, plusDigits, plusValue);
-            btnPlus.Visibility = (greenFlagCount > 0) ? ViewStates.Visible : ViewStates.Gone;
+            btnPlus.Visibility = (greenFlagCount > 0 && game.Status == GameStatus.Playing) ? ViewStates.Visible : ViewStates.Gone;
 
             var heartValue = heartCount > 99 ? "99" : heartCount.ToString();
             setImageDigits(heartDigitsImages, heartDigits, heartValue);
@@ -868,9 +853,8 @@ namespace MinesweeperPlus
 
             timer = new Timer(1000);
             timer.Elapsed += Timer_Elapsed;
-            //timer.Start();
 
-            blinkTimer = new Timer(500);
+            blinkTimer = new Timer(400);
             blinkTimer.Elapsed += BlinkTimer_Elapsed;
 
             btnToggleFlagDefault = FindViewById<ImageView>(Resource.Id.btnToggleFlagDefault);
@@ -878,6 +862,8 @@ namespace MinesweeperPlus
 
             btnStarToGift = FindViewById<ImageView>(Resource.Id.btnStarToGift);
             btnStarToGift.Click += btnStarToGift_Click;
+            btnStarToGift2 = FindViewById<ImageView>(Resource.Id.btnStarToGift2);
+            btnStarToGift2.Click += btnStarToGift_Click;
 
             btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
             btnPlus.Click += btnPlus_Click;
@@ -917,6 +903,8 @@ namespace MinesweeperPlus
             imgBonusPlus = FindViewById<ImageView>(Resource.Id.imgBonusPlus);
             imgBonusHeart = FindViewById<ImageView>(Resource.Id.imgBonusHeart);
             imgSurprised = FindViewById<ImageView>(Resource.Id.imgSurprised);
+
+            txtTest = FindViewById<TextView>(Resource.Id.txtTest);
         }
 
         private void btnHome_Click(object sender, EventArgs e)
@@ -1165,32 +1153,33 @@ namespace MinesweeperPlus
             });
         }
 
-        //private void Button_Touch(object sender, View.TouchEventArgs e)
-        //{
-        //    var button = (ImageView)sender;
-        //    int position = gridLayout.IndexOfChild(button);
+        private void Button_Touch(object sender, View.TouchEventArgs e)
+        {
+            var button = (ImageView)sender;
+            int position = gridLayout.IndexOfChild(button);
 
-        //    var r = position / colCount;
-        //    var c = position % colCount;
+            var r = position / game.ColCount;
+            var c = position % game.ColCount;
 
-        //    if (!boardCells[r, c].IsPressed || boardCells[r, c].Value == 0) return;
+            switch (e.Event.Action & MotionEventActions.Mask)
+            {
+                case MotionEventActions.Down:
+                    txtTest.Text = $"Down: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+                    break;
+                case MotionEventActions.Move:
+                    //        showCandidatedCells(r, c);
+                    //Toast.MakeText(Application.Context, "MotionEventActions.Down", ToastLength.Short).Show();
+                    txtTest.Text = $"Move: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+                    break;
 
-        //    switch (e.Event.Action & MotionEventActions.Mask)
-        //    {
-        //        case MotionEventActions.Down:
-        //        case MotionEventActions.Move:
-        //            showCandidatedCells(r, c);
-        //            break;
-
-        //        case MotionEventActions.Up:
-        //            openedPress(r, c);
-        //            break;
-
-        //        case MotionEventActions.Cancel:
-        //            releaseCandidatedCells(r, c);
-        //            break;
-        //    }
-        //}
+                case MotionEventActions.Up:
+                    //        openedPress(r, c);
+                    //Toast.MakeText(Application.Context, "MotionEventActions.Up", ToastLength.Short).Show();
+                    txtTest.Text = $"Up: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+                    button.PerformClick();
+                    break;
+            }
+        }
 
         //private void releaseCandidatedCells(int r, int c)
         //{

@@ -94,12 +94,25 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:id="@+id/space1" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/txtTest"/>
+                    <ImageView
+                        android:src="@drawable/btn_star_to_gift"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="0"
+                        android:scaleType="fitXY"
+                        android:visibility="gone"
+                        android:id="@+id/btnStarToGift2" />
                     <ImageView
                         android:src="@drawable/btn_plus"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_weight="0"
                         android:scaleType="fitXY"
+                        android:visibility="gone"
                         android:id="@+id/btnPlus" />
                 </LinearLayout>
             </LinearLayout>
