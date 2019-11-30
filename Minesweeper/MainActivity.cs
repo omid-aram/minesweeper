@@ -11,7 +11,7 @@ using System.Timers;
 using System.Drawing;
 using Android.Content;
 using Timer = System.Timers.Timer;
-using Android.Support.V4.Content.Res;
+//using Android.Support.V4.Content.Res;
 
 namespace MinesweeperPlus
 {
@@ -20,6 +20,7 @@ namespace MinesweeperPlus
     {
         #region Properties
 
+        Publisher publisher = Publisher.Bazaar;
         Game game;
         int gridWidth, gridHeight, maxColCount, maxRowCount, minColCount, minRowCount, minMinePercent, maxMinePercent,
             starCount = 3, greenFlagCount = 0, heartCount = 0;
@@ -27,7 +28,7 @@ namespace MinesweeperPlus
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
         ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnStarToGift2, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
-                    btnStart, btnAppLike, btnAppDonate, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
+                    btnStart, btnAppLike, btnAppShare, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer, blinkTimer;
@@ -35,7 +36,6 @@ namespace MinesweeperPlus
         LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
-        TextView txtTest;
 
         #endregion
 
@@ -260,7 +260,7 @@ namespace MinesweeperPlus
                     //button.Touch += Button_Touch;
                     button.Click += Button_Click;
                     button.LongClick += Button_LongClick;
-                    
+
                     gridLayout.AddView(button);
                 }
             }
@@ -603,7 +603,7 @@ namespace MinesweeperPlus
                 else
                 {
                     mainImage = Resource.Drawable.box_flag_green;
-                    blinkImage = Resource.Drawable.box_flag;                    
+                    blinkImage = Resource.Drawable.box_flag;
                 }
 
                 blinkers.Add(new Tuple<ImageView, int, int>(imageView, mainImage, blinkImage));
@@ -893,8 +893,8 @@ namespace MinesweeperPlus
             btnAppLike = FindViewById<ImageView>(Resource.Id.btnAppLike);
             btnAppLike.Click += btnAppLike_Click;
 
-            btnAppDonate = FindViewById<ImageView>(Resource.Id.btnAppDonate);
-            btnAppDonate.Click += btnAppDonate_Click;
+            btnAppShare = FindViewById<ImageView>(Resource.Id.btnAppShare);
+            btnAppShare.Click += btnAppShare_Click;
 
             btnHome = FindViewById<ImageView>(Resource.Id.btnHome);
             btnHome.Click += btnHome_Click;
@@ -903,8 +903,6 @@ namespace MinesweeperPlus
             imgBonusPlus = FindViewById<ImageView>(Resource.Id.imgBonusPlus);
             imgBonusHeart = FindViewById<ImageView>(Resource.Id.imgBonusHeart);
             imgSurprised = FindViewById<ImageView>(Resource.Id.imgSurprised);
-
-            txtTest = FindViewById<TextView>(Resource.Id.txtTest);
         }
 
         private void btnHome_Click(object sender, EventArgs e)
@@ -921,50 +919,90 @@ namespace MinesweeperPlus
         private void btnAppLike_Click(object sender, EventArgs e)
         {
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
-            alertDiag.SetTitle("چطورم؟"/*"Enjoying the game?"*/);
-            ////alertDiag.SetMessage("نظرت رو تو کافه بازار بهمون بگو");
-            alertDiag.SetMessage("نظرت رو تو مایکت بهمون بگو");
-            alertDiag.SetPositiveButton("باشه"/*"Rate"*/, (senderAlert, args) =>
+            alertDiag.SetTitle("LIKE IT?");
+            alertDiag.SetMessage("Please take a moment to rate it.");
+            alertDiag.SetPositiveButton("Rate", (senderAlert, args) =>
             {
+                var uri = Android.Net.Uri.Empty;
+                var intent = new Intent();
                 try
                 {
-                    //var uri = Android.Net.Uri.Parse("market://details?id=" + AppInfo.PackageName);
-                    ////var uri = Android.Net.Uri.Parse("bazaar://details?id=" + AppInfo.PackageName);
-                    var uri = Android.Net.Uri.Parse("myket://comment?id=" + AppInfo.PackageName);
-                    var intent = new Intent(Intent.ActionView, uri);
-                    ////Intent.SetPackage("com.farsitel.bazaar");
+                    switch (publisher)
+                    {
+                        case Publisher.PlayStore:
+                            uri = Android.Net.Uri.Parse("market://details?id=" + AppInfo.PackageName);
+                            intent = new Intent(Intent.ActionView, uri);
+                            break;
+                        case Publisher.Bazaar:
+                            uri = Android.Net.Uri.Parse("bazaar://details?id=" + AppInfo.PackageName);
+                            intent = new Intent(Intent.ActionEdit, uri);
+                            Intent.SetPackage("com.farsitel.bazaar");
+                            break;
+                        case Publisher.Myket:
+                            uri = Android.Net.Uri.Parse("myket://comment?id=" + AppInfo.PackageName);
+                            intent = new Intent(Intent.ActionView, uri);
+                            break;
+                    }
                     StartActivity(intent);
                 }
                 catch (Exception)
                 {
-                    //var uri = Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + AppInfo.PackageName);
-                    ////var uri = Android.Net.Uri.Parse("https://cafebazaar.ir/app/" + AppInfo.PackageName);
-                    var uri = Android.Net.Uri.Parse("https://myket.ir/app/" + AppInfo.PackageName);
-                    var intent = new Intent(Intent.ActionView, uri);
+                    switch (publisher)
+                    {
+                        case Publisher.PlayStore:
+                            uri = Android.Net.Uri.Parse("https://play.google.com/store/apps/details?id=" + AppInfo.PackageName);
+                            break;
+                        case Publisher.Bazaar:
+                            uri = Android.Net.Uri.Parse("https://cafebazaar.ir/app/" + AppInfo.PackageName);
+                            break;
+                        case Publisher.Myket:
+                            uri = Android.Net.Uri.Parse("https://myket.ir/app/" + AppInfo.PackageName);
+                            break;
+                    }
+                    intent = new Intent(Intent.ActionView, uri);
                     StartActivity(intent);
                 }
             });
-            alertDiag.SetNegativeButton("الان نه"/*"No Thanks"*/, (senderAlert, args) =>
+            alertDiag.SetNegativeButton("No Thanks", (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });
+
             Dialog diag = alertDiag.Create();
             diag.Show();
         }
 
-        private void btnAppDonate_Click(object sender, EventArgs e)
+        private void btnAppShare_Click(object sender, EventArgs e)
         {
-            Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
-            alertDiag.SetTitle("تشکر ویژه از حمایت شما");
-            alertDiag.SetMessage("برای حمایت از ما این بازی رو به دوستان خود معرفی کنید");
-            alertDiag.SetPositiveButton("باشه", (senderAlert, args) =>
+            var appLink = string.Empty;
+            var smsBody = string.Empty;
+            switch (publisher)
             {
-                //var uri = Android.Net.Uri.Parse("https://www.omidaram.ir");
-                //var intent = new Intent(Intent.ActionView, uri);
-                //StartActivity(intent);
+                case Publisher.PlayStore:
+                    appLink = "https://play.google.com/store/apps/details?id=" + AppInfo.PackageName;
+                    smsBody = "Minesweeper Plus\n" + appLink;
+                    break;
+                case Publisher.Bazaar:
+                    appLink = "https://cafebazaar.ir/app/" + AppInfo.PackageName;
+                    smsBody = "مین روب پلاس\n" + appLink;
+                    break;
+                case Publisher.Myket:
+                    appLink = "https://myket.ir/app/" + AppInfo.PackageName;
+                    smsBody = "مین روب پلاس\n" + appLink;
+                    break;
+            }
+            Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
+            alertDiag.SetTitle("SHARE WITH FRIENDS");
+            alertDiag.SetMessage("Please share the goodness of Minesweeper Plus with your friends.");
+            alertDiag.SetPositiveButton("OK", (senderAlert, args) =>
+            {
+                var smsIntent = new Intent(Intent.ActionView);
+                smsIntent.SetData(Android.Net.Uri.Parse("sms:"));
+                smsIntent.PutExtra("sms_body", smsBody);
+                StartActivity(smsIntent);
                 alertDiag.Dispose();
             });
-            alertDiag.SetNegativeButton("نمیخوام", (senderAlert, args) =>
+            alertDiag.SetNegativeButton("No Thanks", (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });
@@ -1024,9 +1062,9 @@ namespace MinesweeperPlus
             var _nextHeart_PlusCount = nextHeart / 3;
 
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
-            alertDiag.SetTitle("خرج ستاره ها");
-            alertDiag.SetMessage(En2Fa($"{starCount} ستاره داری = {_plusCount} راهنما + {_heartCount} جون\n\nاگه بیشتر میخوای بیشتر بازی کن!\n\n{nextPlus} ستاره = {_plusCount + 1} راهنما + {_nextPlus_HeartCount} جون\n{nextHeart} ستاره = {_nextHeart_PlusCount} راهنما + {_heartCount + 1} جون\n"));
-            alertDiag.SetPositiveButton("میگیرم", (senderAlert, args) =>
+            alertDiag.SetTitle("SELLING STARS");
+            alertDiag.SetMessage($"You have\n{starCount} Stars = {_plusCount} Plus(s), {_heartCount} Heart(s)\n\nWant more? Play more!\n\n{nextPlus} Stars = {_plusCount + 1} Plus(s), {_nextPlus_HeartCount} Heart(s)\n{nextHeart} Stars = {_nextHeart_PlusCount} Plus(s), {_heartCount + 1} Heart(s)\n");
+            alertDiag.SetPositiveButton("Sell", (senderAlert, args) =>
             {
                 if (starCount >= 3)
                 {
@@ -1037,7 +1075,7 @@ namespace MinesweeperPlus
                     setBonusNumbers();
                 }
             });
-            alertDiag.SetNegativeButton("بازی میکنم", (senderAlert, args) =>
+            alertDiag.SetNegativeButton("Play More", (senderAlert, args) =>
             {
                 alertDiag.Dispose();
             });
@@ -1141,7 +1179,7 @@ namespace MinesweeperPlus
                     var mainImage = blinker.Item2;
                     var blinkImage = blinker.Item3;
 
-                    if (imageView.Drawable.GetConstantState() == ResourcesCompat.GetDrawable(Resources, mainImage, null).GetConstantState())
+                    if (imageView.Drawable.GetConstantState() == Resources.GetDrawable(mainImage, null).GetConstantState())
                     {
                         if (blinkImage > 0) imageView.SetImageResource(blinkImage);
                     }
@@ -1153,50 +1191,34 @@ namespace MinesweeperPlus
             });
         }
 
-        private void Button_Touch(object sender, View.TouchEventArgs e)
-        {
-            var button = (ImageView)sender;
-            int position = gridLayout.IndexOfChild(button);
-
-            var r = position / game.ColCount;
-            var c = position % game.ColCount;
-
-            switch (e.Event.Action & MotionEventActions.Mask)
-            {
-                case MotionEventActions.Down:
-                    txtTest.Text = $"Down: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
-                    break;
-                case MotionEventActions.Move:
-                    //        showCandidatedCells(r, c);
-                    //Toast.MakeText(Application.Context, "MotionEventActions.Down", ToastLength.Short).Show();
-                    txtTest.Text = $"Move: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
-                    break;
-
-                case MotionEventActions.Up:
-                    //        openedPress(r, c);
-                    //Toast.MakeText(Application.Context, "MotionEventActions.Up", ToastLength.Short).Show();
-                    txtTest.Text = $"Up: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
-                    button.PerformClick();
-                    break;
-            }
-        }
-
-        //private void releaseCandidatedCells(int r, int c)
+        //private void Button_Touch(object sender, View.TouchEventArgs e)
         //{
-        //    throw new NotImplementedException();
+        //    var button = (ImageView)sender;
+        //    int position = gridLayout.IndexOfChild(button);
+
+        //    var r = position / game.ColCount;
+        //    var c = position % game.ColCount;
+
+        //    switch (e.Event.Action & MotionEventActions.Mask)
+        //    {
+        //        case MotionEventActions.Down:
+        //            txtTest.Text = $"Down: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+        //            break;
+        //        case MotionEventActions.Move:
+        //            //        showCandidatedCells(r, c);
+        //            //Toast.MakeText(Application.Context, "MotionEventActions.Down", ToastLength.Short).Show();
+        //            txtTest.Text = $"Move: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+        //            break;
+
+        //        case MotionEventActions.Up:
+        //            //        openedPress(r, c);
+        //            //Toast.MakeText(Application.Context, "MotionEventActions.Up", ToastLength.Short).Show();
+        //            txtTest.Text = $"Up: ({r}, {c}) - ({e.Event.RawX}, {e.Event.RawY})";
+        //            button.PerformClick();
+        //            break;
+        //    }
         //}
 
-        //private void showCandidatedCells(int r, int c)
-        //{
-        //    setCellImage(r - 1, c - 1, Resource.Drawable.box_0);
-        //    setCellImage(r - 1, c - 0, Resource.Drawable.box_0);
-        //    setCellImage(r - 1, c + 1, Resource.Drawable.box_0);
-        //    setCellImage(r - 0, c - 1, Resource.Drawable.box_0);
-        //    setCellImage(r - 0, c + 1, Resource.Drawable.box_0);
-        //    setCellImage(r + 1, c - 1, Resource.Drawable.box_0);
-        //    setCellImage(r + 1, c - 0, Resource.Drawable.box_0);
-        //    setCellImage(r + 1, c + 1, Resource.Drawable.box_0);
-        //}
         private void Button_Click(object sender, System.EventArgs e)
         {
             if (game.Status == GameStatus.Paused) return;
@@ -1308,5 +1330,12 @@ namespace MinesweeperPlus
         NotPressed,
         Pressed,
         Flagged,
+    }
+
+    public enum Publisher
+    {
+        PlayStore,
+        Bazaar,
+        Myket,
     }
 }
