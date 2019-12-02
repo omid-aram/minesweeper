@@ -63,8 +63,8 @@
                 android:paddingLeft="22dp"
                 android:paddingRight="5dp"
                 android:paddingBottom="3dp"
-                android:id="@+id/linearLayoutButtons"
-                android:visibility="visible">
+                android:id="@+id/linearLayoutPlaying"
+                android:visibility="gone">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="0dp"
@@ -94,18 +94,14 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:id="@+id/space1" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/txtTest"/>
-                    <ImageView
+                    <!--<ImageView
                         android:src="@drawable/btn_star_to_gift"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_weight="0"
                         android:scaleType="fitXY"
                         android:visibility="gone"
-                        android:id="@+id/btnStarToGift2" />
+                        android:id="@+id/btnStarToGift2" />-->
                     <ImageView
                         android:src="@drawable/btn_plus"
                         android:layout_width="32dp"
@@ -124,9 +120,9 @@
                 android:paddingLeft="22dp"
                 android:paddingRight="5dp"
                 android:paddingBottom="3dp"
-                android:id="@+id/linearLayoutMessage"
+                android:id="@+id/linearLayoutStop"
                 android:gravity="center"
-                android:visibility="gone">
+                android:visibility="visible">
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="0dp"
@@ -134,6 +130,7 @@
                     android:layout_weight="0.5">
                     <ImageView
                         android:src="@drawable/btn_homepage"
+                        android:background="@null"
                         android:layout_width="32dp"
                         android:layout_height="32dp"
                         android:layout_weight="0"
@@ -141,7 +138,7 @@
                         android:id="@+id/btnHome" />
                 </LinearLayout>
                 <ImageView
-                    android:src="@drawable/emoji_glasses"
+                    android:src="@drawable/emoji_smiling"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:scaleType="fitXY"
@@ -326,21 +323,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:id="@+id/initLayout"
+        android:visibility="visible"
+        android:id="@+id/homeLayout"
         android:background="#FFFFDD78">
         <Space
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="0.25" />
-        <!--<TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Start"
-            android:textSize="9pt"
-            android:textStyle="bold"
-            android:textAlignment="center"
-            android:textColor="#FF000000"
-        />-->
         <ImageView
             android:src="@drawable/flag_start"
             android:layout_width="match_parent"
@@ -399,18 +388,109 @@
                 android:scaleType="fitCenter"
                 android:id="@+id/btnAppInfo" />
         </LinearLayout>
-        <!--<Space
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:visibility="gone"
-            android:layout_weight="0.16" />-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Minesweeper Plus.     ©2020.     version: 1.4"
+            android:text="Minesweeper Plus.     ©2020.     version: "
             android:textSize="4pt"
             android:textAlignment="center"
             android:textColor="#FF000000"
+            android:id="@+id/txtVersion"
         />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:id="@+id/infoLayout"
+        android:background="#FFFAFAFA">
+        <!--<Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:title="Test"
+            android:background="#FFFFD000">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="En"/>
+        </Toolbar>-->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:textColor="#FF080808"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Minesweeper Plus: A more attractive version of the nostalgic and addictive game, Minesweeper; Including prizes to help you!"
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:textColor="#FF080808"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Minesweeper  is a single-player puzzle computer game. The objective of the game is to clear a rectangular board containing hidden mines or bombs without detonating any of them, with help from clues about the number of neighboring mines in each field. This Plus version of Minesweeper contains some new features that help you have a more attractive experience, by encouraging you to play more until win the final level."
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:textColor="#FF080808"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="In this version, shapes show the number of mines, click or long-click action can be chosen to put flag or leg on each field, and clicking on numbers opens beside fields, if its mines have been detected before."
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:textColor="#FF080808"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="The game level will become harder if you win, and easier if you lose! Number of fields and mines is related to your device! Try to reach the final level and win the game again and again!"
+                />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" 
+                    android:textColor="#FF080808"
+                    android:layout_marginBottom="15dp"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="On each match, your winning time indicates the prize: Star, Help (Plus) and Heart. hearts can save your life, helps can show you mines and stars can be exchanged to helps (3 stars) and hearts (5 stars)."
+                />
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#80808080">
+            <ImageButton
+                android:src="@drawable/left_arrow"
+                android:padding="9dp"
+                android:scaleType="fitCenter"
+                android:background="@null"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5"
+                android:id="@+id/btnInfoBack"
+                />
+            <TextView
+                android:text="En"
+                android:padding="9dp"
+                android:textAlignment="center"
+                android:textSize="15dp"
+                android:textColor="#FF000000"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.5" />
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

@@ -11,6 +11,7 @@ using System.Timers;
 using System.Drawing;
 using Android.Content;
 using Timer = System.Timers.Timer;
+using Android.Text;
 //using Android.Support.V4.Content.Res;
 
 namespace MinesweeperPlus
@@ -27,15 +28,16 @@ namespace MinesweeperPlus
         float screenXdpi, screenYdpi;
         GridLayout gridLayout;
         bool isAppInitialized, isFlagDefault, isBombOnAutoClick;
-        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnStarToGift2, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
-                    btnStart, btnAppLike, btnAppShare, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
+        ImageView btnToggleFlagDefault, btnPlus, btnStarToGift, btnNewGame, btnRestartGame, btnUseHeart, btnDontUseHeart,
+                    btnStart, btnAppLike, btnAppShare, btnAppInfo, btnHome, imgBonusStar, imgBonusPlus, imgBonusHeart, imgSurprised;
         ImageView[] timerDigitsImages, remainFlagsImages, starDigitsImages, plusDigitsImages, heartDigitsImages;
         char[] bombsDigits, timerDigits, starDigits, plusDigits, heartDigits;
         Timer timer, blinkTimer;
         List<Tuple<ImageView, int, int>> blinkers;
-        LinearLayout linearLayoutMessage, linearLayoutButtons, linearLayoutUseHeart, initLayout;
+        LinearLayout linearLayoutStop, linearLayoutPlaying, linearLayoutUseHeart, homeLayout, infoLayout;
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
+        ImageButton btnInfoBack;
 
         #endregion
 
@@ -72,11 +74,11 @@ namespace MinesweeperPlus
         }
         private void initApp()
         {
-            initLayout = FindViewById<LinearLayout>(Resource.Id.initLayout);
-            gridWidth = initLayout.Width;
-            gridHeight = initLayout.Height;
+            //homeLayout = FindViewById<LinearLayout>(Resource.Id.homeLayout);
+            gridWidth = homeLayout.Width;
+            gridHeight = homeLayout.Height;
 
-            gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
+            //gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
 
             screenXdpi = Resources.DisplayMetrics.Xdpi;
             screenYdpi = Resources.DisplayMetrics.Ydpi;
@@ -94,36 +96,16 @@ namespace MinesweeperPlus
 
             //calculating max bomb count
             var maxMineCount = (int)Math.Round((double)maxMinePercent * maxRowCount * maxColCount / 100);
-            Toast.MakeText(Application.Context, $"سعی کن برنده مرحله {En2Fa(maxMineCount.ToString())} بمب بشی", ToastLength.Long).Show();
-
-            timerDigits = new char[5];
-            timerDigitsImages = new ImageView[5];
-            timerDigitsImages[0] = FindViewById<ImageView>(Resource.Id.timerDigit_h1);
-            timerDigitsImages[1] = FindViewById<ImageView>(Resource.Id.timerDigit_h2);
-            timerDigitsImages[2] = FindViewById<ImageView>(Resource.Id.timerDigit_col);
-            timerDigitsImages[3] = FindViewById<ImageView>(Resource.Id.timerDigit_m1);
-            timerDigitsImages[4] = FindViewById<ImageView>(Resource.Id.timerDigit_m2);
-
-            bombsDigits = new char[3];
-            remainFlagsImages = new ImageView[3];
-            remainFlagsImages[0] = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
-            remainFlagsImages[1] = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
-            remainFlagsImages[2] = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
-
-            starDigits = new char[2];
-            starDigitsImages = new ImageView[2];
-            starDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtStar0);
-            starDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtStar1);
-
-            plusDigits = new char[2];
-            plusDigitsImages = new ImageView[2];
-            plusDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtPlus0);
-            plusDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtPlus1);
-
-            heartDigits = new char[2];
-            heartDigitsImages = new ImageView[2];
-            heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
-            heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
+            //Toast.MakeText(Application.Context, $"سعی کن برنده مرحله {En2Fa(maxMineCount.ToString())} بمب بشی", ToastLength.Long).Show();
+            AlertDialog.Builder alertDiag = new AlertDialog.Builder(this);
+            alertDiag.SetTitle("GAME GOAL");
+            alertDiag.SetMessage($"Final Level has {maxMineCount} mines!\n\nTry to reach and win that.\n\nIt will give you 10 stars.");
+            alertDiag.SetPositiveButton("OK", (senderAlert, args) =>
+            {
+                alertDiag.Dispose();
+            });
+            Dialog diag = alertDiag.Create();
+            diag.Show();
 
             setFlagDefaultButton();
 
@@ -158,8 +140,9 @@ namespace MinesweeperPlus
                 initApp();
             }
 
-            initLayout.Visibility = ViewStates.Gone;
+            homeLayout.Visibility = ViewStates.Gone;
             gridLayout.Visibility = ViewStates.Visible;
+            infoLayout.Visibility = ViewStates.Gone;
 
             if (game == null)
             {
@@ -271,11 +254,10 @@ namespace MinesweeperPlus
             prgGoldenTimes.Progress = 0;
             prgSilverTimes.Progress = 0;
 
-            linearLayoutMessage.Visibility = ViewStates.Gone;
-            linearLayoutButtons.Visibility = ViewStates.Visible;
+            btnNewGame.SetImageResource(Resource.Drawable.emoji_smiling);
+            linearLayoutStop.Visibility = ViewStates.Visible;
+            linearLayoutPlaying.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
-
-            StopBlinking();
         }
         private void createNewBoard(int firstR, int firstC)
         {
@@ -375,6 +357,11 @@ namespace MinesweeperPlus
         {
             game.Status = GameStatus.Playing;
 
+            btnNewGame.SetImageResource(Resource.Drawable.emoji_smiling);
+            linearLayoutStop.Visibility = ViewStates.Gone;
+            linearLayoutPlaying.Visibility = ViewStates.Visible;
+            linearLayoutUseHeart.Visibility = ViewStates.Gone;
+
             setBonusNumbers();
 
             game.GameStartedTime = DateTime.Now;
@@ -434,8 +421,8 @@ namespace MinesweeperPlus
                 {
                     isBombOnAutoClick = isAutoClick;
                     game.Status = GameStatus.Paused;
-                    linearLayoutMessage.Visibility = ViewStates.Gone;
-                    linearLayoutButtons.Visibility = ViewStates.Gone;
+                    linearLayoutStop.Visibility = ViewStates.Gone;
+                    linearLayoutPlaying.Visibility = ViewStates.Gone;
                     linearLayoutUseHeart.Visibility = ViewStates.Visible;
 
                     StartBlinking(imgSurprised);
@@ -505,6 +492,8 @@ namespace MinesweeperPlus
         }
         private void gameDone()
         {
+            StopBlinking();
+
             timer.Stop();
             game.GamePlayingTime = DateTime.Now - game.GameStartedTime;
 
@@ -551,15 +540,14 @@ namespace MinesweeperPlus
 
             setBonusNumbers();
 
-            btnNewGame.SetImageResource(Resource.Drawable.emoji_glasses);
-            linearLayoutMessage.Visibility = ViewStates.Visible;
-            linearLayoutButtons.Visibility = ViewStates.Gone;
+            linearLayoutStop.Visibility = ViewStates.Visible;
+            linearLayoutPlaying.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
         }
 
         private void StartBlinking(params ImageView[] imageViews)
         {
-            StopBlinking();
+            //StopBlinking();
 
             blinkers = new List<Tuple<ImageView, int, int>>();
 
@@ -624,6 +612,8 @@ namespace MinesweeperPlus
                 imageView.SetImageResource(mainImage);
             }
 
+            blinkers = new List<Tuple<ImageView, int, int>>();
+
             blinkTimer.Stop();
         }
 
@@ -633,11 +623,11 @@ namespace MinesweeperPlus
             setImageDigits(starDigitsImages, starDigits, starValue);
 
             btnStarToGift.Visibility = (starCount >= 3) ? ViewStates.Visible : ViewStates.Gone;
-            btnStarToGift2.Visibility = game.Status == GameStatus.Playing ? ViewStates.Gone : btnStarToGift.Visibility;
+            //btnStarToGift2.Visibility = game.Status == GameStatus.Playing ? ViewStates.Gone : btnStarToGift.Visibility;
 
             var plusValue = greenFlagCount > 99 ? "99" : greenFlagCount.ToString();
             setImageDigits(plusDigitsImages, plusDigits, plusValue);
-            btnPlus.Visibility = (greenFlagCount > 0 && game.Status == GameStatus.Playing) ? ViewStates.Visible : ViewStates.Gone;
+            btnPlus.Visibility = (greenFlagCount > 0 && game != null && game.Status == GameStatus.Playing) ? ViewStates.Visible : ViewStates.Gone;
 
             var heartValue = heartCount > 99 ? "99" : heartCount.ToString();
             setImageDigits(heartDigitsImages, heartDigits, heartValue);
@@ -761,9 +751,9 @@ namespace MinesweeperPlus
             }
 
             game.Status = GameStatus.Fail;
-            btnNewGame.SetImageResource(Resource.Drawable.emoji_sad);
-            linearLayoutMessage.Visibility = ViewStates.Visible;
-            linearLayoutButtons.Visibility = ViewStates.Gone;
+
+            linearLayoutStop.Visibility = ViewStates.Visible;
+            linearLayoutPlaying.Visibility = ViewStates.Gone;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
 
             StartBlinking(btnNewGame);
@@ -862,8 +852,6 @@ namespace MinesweeperPlus
 
             btnStarToGift = FindViewById<ImageView>(Resource.Id.btnStarToGift);
             btnStarToGift.Click += btnStarToGift_Click;
-            btnStarToGift2 = FindViewById<ImageView>(Resource.Id.btnStarToGift2);
-            btnStarToGift2.Click += btnStarToGift_Click;
 
             btnPlus = FindViewById<ImageView>(Resource.Id.btnPlus);
             btnPlus.Click += btnPlus_Click;
@@ -874,8 +862,8 @@ namespace MinesweeperPlus
             btnDontUseHeart = FindViewById<ImageView>(Resource.Id.btnDontUseHeart);
             btnDontUseHeart.Click += BtnDontUseHeart_Click;
 
-            linearLayoutButtons = FindViewById<LinearLayout>(Resource.Id.linearLayoutButtons);
-            linearLayoutMessage = FindViewById<LinearLayout>(Resource.Id.linearLayoutMessage);
+            linearLayoutPlaying = FindViewById<LinearLayout>(Resource.Id.linearLayoutPlaying);
+            linearLayoutStop = FindViewById<LinearLayout>(Resource.Id.linearLayoutStop);
             linearLayoutUseHeart = FindViewById<LinearLayout>(Resource.Id.linearLayoutUseHeart);
 
             btnNewGame = FindViewById<ImageView>(Resource.Id.btnNewGame);
@@ -896,6 +884,9 @@ namespace MinesweeperPlus
             btnAppShare = FindViewById<ImageView>(Resource.Id.btnAppShare);
             btnAppShare.Click += btnAppShare_Click;
 
+            btnAppInfo = FindViewById<ImageView>(Resource.Id.btnAppInfo);
+            btnAppInfo.Click += btnAppInfo_Click;
+
             btnHome = FindViewById<ImageView>(Resource.Id.btnHome);
             btnHome.Click += btnHome_Click;
 
@@ -903,12 +894,61 @@ namespace MinesweeperPlus
             imgBonusPlus = FindViewById<ImageView>(Resource.Id.imgBonusPlus);
             imgBonusHeart = FindViewById<ImageView>(Resource.Id.imgBonusHeart);
             imgSurprised = FindViewById<ImageView>(Resource.Id.imgSurprised);
+
+            var txtVersion = FindViewById<TextView>(Resource.Id.txtVersion);
+            txtVersion.Text += AppInfo.VersionString;
+
+            homeLayout = FindViewById<LinearLayout>(Resource.Id.homeLayout);
+            gridLayout = FindViewById<GridLayout>(Resource.Id.gridLayout);
+            infoLayout = FindViewById<LinearLayout>(Resource.Id.infoLayout);
+
+            timerDigits = new char[5];
+            timerDigitsImages = new ImageView[5];
+            timerDigitsImages[0] = FindViewById<ImageView>(Resource.Id.timerDigit_h1);
+            timerDigitsImages[1] = FindViewById<ImageView>(Resource.Id.timerDigit_h2);
+            timerDigitsImages[2] = FindViewById<ImageView>(Resource.Id.timerDigit_col);
+            timerDigitsImages[3] = FindViewById<ImageView>(Resource.Id.timerDigit_m1);
+            timerDigitsImages[4] = FindViewById<ImageView>(Resource.Id.timerDigit_m2);
+
+            bombsDigits = new char[3];
+            remainFlagsImages = new ImageView[3];
+            remainFlagsImages[0] = FindViewById<ImageView>(Resource.Id.remainFlagDigit100);
+            remainFlagsImages[1] = FindViewById<ImageView>(Resource.Id.remainFlagDigit10);
+            remainFlagsImages[2] = FindViewById<ImageView>(Resource.Id.remainFlagDigit1);
+
+            starDigits = new char[2];
+            starDigitsImages = new ImageView[2];
+            starDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtStar0);
+            starDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtStar1);
+
+            plusDigits = new char[2];
+            plusDigitsImages = new ImageView[2];
+            plusDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtPlus0);
+            plusDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtPlus1);
+
+            heartDigits = new char[2];
+            heartDigitsImages = new ImageView[2];
+            heartDigitsImages[0] = FindViewById<ImageView>(Resource.Id.dgtHeart0);
+            heartDigitsImages[1] = FindViewById<ImageView>(Resource.Id.dgtHeart1);
+
+            btnInfoBack = FindViewById<ImageButton>(Resource.Id.btnInfoBack);
+            btnInfoBack.Click += btnInfoBack_Click;
+
+            setBonusNumbers();
         }
 
         private void btnHome_Click(object sender, EventArgs e)
         {
-            initLayout.Visibility = ViewStates.Visible;
+            homeLayout.Visibility = ViewStates.Visible;
             gridLayout.Visibility = ViewStates.Gone;
+            infoLayout.Visibility = ViewStates.Gone;
+        }
+
+        private void btnAppInfo_Click(object sender, EventArgs e)
+        {
+            homeLayout.Visibility = ViewStates.Gone;
+            gridLayout.Visibility = ViewStates.Gone;
+            infoLayout.Visibility = ViewStates.Visible;
         }
 
         private void btnStart_Click(object sender, EventArgs e)
@@ -996,9 +1036,10 @@ namespace MinesweeperPlus
             alertDiag.SetMessage("Please share the goodness of Minesweeper Plus with your friends.");
             alertDiag.SetPositiveButton("OK", (senderAlert, args) =>
             {
-                var smsIntent = new Intent(Intent.ActionView);
-                smsIntent.SetData(Android.Net.Uri.Parse("sms:"));
-                smsIntent.PutExtra("sms_body", smsBody);
+                var smsIntent = new Intent(Intent.ActionSend);
+                //smsIntent.SetData(Android.Net.Uri.Parse("sms:"));
+                smsIntent.PutExtra(Intent.ExtraText/*"sms_body"*/, smsBody);
+                smsIntent.SetType("text/plain");
                 StartActivity(smsIntent);
                 alertDiag.Dispose();
             });
@@ -1044,8 +1085,8 @@ namespace MinesweeperPlus
             heartCount--;
             game.Status = GameStatus.Playing;
 
-            linearLayoutMessage.Visibility = ViewStates.Gone;
-            linearLayoutButtons.Visibility = ViewStates.Visible;
+            linearLayoutStop.Visibility = ViewStates.Gone;
+            linearLayoutPlaying.Visibility = ViewStates.Visible;
             linearLayoutUseHeart.Visibility = ViewStates.Gone;
 
             setBonusNumbers();
@@ -1063,7 +1104,7 @@ namespace MinesweeperPlus
 
             Android.App.AlertDialog.Builder alertDiag = new Android.App.AlertDialog.Builder(this);
             alertDiag.SetTitle("SELLING STARS");
-            alertDiag.SetMessage($"You have\n{starCount} Stars = {_plusCount} Plus(s), {_heartCount} Heart(s)\n\nWant more? Play more!\n\n{nextPlus} Stars = {_plusCount + 1} Plus(s), {_nextPlus_HeartCount} Heart(s)\n{nextHeart} Stars = {_nextHeart_PlusCount} Plus(s), {_heartCount + 1} Heart(s)\n");
+            alertDiag.SetMessage($"You have\n{starCount} Stars = {_plusCount} Plus(s), {_heartCount} Heart(s)\n\n_______________________\nWant more? Play more!\n\n{nextPlus} Stars = {_plusCount + 1} Plus(s), {_nextPlus_HeartCount} Heart(s)\n{nextHeart} Stars = {_nextHeart_PlusCount} Plus(s), {_heartCount + 1} Heart(s)");
             alertDiag.SetPositiveButton("Sell", (senderAlert, args) =>
             {
                 if (starCount >= 3)
@@ -1286,6 +1327,21 @@ namespace MinesweeperPlus
             Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
+        public override void OnBackPressed()
+        {
+            if (homeLayout.Visibility == ViewStates.Visible || (game != null && game.Status == GameStatus.Playing))
+            {
+                base.OnBackPressed();
+            }
+            else
+            {
+                btnHome.PerformClick();
+            }
+        }
+        private void btnInfoBack_Click(object sender, EventArgs e)
+        {
+            this.OnBackPressed();
         }
 
         #endregion
