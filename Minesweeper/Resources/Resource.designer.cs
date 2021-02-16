@@ -534,20 +534,20 @@ namespace MinesweeperPlus
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f0b003b
-			public const int action_container = 2131427387;
-			
-			// aapt resource value: 0x7f0b0047
-			public const int action_divider = 2131427399;
-			
 			// aapt resource value: 0x7f0b003c
-			public const int action_image = 2131427388;
-			
-			// aapt resource value: 0x7f0b003d
-			public const int action_text = 2131427389;
+			public const int action_container = 2131427388;
 			
 			// aapt resource value: 0x7f0b0048
-			public const int actions = 2131427400;
+			public const int action_divider = 2131427400;
+			
+			// aapt resource value: 0x7f0b003d
+			public const int action_image = 2131427389;
+			
+			// aapt resource value: 0x7f0b003e
+			public const int action_text = 2131427390;
+			
+			// aapt resource value: 0x7f0b0049
+			public const int actions = 2131427401;
 			
 			// aapt resource value: 0x7f0b0006
 			public const int async = 2131427334;
@@ -576,8 +576,8 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b0019
 			public const int btnHome = 2131427353;
 			
-			// aapt resource value: 0x7f0b003a
-			public const int btnInfoBack = 2131427386;
+			// aapt resource value: 0x7f0b003b
+			public const int btnInfoBack = 2131427387;
 			
 			// aapt resource value: 0x7f0b001a
 			public const int btnNewGame = 2131427354;
@@ -600,8 +600,8 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b001f
 			public const int btnUseHeart = 2131427359;
 			
-			// aapt resource value: 0x7f0b0046
-			public const int chronometer = 2131427398;
+			// aapt resource value: 0x7f0b0047
+			public const int chronometer = 2131427399;
 			
 			// aapt resource value: 0x7f0b002e
 			public const int dgtHeart0 = 2131427374;
@@ -630,11 +630,11 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b0031
 			public const int homeLayout = 2131427377;
 			
-			// aapt resource value: 0x7f0b003f
-			public const int icon = 2131427391;
+			// aapt resource value: 0x7f0b0040
+			public const int icon = 2131427392;
 			
-			// aapt resource value: 0x7f0b0049
-			public const int icon_group = 2131427401;
+			// aapt resource value: 0x7f0b004a
+			public const int icon_group = 2131427402;
 			
 			// aapt resource value: 0x7f0b002d
 			public const int imgBonusHeart = 2131427373;
@@ -648,8 +648,8 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b001e
 			public const int imgSurprised = 2131427358;
 			
-			// aapt resource value: 0x7f0b0042
-			public const int info = 2131427394;
+			// aapt resource value: 0x7f0b0043
+			public const int info = 2131427395;
 			
 			// aapt resource value: 0x7f0b0039
 			public const int infoLayout = 2131427385;
@@ -687,14 +687,14 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b000a
 			public const int normal = 2131427338;
 			
-			// aapt resource value: 0x7f0b0044
-			public const int notification_background = 2131427396;
+			// aapt resource value: 0x7f0b0045
+			public const int notification_background = 2131427397;
 			
-			// aapt resource value: 0x7f0b0040
-			public const int notification_main_column = 2131427392;
+			// aapt resource value: 0x7f0b0041
+			public const int notification_main_column = 2131427393;
 			
-			// aapt resource value: 0x7f0b003e
-			public const int notification_main_column_container = 2131427390;
+			// aapt resource value: 0x7f0b003f
+			public const int notification_main_column_container = 2131427391;
 			
 			// aapt resource value: 0x7f0b000d
 			public const int prgGameLevel = 2131427341;
@@ -714,11 +714,11 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b0010
 			public const int remainFlagDigit100 = 2131427344;
 			
-			// aapt resource value: 0x7f0b0043
-			public const int right_icon = 2131427395;
+			// aapt resource value: 0x7f0b0044
+			public const int right_icon = 2131427396;
 			
-			// aapt resource value: 0x7f0b0041
-			public const int right_side = 2131427393;
+			// aapt resource value: 0x7f0b0042
+			public const int right_side = 2131427394;
 			
 			// aapt resource value: 0x7f0b0016
 			public const int space1 = 2131427350;
@@ -732,8 +732,8 @@ namespace MinesweeperPlus
 			// aapt resource value: 0x7f0b0004
 			public const int text2 = 2131427332;
 			
-			// aapt resource value: 0x7f0b0045
-			public const int time = 2131427397;
+			// aapt resource value: 0x7f0b0046
+			public const int time = 2131427398;
 			
 			// aapt resource value: 0x7f0b0022
 			public const int timerDigit_col = 2131427362;
@@ -755,6 +755,9 @@ namespace MinesweeperPlus
 			
 			// aapt resource value: 0x7f0b0038
 			public const int txtVersion = 2131427384;
+			
+			// aapt resource value: 0x7f0b003a
+			public const int webView = 2131427386;
 			
 			static Id()
 			{

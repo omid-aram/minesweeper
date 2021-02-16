@@ -12,6 +12,7 @@ using System.Drawing;
 using Android.Content;
 using Timer = System.Timers.Timer;
 using Android.Text;
+using Android.Webkit;
 //using Android.Support.V4.Content.Res;
 
 namespace MinesweeperPlus
@@ -38,6 +39,7 @@ namespace MinesweeperPlus
         Point lastPressedPoint, lastOpenedPressed;
         ProgressBar prgSilverTimes, prgGoldenTimes;
         ImageButton btnInfoBack;
+        WebView webView;
 
         #endregion
 
@@ -150,7 +152,7 @@ namespace MinesweeperPlus
                 game.ColCount = maxColCount;
                 game.MinePercent = maxMinePercent;
             }
-            game.IsAutoFlagMode = true;
+            //game.IsAutoFlagMode = true;
 
             StopBlinking();
             setBonusNumbers();
@@ -447,7 +449,7 @@ namespace MinesweeperPlus
                 pressCell(r + 1, c + 1);
             }
 
-            checkAutoFlag();
+            //checkAutoFlag();
 
             if (game.Status == GameStatus.Playing)
             {
@@ -455,43 +457,43 @@ namespace MinesweeperPlus
             }
         }
 
-        private void checkAutoFlag()
-        {
-            if (!game.IsAutoFlagMode) return;
+        //private void checkAutoFlag()
+        //{
+        //    if (!game.IsAutoFlagMode) return;
 
-            for (int r = 0; r < game.RowCount; r++)
-            {
-                for (int c = 0; c < game.ColCount; c++)
-                {
-                    if (game.BoardCells[r, c].IsAutoFlagChecked ||
-                        game.BoardCells[r, c].Status != CellStatus.Pressed ||
-                        game.BoardCells[r, c].Value <= 0)
-                        continue;
+        //    for (int r = 0; r < game.RowCount; r++)
+        //    {
+        //        for (int c = 0; c < game.ColCount; c++)
+        //        {
+        //            if (game.BoardCells[r, c].IsAutoFlagChecked ||
+        //                game.BoardCells[r, c].Status != CellStatus.Pressed ||
+        //                game.BoardCells[r, c].Value <= 0)
+        //                continue;
 
-                    var cellValue = game.BoardCells[r, c].Value;
-                    var notPressedPoints = new List<Point>();
+        //            var cellValue = game.BoardCells[r, c].Value;
+        //            var notPressedPoints = new List<Point>();
 
-                    if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c - 1));
-                    if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c - 0));
-                    if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c + 1));
-                    if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 0, c - 1));
-                    if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 0, c + 1));
-                    if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c - 1));
-                    if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c - 0));
-                    if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c + 1));
+        //            if (isInBoard(r - 1, c - 1) && game.BoardCells[r - 1, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c - 1));
+        //            if (isInBoard(r - 1, c - 0) && game.BoardCells[r - 1, c - 0].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c - 0));
+        //            if (isInBoard(r - 1, c + 1) && game.BoardCells[r - 1, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 1, c + 1));
+        //            if (isInBoard(r - 0, c - 1) && game.BoardCells[r - 0, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 0, c - 1));
+        //            if (isInBoard(r - 0, c + 1) && game.BoardCells[r - 0, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r - 0, c + 1));
+        //            if (isInBoard(r + 1, c - 1) && game.BoardCells[r + 1, c - 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c - 1));
+        //            if (isInBoard(r + 1, c - 0) && game.BoardCells[r + 1, c - 0].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c - 0));
+        //            if (isInBoard(r + 1, c + 1) && game.BoardCells[r + 1, c + 1].Status != CellStatus.Pressed) notPressedPoints.Add(new Point(r + 1, c + 1));
 
-                    if (cellValue == notPressedPoints.Count)
-                    {
-                        foreach (var item in notPressedPoints)
-                        {
-                            putGreenFlag(item.X, item.Y);
-                            game.BoardCells[item.X, item.Y].IsAutoFlagChecked = true;
-                        }
-                    }
-                }
-            }
+        //            if (cellValue == notPressedPoints.Count)
+        //            {
+        //                foreach (var item in notPressedPoints)
+        //                {
+        //                    putGreenFlag(item.X, item.Y);
+        //                    game.BoardCells[item.X, item.Y].IsAutoFlagChecked = true;
+        //                }
+        //            }
+        //        }
+        //    }
 
-        }
+        //}
 
         private void openedPress(int r, int c)
         {
@@ -976,6 +978,15 @@ namespace MinesweeperPlus
             btnInfoBack = FindViewById<ImageButton>(Resource.Id.btnInfoBack);
             btnInfoBack.Click += btnInfoBack_Click;
 
+            webView = FindViewById<WebView>(Resource.Id.webView);
+
+            //SetWebViewClient with an instance of WebViewClientClass  
+            webView.SetWebViewClient(new WebViewClientClass());
+
+            //Enabled Javascript in Websettings  
+            WebSettings websettings = webView.Settings;
+            websettings.JavaScriptEnabled = true;
+
             setBonusNumbers();
         }
 
@@ -988,6 +999,8 @@ namespace MinesweeperPlus
 
         private void btnAppInfo_Click(object sender, EventArgs e)
         {
+            webView.LoadUrl("https://google.com");
+
             homeLayout.Visibility = ViewStates.Gone;
             gridLayout.Visibility = ViewStates.Gone;
             infoLayout.Visibility = ViewStates.Visible;
@@ -1389,6 +1402,15 @@ namespace MinesweeperPlus
         #endregion
     }
 
+    internal class WebViewClientClass : WebViewClient
+    {
+        //Give the host application a chance to take over the control when a new URL is about to be loaded in the current WebView.  
+        public override bool ShouldOverrideUrlLoading(WebView view, string url)
+        {
+            view.LoadUrl(url);
+            return true;
+        }
+    }
     public class Game
     {
         public int RowCount { get; set; }
@@ -1413,7 +1435,7 @@ namespace MinesweeperPlus
         public CellStatus Status { get; set; }
         public bool IsGreenFlag { get; set; }
         public bool IsNearByZero { get; set; }
-        public bool IsAutoFlagChecked { get; set; }
+        //public bool IsAutoFlagChecked { get; set; }
     }
 
     public enum GameStatus

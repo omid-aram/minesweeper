@@ -416,7 +416,7 @@
                 android:layout_height="match_parent"
                 android:text="En"/>
         </Toolbar>-->
-        <ScrollView
+        <!--<ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
@@ -466,7 +466,11 @@
                     android:text="On each match, your winning time indicates the prize: Star, Help (Plus) and Heart. hearts can save your life, helps can show you mines and stars can be exchanged to helps (3 stars) and hearts (5 stars)."
                 />
             </LinearLayout>
-        </ScrollView>
+        </ScrollView>-->
+        <android.webkit.WebView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/webView" />
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
